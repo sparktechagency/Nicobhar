@@ -1,0 +1,364 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* sider  */
+.ant-layout-sider {
+    background: black !important;
+}
+
+.ant-menu-dark, .ant-menu-dark .ant-menu {
+    background: black !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+    background-color: #cb0909 !important;
+}
+
+.ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-submenu-title {
+    margin-bottom: 20px !important;
+}
+
+.ant-layout-sider-collapsed svg.w-5.h-5.ant-menu-item-icon {
+    margin-left: -2px;
+    margin-bottom: -4px;
+}
+
+
+.ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+    background: black !important;
+}
+/* Add these styles to your CSS file */
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  border: none;
+  background: transparent;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+  background: white;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+.ant-modal-content {
+  border-radius: 8px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.tickets-page {
+    padding: 24px;
+    background: #f5f5f5;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .search-section {
+    flex: 1;
+    margin-right: 16px;
+  }
+  
+  .search-input {
+    max-width: 400px;
+    border-radius: 8px;
+  }
+  
+  .location-select {
+    width: 200px;
+  }
+  
+  /* Tabs Styling */
+  .ant-tabs-nav {
+    margin-bottom: 0 !important;
+  }
+  
+  .ant-tabs-tab {
+    padding: 12px 0 !important;
+    margin: 0 24px 0 0 !important;
+  }
+  
+  .ant-tabs-tab-active {
+    font-weight: 600;
+  }
+  
+  .ant-tabs-ink-bar {
+    background: #ff0000 !important;
+    height: 3px !important;
+  }
+  
+  /* Table Styling */
+  .ant-table {
+    background: transparent !important;
+  }
+  
+  .ant-table-thead > tr > th {
+    background: transparent !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+    font-weight: 500 !important;
+    color: #666 !important;
+  }
+  
+  .ant-table-tbody > tr > td {
+    background: white !important;
+    border: none !important;
+  }
+  
+  .ant-table-tbody > tr {
+    background: white !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .ant-table-tbody > tr:hover {
+    cursor: pointer;
+  }
+  
+  /* Custom Table Cell Styling */
+  .ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .ticket-number {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .company-name {
+    color: #ff0000;
+    font-weight: 500;
+  }
+  
+  .model-number {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .date-time {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .date,
+  .time {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .ticket-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .status-badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-badge.new {
+    color: #ff0000;
+  }
+  
+  .arrow-icon {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  /* Pagination Styling */
+  .ant-pagination {
+    margin-top: 16px !important;
+  }
+  
+  .ant-pagination-item {
+    border-radius: 4px !important;
+  }
+  
+  .ant-pagination-item-active {
+    background: #f0f0f0 !important;
+    border-color: #f0f0f0 !important;
+  }
+  
+  /* Modal Styling */
+  .ant-modal-content {
+    border-radius: 8px;
+  }
+  
+  .ant-modal-header {
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .ticket-modal .ant-modal-content {
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .ticket-modal .ant-modal-header {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  
+  .modal-header {
+    background-color: #ef4444;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .status-badge {
+    background-color: #fef08a;
+    color: #854d0e;
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  
+  .header-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .close-icon {
+    color: white;
+    font-size: 16px;
+    position: absolute;
+    right: 24px;
+    top: 20px;
+  }
+  
+  .modal-content {
+    padding: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    /* margin-bottom: 20px; */
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  .input-with-copy {
+    position: relative;
+  }
+  
+  .gray-bg {
+    background-color: #f3f4f6 !important;
+    border: none !important;
+  }
+  
+  .copy-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    cursor: pointer;
+  }
+  
+  .textarea-copy {
+    top: 24px;
+  }
+  
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  
+  .btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .btn-outline {
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    background: white;
+  }
+  
+  .btn-outline:hover {
+    background: #fef2f2;
+  }
+  
+  .btn-primary {
+    background: #ef4444;
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: #dc2626;
+  }
+  
+  
+  .ant-table-tbody > tr > td {
+   
+    padding: 10px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-right: 1px solid #e5e7eb !important;
+
+  }
+
+
+
+  /* side bar active -------------------------- */
+
+  li.ant-menu-item.ant-menu-item-selected {
+    background-color: #ED1C24 !important;
+    color: white !important;
+}
+
+/* Add these styles to customize the table appearance */
+.maintenance-table .ant-table-thead > tr > th {
+  background-color: #f3f4f6;
+  text-align: center;
+}
+
+.maintenance-table .ant-table-cell {
+  padding: 12px 8px !important;
+}
+
+.maintenance-table .ant-table-row:hover > td {
+  background-color: #f9fafb !important;
+}
+
+.maintenance-table .ant-table-cell-row-hover {
+  background-color: #f9fafb !important;
+}
+
