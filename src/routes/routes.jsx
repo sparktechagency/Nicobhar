@@ -53,6 +53,7 @@ import OrgserviceProvider from "../pages/OrgserviceProvider";
 import AboutUs from "../components/superadmin/AboutUs";
 import FAQ from "../components/superadmin/FAQ";
 import SupportAgentTicket from "../pages/SupportAgentTicket";
+import Unauthorized from "../components/shared/Unauthorized";
 
 
 // Define User Role (Replace with Actual Authentication Logic)
@@ -60,7 +61,7 @@ import SupportAgentTicket from "../pages/SupportAgentTicket";
 const router = createBrowserRouter([
 
   // SUPER ADMIN-DASHBOARD ROUTES 
- {
+  {
     path: "",
     element: <SuperAdmin />,
     children: [
@@ -107,7 +108,7 @@ const router = createBrowserRouter([
   },
 
   // LOCATION EMPLOYEE-DASHBOARD ROUTES
-{
+  {
     path: "/location-employee",
     element: <LocationEmployeLayout />,
     children: [
@@ -124,7 +125,7 @@ const router = createBrowserRouter([
       { path: "create-inspection", element: <CreateInspectionPage /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
-    
+
 
       { path: 'notification', element: <NotificationsPage /> },
     ],
@@ -176,8 +177,12 @@ const router = createBrowserRouter([
       { path: '/create-new-password', element: <CreateNewPassword /> },
 
     ]
-  }
+  },
 
+  {
+    path: "/unauthorized",
+    element: <Unauthorized />,
+  }
 ]);
 
 export default router;

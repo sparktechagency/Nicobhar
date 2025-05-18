@@ -1,23 +1,48 @@
 
 import { Button, Card, Checkbox, Form, Input, Typography } from "antd"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useLoginMutation } from "../../redux/features/auth/authApi"
+import toast from "react-hot-toast"
 
 
 const { Title, Text } = Typography
 
 export default function Login() {
   const [form] = Form.useForm()
+  const navigate = useNavigate()
 
-  const onFinish = (values) => {
-    console.log("Success:", values)
+
+  const [login] = useLoginMutation()
+
+  const onFinish = async (values) => {
+    const userInfo = {
+      email: values.email,
+      password : values.password
+    }
+    try {
+      const res = await login(userInfo).unwrap();
+      const token = res.data?.token;
+      console.log(res);
+      if (res.data?.token) {
+        toast.success(res?.message);
+        localStorage.setItem("token", token);
+        navigate('/')
+      }
+    } catch (errors) {
+      // toast.error(errors.data?.message);
+      toast.error('some thisg wrong');
+      
+    }
   }
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-[600px] px-[70px] py-[50px] shadow-lg border-[2px] border-[#FEFEFE] ">
         <div className="text-center mb-8">
           <Title level={3} style={{ marginBottom: "16px", fontSize: "24px", fontWeight: "600", color: "#333333" }}>
-          Log in to your account
+            Log in to your account
           </Title>
           <Text style={{ fontSize: "14px", color: '#5C5C5C', marginBottom: "8px" }} type="secondary">Please enter your email and password to continue</Text>
         </div>
@@ -49,15 +74,15 @@ export default function Login() {
           <Form.Item >
             <div className="flex items-center justify-between">
 
-            <Checkbox style={{ color: "#636363", fontSize: '16px' }}>Remember Password</Checkbox>
-            <Link to="/reset-password" className="text-[#1877F2] hover:text-[#1877F2] text-[16px] font-medium float-right">Forgot Password?</Link>
+              <Checkbox style={{ color: "#636363", fontSize: '16px' }}>Remember Password</Checkbox>
+              <Link to="/reset-password" className="text-[#1877F2] hover:text-[#1877F2] text-[16px] font-medium float-right">Forgot Password?</Link>
             </div>
           </Form.Item>
 
           <Form.Item>
             <div className="w-fit mx-auto">
               <Button style={{ backgroundColor: "#1877F2", borderColor: '#1877F2', height: '44px' }} type="primary" htmlType="submit" block size="large" className="">
-                Sign up
+                Sign In
               </Button>
 
             </div>
@@ -65,9 +90,9 @@ export default function Login() {
 
           <div className="text-center">
             <Text style={{ fontSize: "16px", color: '#000000', fontWeight: '500' }}>
-            Don’t have an account?{" "}
+              Don’t have an account?{" "}
               <Link to="/signup" className="text-blue-500 hover:text-blue-600 ">
-              Signup
+                Signup
               </Link>
             </Text>
           </div>
