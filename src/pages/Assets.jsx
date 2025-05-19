@@ -1,10 +1,13 @@
 import { useState } from "react"
 import { Search, Import } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const AssetManagement = () => {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("")
+  const user = useSelector((state) => state?.auth?.user);
+  console.log(user)
 
   const assets = [
     {

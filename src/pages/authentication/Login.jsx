@@ -3,6 +3,9 @@ import { Button, Card, Checkbox, Form, Input, Typography } from "antd"
 import { Link, useNavigate } from "react-router-dom"
 import { useLoginMutation } from "../../redux/features/auth/authApi"
 import toast from "react-hot-toast"
+import { useDispatch } from "react-redux"
+import { setUser } from "../../redux/features/auth/authSlice"
+
 
 
 const { Title, Text } = Typography
@@ -12,26 +15,25 @@ export default function Login() {
   const navigate = useNavigate()
 
 
+
   const [login] = useLoginMutation()
+  const dispatch = useDispatch();
 
   const onFinish = async (values) => {
     const userInfo = {
       email: values.email,
-      password : values.password
+      password: values.password
     }
     try {
       const res = await login(userInfo).unwrap();
-      const token = res.data?.token;
-      console.log(res);
-      if (res.data?.token) {
+      const { user, token } = res.data;
+      if (token) {
+        dispatch(setUser({ user, token }));
         toast.success(res?.message);
-        localStorage.setItem("token", token);
-        navigate('/')
+        navigate('/');
       }
     } catch (errors) {
-      // toast.error(errors.data?.message);
-      toast.error('some thisg wrong');
-      
+      toast.error('Something went wrong');
     }
   }
 
