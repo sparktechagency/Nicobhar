@@ -14,13 +14,15 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const user = useSelector((state) => state.auth.user);
+console.log(user)
+
   if (!user) {
     return <Navigate to="/login" />;
   }
 
-  if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/unauthorized" />; 
-  }
+  // if (!allowedRoles.includes(user.role)) {
+  //   return <Navigate to="/unauthorized" />; 
+  // }
 
   return <Outlet />;
 };

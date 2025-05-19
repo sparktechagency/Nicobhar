@@ -5,7 +5,8 @@ import logo from '../../assets/logo.png';
 import Swal from 'sweetalert2';
 
 const LocationEmployeSidebar = ({ collapsed }) => {
-    const location = useLocation(); 
+    const location = useLocation();
+
     const handleLogout = () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -18,7 +19,8 @@ const LocationEmployeSidebar = ({ collapsed }) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem('token');
-                window.location.href = '/login';  
+                localStorage.removeItem('user');
+                window.location.href = '/login';
             }
         });
     }
@@ -184,7 +186,7 @@ const LocationEmployeSidebar = ({ collapsed }) => {
                             }
                         >
                             <NavLink to="chats" className="text-primary text-[20px] font-medium">
-                                Chats  
+                                Chats
                             </NavLink>
                         </Menu.Item>
 
@@ -216,5 +218,5 @@ const LocationEmployeSidebar = ({ collapsed }) => {
         </div>
     );
 };
-             
+
 export default LocationEmployeSidebar;

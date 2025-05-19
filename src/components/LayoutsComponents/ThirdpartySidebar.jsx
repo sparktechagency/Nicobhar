@@ -3,9 +3,14 @@ import { NavLink, useLocation } from 'react-router-dom';
 const { Sider } = Layout;
 import logo from '../../assets/logo.png';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/features/auth/authSlice';
 
 const ThirdpartySidebar = ({ collapsed }) => {
-    const location = useLocation(); 
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+
     const handleLogout = () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -17,8 +22,8 @@ const ThirdpartySidebar = ({ collapsed }) => {
             confirmButtonText: 'Yes, logout!'
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.removeItem('token');
-                window.location.href = '/login';  
+                dispatch(logout()); 
+                window.location.href = '/login';
             }
         });
     }
@@ -64,9 +69,9 @@ const ThirdpartySidebar = ({ collapsed }) => {
                         className='px-2 space-y-4 '
                         selectedKeys={[location.pathname]}
                     >
-                
 
-               
+
+
 
 
 
@@ -138,7 +143,7 @@ const ThirdpartySidebar = ({ collapsed }) => {
                         </Menu.Item>
 
 
-                  
+
 
                         <Menu.Item
                             key="/thirdparty/jobcards"
@@ -170,7 +175,7 @@ const ThirdpartySidebar = ({ collapsed }) => {
                             }
                         >
                             <NavLink to="chats" className="text-primary text-[20px] font-medium">
-                                Chats  
+                                Chats
                             </NavLink>
                         </Menu.Item>
 
@@ -202,5 +207,5 @@ const ThirdpartySidebar = ({ collapsed }) => {
         </div>
     );
 };
-             
+
 export default ThirdpartySidebar;
