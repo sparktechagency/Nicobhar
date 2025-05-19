@@ -8,10 +8,12 @@ import { PiUsersLight } from "react-icons/pi";
 const { Sider } = Layout;
 import logo from '../../assets/logo.png';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/features/auth/authSlice';
 
 const OrganizationSidebar = ({ collapsed }) => {
     const location = useLocation(); // Get current path
-
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         Swal.fire({
@@ -24,7 +26,7 @@ const OrganizationSidebar = ({ collapsed }) => {
             confirmButtonText: 'Yes, logout!'
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.removeItem('token');
+                dispatch(logout()); // 🔥 
                 window.location.href = '/login';
             }
         });
@@ -34,7 +36,7 @@ const OrganizationSidebar = ({ collapsed }) => {
 
 
 
-    
+
     const items = [
         {
             key: 'sub1',
@@ -236,7 +238,7 @@ const OrganizationSidebar = ({ collapsed }) => {
                         </Menu.Item>
 
 
-                        
+
                         <Menu
 
                             className='bg-primary text-white text-[18px] font-medium'

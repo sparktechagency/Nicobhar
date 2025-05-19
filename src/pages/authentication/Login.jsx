@@ -19,23 +19,28 @@ export default function Login() {
   const [login] = useLoginMutation()
   const dispatch = useDispatch();
 
-  const onFinish = async (values) => {
-    const userInfo = {
-      email: values.email,
-      password: values.password
+const onFinish = async (values) => {
+  const userInfo = {
+    email: values.email,
+    password: values.password,
+  };
+
+  try {
+    const res = await login(userInfo).unwrap();
+
+    if (res?.access_token) {
+      const { user_information, access_token } = res;
+      
+      dispatch(setUser({ user: user_information, token: access_token }));
+      navigate('/');
     }
-    try {
-      const res = await login(userInfo).unwrap();
-      const { user, token } = res.data;
-      if (token) {
-        dispatch(setUser({ user, token }));
-        toast.success(res?.message);
-        navigate('/');
-      }
-    } catch (errors) {
-      toast.error('Something went wrong');
+  } catch (error) {
+    if(error){
+      toast.error(error?.data?.message)
     }
   }
+};
+
 
 
 
@@ -84,20 +89,11 @@ export default function Login() {
           <Form.Item>
             <div className="w-fit mx-auto">
               <Button style={{ backgroundColor: "#1877F2", borderColor: '#1877F2', height: '44px' }} type="primary" htmlType="submit" block size="large" className="">
-                Sign In
+                Sign in
               </Button>
 
             </div>
           </Form.Item>
-
-          <div className="text-center">
-            <Text style={{ fontSize: "16px", color: '#000000', fontWeight: '500' }}>
-              Don’t have an account?{" "}
-              <Link to="/signup" className="text-blue-500 hover:text-blue-600 ">
-                Signup
-              </Link>
-            </Text>
-          </div>
         </Form>
       </Card>
     </div>
