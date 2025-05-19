@@ -1,3 +1,4 @@
+
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import SuperAdmin from "../layouts/SuperAdmin";
 import Supportagent from "../layouts/Supportagent";
@@ -54,6 +55,7 @@ import AboutUs from "../components/superadmin/AboutUs";
 import FAQ from "../components/superadmin/FAQ";
 import SupportAgentTicket from "../pages/SupportAgentTicket";
 import Unauthorized from "../components/shared/Unauthorized";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 // Define User Role (Replace with Actual Authentication Logic)
@@ -61,112 +63,148 @@ import Unauthorized from "../components/shared/Unauthorized";
 const router = createBrowserRouter([
 
   // SUPER ADMIN-DASHBOARD ROUTES 
+  // ok----
   {
     path: "",
-    element: <SuperAdmin />,
+    element: <ProtectedRoute allowedRoles={["support_admin"]} />,
     children: [
-      { path: "", element: <Dashboard /> },
-      { path: "assets", element: <AssetManagement /> },
-      { path: "assets/asset-history/:id", element: <AssetHistory /> },
-      { path: "tickets", element: <TicketsPage /> },
-      { path: "maintenance", element: <Maintenance /> },
-      { path: "tickets-activity", element: <TicketsActivity /> },
-      { path: "inspections-activity", element: <InspactionAcvity /> },
-      { path: "jobcards-overview", element: <JobCardsOverview /> },
-      { path: "inspectionsheets", element: <Inspectionsheets /> },
-      { path: "service-providers", element: <ServiceProviders /> },
-      { path: "jobcards", element: <JobCards /> },
-      { path: "reports", element: <Reports /> },
-      { path: "chats", element: <Chats /> },
-      { path: "profile", element: <AdminProfile /> },
-      { path: "user-management", element: <UserManagement /> },
-      { path: 'notification', element: <NotificationsPage /> },
-      { path: "tickets/create-inspection", element: <CreateInspectionPage /> },
-      { path: "aboutus", element: <AboutUs /> },
-      { path: "faq", element: <FAQ /> },
+      {
+        element: <SuperAdmin />,
+        children: [
+          { path: "", element: <Dashboard /> },
+          { path: "assets", element: <AssetManagement /> },
+          { path: "assets/asset-history/:id", element: <AssetHistory /> },
+          { path: "tickets", element: <TicketsPage /> },
+          { path: "maintenance", element: <Maintenance /> },
+          { path: "tickets-activity", element: <TicketsActivity /> },
+          { path: "inspections-activity", element: <InspactionAcvity /> },
+          { path: "jobcards-overview", element: <JobCardsOverview /> },
+          { path: "inspectionsheets", element: <Inspectionsheets /> },
+          { path: "service-providers", element: <ServiceProviders /> },
+          { path: "jobcards", element: <JobCards /> },
+          { path: "reports", element: <Reports /> },
+          { path: "chats", element: <Chats /> },
+          { path: "profile", element: <AdminProfile /> },
+          { path: "user-management", element: <UserManagement /> },
+          { path: 'notification', element: <NotificationsPage /> },
+          { path: "tickets/create-inspection", element: <CreateInspectionPage /> },
+          { path: "aboutus", element: <AboutUs /> },
+          { path: "faq", element: <FAQ /> },
+        ],
+      },
     ],
   },
+
+
+
 
   // SUPPORT AGENT-DASHBOARD ROUTES 
-
-
-  
+  // ok-------
   {
     path: "/support-agent",
-    element: <Supportagent />,
+    element: <ProtectedRoute allowedRoles={["support_agent"]} />,
     children: [
-      { path: "", element: <SupportAgentDashboard /> },
-      { path: "tickets", element: <SupportAgentTicket /> },
-      { path: "tickets-activity", element: <TicketsActivity /> },
-      { path: "inspections-activity", element: <InspactionAcvity /> },
-      { path: "jobcards-overview", element: <JobCardsOverview /> },
-      { path: "inspectionsheets", element: <SupportAgentInspaction /> },
-      { path: "inspectionsheets/create-inspection", element: <CreateInspectionPage /> },
-      { path: "profile", element: <AdminProfile /> },
-      { path: "chats", element: <Chats /> },
-      { path: "reports", element: <Reports /> },
-      { path: "jobcards", element: <JobCards /> },
-      { path: 'notification', element: <NotificationsPage /> },
-    ],
+      {
+        element: <Supportagent />,
+        children: [
+          { path: "", element: <SupportAgentDashboard /> },
+          { path: "tickets", element: <SupportAgentTicket /> },
+          { path: "tickets-activity", element: <TicketsActivity /> },
+          { path: "inspections-activity", element: <InspactionAcvity /> },
+          { path: "jobcards-overview", element: <JobCardsOverview /> },
+          { path: "inspectionsheets", element: <SupportAgentInspaction /> },
+          { path: "inspectionsheets/create-inspection", element: <CreateInspectionPage /> },
+          { path: "profile", element: <AdminProfile /> },
+          { path: "chats", element: <Chats /> },
+          { path: "reports", element: <Reports /> },
+          { path: "jobcards", element: <JobCards /> },
+          { path: 'notification', element: <NotificationsPage /> },
+        ],
+      }
+    ]
   },
+
+
+
+
 
   // LOCATION EMPLOYEE-DASHBOARD ROUTES
+  // ok-------
   {
     path: "/location-employee",
-    element: <LocationEmployeLayout />,
+    element: <ProtectedRoute allowedRoles={["location_employee"]} />,
     children: [
-      { path: "", element: <LocationEmployDashb /> },
-      { path: "tickets", element: <LocationEmplTickets /> },
-      { path: "assets", element: <LocationEmloyeAsstsManage /> },
-      { path: "inspectionsheets", element: <LocaEmployInspaction /> },
-      { path: "jobcards", element: <LocaJobCard /> },
-      { path: "maintenance", element: <LocationEmpMinatanence /> },
-      { path: "assets/asset-history/:id", element: <AssetHistory /> },
-      { path: "tickets-activity", element: <TicketsActivity /> },
-      { path: "inspections-activity", element: <InspactionAcvity /> },
-      { path: "jobcards-overview", element: <JobCardsOverview /> },
-      { path: "create-inspection", element: <CreateInspectionPage /> },
-      { path: "profile", element: <AdminProfile /> },
-      { path: "chats", element: <Chats /> },
-
-
-      { path: 'notification', element: <NotificationsPage /> },
+      {
+        element: <LocationEmployeLayout />,
+        children: [
+          { path: "", element: <LocationEmployDashb /> },
+          { path: "tickets", element: <LocationEmplTickets /> },
+          { path: "assets", element: <LocationEmloyeAsstsManage /> },
+          { path: "inspectionsheets", element: <LocaEmployInspaction /> },
+          { path: "jobcards", element: <LocaJobCard /> },
+          { path: "maintenance", element: <LocationEmpMinatanence /> },
+          { path: "assets/asset-history/:id", element: <AssetHistory /> },
+          { path: "tickets-activity", element: <TicketsActivity /> },
+          { path: "inspections-activity", element: <InspactionAcvity /> },
+          { path: "jobcards-overview", element: <JobCardsOverview /> },
+          { path: "create-inspection", element: <CreateInspectionPage /> },
+          { path: "profile", element: <AdminProfile /> },
+          { path: "chats", element: <Chats /> },
+          { path: 'notification', element: <NotificationsPage /> },
+        ],
+      },
     ],
   },
+
+
   // THIRD PARTY-DASHBOARD ROUTES
+  // ok----
   {
     path: "/thirdparty",
-    element: <ThirdpartyLayout />,
+    element: <ProtectedRoute allowedRoles={["third_party"]} />,
     children: [
-      { path: "", element: <ThirdPartyTickets /> },
-      { path: "service-providers", element: <ThirdPartyServiceProvider /> },
-      { path: "profile", element: <AdminProfile /> },
-      { path: 'notification', element: <NotificationsPage /> },
-      { path: "chats", element: <Chats /> },
-      { path: "inspectionsheets", element: <ThirdpartyInspaction /> },
-      { path: "jobcards", element: <ThirdPartyJobcards /> },
+      {
+        element: <ThirdpartyLayout />,
+        children: [
+          { path: "", element: <ThirdPartyTickets /> },
+          { path: "service-providers", element: <ThirdPartyServiceProvider /> },
+          { path: "profile", element: <AdminProfile /> },
+          { path: 'notification', element: <NotificationsPage /> },
+          { path: "chats", element: <Chats /> },
+          { path: "inspectionsheets", element: <ThirdpartyInspaction /> },
+          { path: "jobcards", element: <ThirdPartyJobcards /> },
+        ]
+      }
     ]
   },
 
+
+
+  // ok-------
   {
     path: "/organization",
-    element: <OrganizationLayout />,
+    element: <ProtectedRoute allowedRoles={["organization"]} />,
     children: [
-      { path: "", element: <OrganizationDashbord /> }, // Default for /organization
-      { path: "tickets", element: <OrganizationTickets /> },
-      { path: "tickets/tickets-activity", element: <OrganizationTicketsActivity /> },
-      { path: "assets", element: <OrganizationAssets /> },
-      { path: "assets/asset-history/:id", element: <AssetHistory /> },
-      { path: "inspectionsheets", element: <OrganizInspaction /> },
-      { path: "inspectionsheets/inspections-activity", element: <OrganizaInspactionAcvity /> },
-      { path: "service-providers", element: <OrgserviceProvider /> },
-      { path: "jobcards", element: <OrganizationJobcarda /> },
-      { path: "jobcards/jobcards-overview", element: <OrganizationJobCardsOverview /> },
-      { path: "maintenance", element: <OrganizMaintenance /> },
-      { path: "profile", element: <AdminProfile /> },
-      { path: "notification", element: <NotificationsPage /> },
-      { path: "chats", element: <Chats /> },
-    ]
+      {
+        element: <OrganizationLayout />,
+        children: [
+          { path: "", element: <OrganizationDashbord /> }, // Default for /organization
+          { path: "tickets", element: <OrganizationTickets /> },
+          { path: "tickets/tickets-activity", element: <OrganizationTicketsActivity /> },
+          { path: "assets", element: <OrganizationAssets /> },
+          { path: "assets/asset-history/:id", element: <AssetHistory /> },
+          { path: "inspectionsheets", element: <OrganizInspaction /> },
+          { path: "inspectionsheets/inspections-activity", element: <OrganizaInspactionAcvity /> },
+          { path: "service-providers", element: <OrgserviceProvider /> },
+          { path: "jobcards", element: <OrganizationJobcarda /> },
+          { path: "jobcards/jobcards-overview", element: <OrganizationJobCardsOverview /> },
+          { path: "maintenance", element: <OrganizMaintenance /> },
+          { path: "profile", element: <AdminProfile /> },
+          { path: "notification", element: <NotificationsPage /> },
+          { path: "chats", element: <Chats /> },
+        ]
+      },
+    ],
   },
 
   {
@@ -174,7 +212,7 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       { path: "/login", element: <Login /> },
-      { path: "/signup", element: <Signup /> },
+      // { path: "/signup", element: <Signup /> },
       { path: "/reset-password", element: <ResetPassword /> },
       { path: '/otp-verification', element: <OtpVerification /> },
       { path: '/create-new-password', element: <CreateNewPassword /> },
@@ -182,10 +220,6 @@ const router = createBrowserRouter([
     ]
   },
 
-  {
-    path: "/unauthorized",
-    element: <Unauthorized />,
-  }
 ]);
 
 export default router;
