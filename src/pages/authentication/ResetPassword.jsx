@@ -22,7 +22,7 @@ export default function ResetPassword() {
       console.log(res)
       if (res?.status === true) {
         toast.success(res?.message)
-        navigate('/otp-verification')
+        navigate(`/otp-verification?email=${values?.email}`)
       }
     } catch (error) {
       console.log(error)
