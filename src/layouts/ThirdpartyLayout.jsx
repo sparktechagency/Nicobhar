@@ -1,9 +1,10 @@
-import { Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { Outlet, } from "react-router-dom";
+import {  useState } from 'react';
 import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
 import LocationEmployeSidebar from "../components/LayoutsComponents/LocationEmployeSidebar";
 import ThirdpartySidebar from "../components/LayoutsComponents/ThirdpartySidebar";
+
 
 
 const { Content } = Layout;
@@ -14,7 +15,7 @@ const ThirdpartyLayout = () => {
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
             <Layout className=" !bg-white" style={{ backgroundColor: "white" }}>
- 
+
                 <ThirdpartySidebar collapsed={collapsed} ></ThirdpartySidebar>
                 <Layout
                     style={{

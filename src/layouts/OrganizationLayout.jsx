@@ -1,10 +1,11 @@
-import { Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
 import LocationEmployeSidebar from "../components/LayoutsComponents/LocationEmployeSidebar";
 import ThirdpartySidebar from "../components/LayoutsComponents/ThirdpartySidebar";
 import OrganizationSidebar from "../components/LayoutsComponents/OrganizationSidebar";
+import { useSelector } from "react-redux";
 
 
 const { Content } = Layout;

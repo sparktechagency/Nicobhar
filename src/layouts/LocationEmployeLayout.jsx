@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { Outlet, } from "react-router-dom";
+import {  useState } from 'react';
 import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
 import LocationEmployeSidebar from "../components/LayoutsComponents/LocationEmployeSidebar";
+
 
 
 const { Content } = Layout;
@@ -10,10 +11,11 @@ const { Content } = Layout;
 
 const LocationEmployeLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
             <Layout className=" !bg-white" style={{ backgroundColor: "white" }}>
- 
+
                 <LocationEmployeSidebar collapsed={collapsed} ></LocationEmployeSidebar>
                 <Layout
                     style={{

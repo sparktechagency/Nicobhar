@@ -4,12 +4,12 @@ import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
 import SupportAgentSidebar from "../components/LayoutsComponents/SupportAgentSidebar";
 
+
 const { Content } = Layout;
 
 
 const Supportagent = () => {
     const [collapsed, setCollapsed] = useState(false);
-
 
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>

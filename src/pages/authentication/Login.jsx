@@ -27,7 +27,6 @@ const onFinish = async (values) => {
 
   try {
     const res = await login(userInfo).unwrap();
-console.log(res)
     if (res?.access_token) {
       const { user_information, access_token } = res;
       
