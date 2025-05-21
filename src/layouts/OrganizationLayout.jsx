@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
@@ -13,10 +13,19 @@ const { Content } = Layout;
 
 const OrganizationLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const user = useSelector((state) => state.auth.user);
+
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+    if (user.role !== 'organization') {
+        return <Navigate to="/login" />;
+    }
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
             <Layout className=" !bg-white" style={{ backgroundColor: "white" }}>
- 
+
                 <OrganizationSidebar collapsed={collapsed} ></OrganizationSidebar>
                 <Layout
                     style={{

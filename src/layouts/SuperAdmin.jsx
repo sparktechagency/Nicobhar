@@ -11,18 +11,15 @@ const { Content } = Layout;
 
 const SuperAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const role = useSelector((state) => state.auth.user.role);
+    const user = useSelector((state) => state.auth.user);
 
-    
-    if (!role) {
-        return <div className="text-center mt-10 text-lg text-gray-600">Loading...</div>;
+
+    if (!user) {
+        return <Navigate to="/login" />;
     }
-
-   
-    if (role !== 'super_admin') {
-        return <Navigate to="/login" replace />;
+    if (user.role !== 'super_admin') {
+        return <Navigate to="/login" />;
     }
-
 
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
