@@ -19,27 +19,39 @@ export default function Login() {
   const [login] = useLoginMutation()
   const dispatch = useDispatch();
 
-const onFinish = async (values) => {
-  const userInfo = {
-    email: values.email,
-    password: values.password,
+  const onFinish = async (values) => {
+    const userInfo = {
+      email: values.email,
+      password: values.password,
+    };
+
+    try {
+      const res = await login(userInfo).unwrap();
+
+      if (res?.access_token) {
+        const { user_information, access_token } = res;
+
+        dispatch(setUser({ user: user_information, token: access_token }));
+        if (user_information.role === 'super_admin') {
+          navigate('/');
+        } else if (user_information.role === 'support_agent') {
+          navigate('/support-agent');
+        } else if (user_information.role === 'location_employee') {
+          navigate('/location-employee')
+        }else if (user_information.role === 'third_party') {
+          navigate('/thirdparty')
+        }else if (user_information.role === 'organization') {
+          navigate('/organization')
+        } else {
+          navigate('/unauthorized')
+        }
+      }
+    } catch (error) {
+      if (error) {
+        toast.error(error?.data?.message)
+      }
+    }
   };
-
-  try {
-    const res = await login(userInfo).unwrap();
-
-    if (res?.access_token) {
-      const { user_information, access_token } = res;
-      
-      dispatch(setUser({ user: user_information, token: access_token }));
-      navigate('/');
-    }
-  } catch (error) {
-    if(error){
-      toast.error(error?.data?.message)
-    }
-  }
-};
 
 
 

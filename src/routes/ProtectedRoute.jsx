@@ -20,9 +20,9 @@ console.log(user)
     return <Navigate to="/login" />;
   }
 
-  // if (!allowedRoles.includes(user.role)) {
-  //   return <Navigate to="/unauthorized" />; 
-  // }
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" />; 
+  }
 
   return <Outlet />;
 };
