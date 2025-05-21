@@ -3,9 +3,14 @@ import { NavLink, useLocation } from 'react-router-dom';
 const { Sider } = Layout;
 import logo from '../../assets/logo.png';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/features/auth/authSlice';
 
 const SupportAgentSidebar = ({ collapsed }) => {
-    const location = useLocation(); 
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+
     const handleLogout = () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -17,8 +22,8 @@ const SupportAgentSidebar = ({ collapsed }) => {
             confirmButtonText: 'Yes, logout!'
         }).then((result) => {
             if (result.isConfirmed) {
-                localStorage.removeItem('token');
-                window.location.href = '/login';  
+                dispatch(logout()); 
+                window.location.href = '/login';
             }
         });
     }

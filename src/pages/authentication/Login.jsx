@@ -22,20 +22,37 @@ export default function Login() {
   const onFinish = async (values) => {
     const userInfo = {
       email: values.email,
-      password: values.password
-    }
+      password: values.password,
+    };
+
     try {
       const res = await login(userInfo).unwrap();
-      const { user, token } = res.data;
-      if (token) {
-        dispatch(setUser({ user, token }));
-        toast.success(res?.message);
-        navigate('/');
+
+      if (res?.access_token) {
+        const { user_information, access_token } = res;
+
+        dispatch(setUser({ user: user_information, token: access_token }));
+        if (user_information.role === 'super_admin') {
+          navigate('/');
+        } else if (user_information.role === 'support_agent') {
+          navigate('/support-agent');
+        } else if (user_information.role === 'location_employee') {
+          navigate('/location-employee')
+        }else if (user_information.role === 'third_party') {
+          navigate('/thirdparty')
+        }else if (user_information.role === 'organization') {
+          navigate('/organization')
+        } else {
+          navigate('/unauthorized')
+        }
       }
-    } catch (errors) {
-      toast.error('Something went wrong');
+    } catch (error) {
+      if (error) {
+        toast.error(error?.data?.message)
+      }
     }
-  }
+  };
+
 
 
 
@@ -84,20 +101,11 @@ export default function Login() {
           <Form.Item>
             <div className="w-fit mx-auto">
               <Button style={{ backgroundColor: "#1877F2", borderColor: '#1877F2', height: '44px' }} type="primary" htmlType="submit" block size="large" className="">
-                Sign In
+                Sign in
               </Button>
 
             </div>
           </Form.Item>
-
-          <div className="text-center">
-            <Text style={{ fontSize: "16px", color: '#000000', fontWeight: '500' }}>
-              Don’t have an account?{" "}
-              <Link to="/signup" className="text-blue-500 hover:text-blue-600 ">
-                Signup
-              </Link>
-            </Text>
-          </div>
         </Form>
       </Card>
     </div>
