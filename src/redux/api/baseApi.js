@@ -16,7 +16,8 @@ export const baseApi = createApi({
     }),
     // refresh for this tag
     tagTypes: [
-        "auth"
+        "auth",
+        "inspectionApi",
     ],
     endpoints: () => ({}),
 });
