@@ -148,6 +148,7 @@ const router = createBrowserRouter([
     ]
   },
 
+  // ORGANIZATION ROUTES
   {
     path: "/organization",
     element: <OrganizationLayout />,

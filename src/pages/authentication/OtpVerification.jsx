@@ -2,10 +2,13 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useOtpVerifyMutation } from '../../redux/features/auth/authApi'
+import toast from 'react-hot-toast';
 
 export default function OtpVerification() {
-  const [otp, setOtp] = useState(['', '', '', '','', ''])
+  const [otpVerify] = useOtpVerifyMutation();
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
   const inputRefs = [
     useRef(null),
     useRef(null),
@@ -14,7 +17,15 @@ export default function OtpVerification() {
     useRef(null),
     useRef(null),
   ]
-const navigate =useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location?.search)
+  const email = searchParams?.get('email')
+
+
+
+
+
   const handleChange = (value, index) => {
     // Only allow numbers
     if (!/^\d*$/.test(value)) return
@@ -25,23 +36,31 @@ const navigate =useNavigate();
 
     // Move to next input if value is entered
     if (value && index < 6) {
-      inputRefs[index + 1].current?.focus()
+      inputRefs[index + 1]?.current?.focus()
     }
   }
 
   const handleKeyDown = (e, index) => {
     // Move to previous input on backspace if current input is empty
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs[index - 1].current?.focus()
+      inputRefs[index - 1]?.current?.focus()
     }
   }
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const completeOtp = otp.join('')
     if (completeOtp.length === 6) {
-      console.log('Verifying OTP:', completeOtp)
-      // Add your verification logic here
-      navigate('/create-new-password')
+      try {
+        const res = await otpVerify({ otp: completeOtp }).unwrap()
+        if (res.status === true) {
+          toast.success(res?.message)
+          navigate(`/create-new-password?email=${email}`)
+        }
+      } catch (error) {
+        if (error) {
+          toast.error(error.data.error)
+        }
+      }
     }
   }
 
@@ -55,20 +74,20 @@ const navigate =useNavigate();
       <div className="w-full max-w-lg shadow-lg rounded-lg p-8 border-[2px] border-[#818181] border-opacity-10 space-y-8">
         <div className="text-center">
           <h1 className="text-[24px] text-[#333333] font-bold  mb-4">
-          Verification code
+            Verification code
           </h1>
           <p className="text-gray-400 text-[16px]">
-          We sent a reset link to contact@dscode...com
-          enter 5 digit code that is mentioned in the email
+            We sent a reset link to contact@dscode...com
+            enter 5 digit code that is mentioned in the email
           </p>
         </div>
 
         <div className="flex justify-center gap-2">
           {otp.map((digit, index) => (
             <Input
-            placeholder='0'
+              placeholder='0'
               key={index}
-            
+
               ref={inputRefs[index]}
               value={digit}
               onChange={(e) => handleChange(e.target.value, index)}
@@ -81,7 +100,7 @@ const navigate =useNavigate();
 
 
         <button
-        style={{ backgroundColor: '#1877F2',color:'white' }}
+          style={{ backgroundColor: '#1877F2', color: 'white' }}
           onClick={handleVerify}
           disabled={otp.some(digit => !digit)}
           className="w-full bg-[#1877F2] hover:bg-[#C4A56E] disabled:opacity-50 
@@ -95,7 +114,7 @@ const navigate =useNavigate();
             onClick={handleResend}
             className="text-[#818181] hover:text-[#818181] text-[16px] font-medium"
           >
-           You have not received the email?  <span className='text-[#1877F2]'>Resend</span>
+            You have not received the email?  <span className='text-[#1877F2]'>Resend</span>
           </button>
         </div>
       </div>

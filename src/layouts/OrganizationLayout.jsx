@@ -1,5 +1,5 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import MainHeader from "../components/LayoutsComponents/MainHeader";
 import LocationEmployeSidebar from "../components/LayoutsComponents/LocationEmployeSidebar";
@@ -13,8 +13,8 @@ const { Content } = Layout;
 
 const OrganizationLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
-        const user = useSelector((state) => state.auth.user);
-    console.log(user)
+    const user = useSelector((state) => state.auth.user);
+
 
     if (!user) {
         return <Navigate to="/login" />;
@@ -25,7 +25,7 @@ const OrganizationLayout = () => {
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
             <Layout className=" !bg-white" style={{ backgroundColor: "white" }}>
- 
+
                 <OrganizationSidebar collapsed={collapsed} ></OrganizationSidebar>
                 <Layout
                     style={{
