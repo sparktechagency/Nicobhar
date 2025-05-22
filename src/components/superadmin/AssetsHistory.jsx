@@ -5,8 +5,11 @@ import { useGetAssetDetailQuery } from "../../redux/features/assest/assestApi";
 const AssetHistory = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data, isLoading } = useGetAssetDetailQuery({ id });
-
+  const { data, isLoading, error } = useGetAssetDetailQuery({ id });
+  console.log(data);
+  if (isLoading) {
+    return <>Loading...</>;
+  }
   const serviceHistory = [
     {
       ticket: "TICKET072483",
@@ -27,21 +30,13 @@ const AssetHistory = () => {
   ];
 
   const assetDetails = {
-    range: data.asset_details.range ? data.asset_details.range : "N/A",
-    asset: data.asset_details.product ? data.asset_details.product : "N/A",
-    location: data.asset_details.location ? data.asset_details.location : "N/A",
-    manufacturerSerialNumber: data.asset_details.serial_number
-      ? data.asset_details.serial_number
-      : "N/A",
-    manufacturingDate: data.asset_details.manufacturing_date
-      ? data.asset_details.manufacturing_date
-      : "N/A",
-    installationDate: data.asset_details.installation_date
-      ? data.asset_details.installation_date
-      : "N/A",
-    warrantyEndDate: data.asset_details.warranty_end_date
-      ? data.asset_details.warranty_end_date
-      : "N/A",
+    range: data?.asset_details?.range ?? "N/A",
+    asset: data?.asset_details?.product ?? "N/A",
+    location: data?.asset_details?.location ?? "N/A",
+    manufacturerSerialNumber: data?.asset_details?.serial_number ?? "N/A",
+    manufacturingDate: data?.asset_details?.manufacturing_date ?? "N/A",
+    installationDate: data?.asset_details?.installation_date ?? "N/A",
+    warrantyEndDate: data?.asset_details?.warranty_end_date ?? "N/A",
   };
 
   const maturityData = {
@@ -54,10 +49,10 @@ const AssetHistory = () => {
       : 0,
   };
 
-  if (isLoading) {
-    return <>Loading...</>;
+  if (error) {
+    console.error("Error fetching asset detail:", error);
+    return <div>Error loading asset data.</div>;
   }
-
   return (
     <div className="p-6">
       {/* Header */}

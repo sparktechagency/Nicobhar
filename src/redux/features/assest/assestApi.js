@@ -1,6 +1,6 @@
 import { baseApi } from "../../api/baseApi";
 
-export const authApi = baseApi.injectEndpoints({
+export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssestlist: builder.query({
       query: ({ page, search, sort_by }) => ({
@@ -19,4 +19,4 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAssestlistQuery, useGetAssetDetailQuery } = authApi;
+export const { useGetAssestlistQuery, useGetAssetDetailQuery } = assetApi;

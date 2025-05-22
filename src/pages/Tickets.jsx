@@ -1,13 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, Table, Input, Select } from "antd";
-import { SearchOutlined, RightOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import TicketModal from "../components/superadmin/TicketModal";
+import {
+  useGetTicketDetailsQuery,
+  useGetTicketListQuery,
+} from "../redux/features/ticket/ticketApi";
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 const TicketsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [activeTab, setActiveTab] = useState("New Tickets");
+  const [filter, setFilter] = useState("New");
+
+  const { data: tickets, isLoading } = useGetTicketListQuery({
+    search: activeTab,
+    filter: filter,
+  });
+
+  const { data: ticketDetail } = useGetTicketDetailsQuery({
+    id: selectedTicket,
+  });
+  if (isLoading) {
+    return <>loading...</>;
+  }
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
+
+  // useEffect(() => {
+  //   console.log(selectedTicket);
+  // }, [selectedTicket]);
+
   const columns = [
     {
       title: "Tickets",
@@ -19,7 +46,7 @@ const TicketsPage = () => {
             #{record.ticketNumber}
           </div>
           <div className="company-name text-[16px] font-semibold">
-            ViewSonic
+            {record.organization}
           </div>
           <div className="model-number text-[16px] font-medium">
             {record.modelNumber}
@@ -115,21 +142,20 @@ const TicketsPage = () => {
       ),
     },
   ];
-  const data = Array(6)
-    .fill()
-    .map((_, index) => ({
-      key: index,
-      ticketNumber: "74956",
-      modelNumber: "HFGS647HNSJU",
-      date: "25/12/2024",
-      time: "10:20 am",
-      location: "Rampura, Dhaka",
-      cost: "--",
-      status: "NEW",
-    }));
+  const data = tickets.data.data.map((ticket) => ({
+    key: ticket.id,
+    ticketNumber: ticket.order_number,
+    organization: "ViewSonic",
+    modelNumber: "Missing",
+    date: "25/12/2024",
+    time: "10:20 am",
+    location: "Rampura, Dhaka",
+    cost: ticket.cost,
+    status: ticket.ticket_status,
+  }));
 
   const handleRowClick = (record) => {
-    setSelectedTicket(record);
+    setSelectedTicket(record.key);
     setIsModalOpen(true);
   };
 
@@ -143,22 +169,34 @@ const TicketsPage = () => {
             className="search-input"
           />
         </div>
-        <Select defaultValue="Dhaka" className="location-select">
-          <Select.Option value="Dhaka">Dhaka</Select.Option>
-          <Select.Option value="Chittagong">Chittagong</Select.Option>
+        <Select
+          defaultValue="New"
+          className="location-select"
+          onChange={(value) => {
+            setFilter(value); // value is just the selected string
+          }}
+        >
+          <Option value="New">New</Option>
+          <Option value="Assigned">Assigned</Option>
+          <Option value="Inspection sheet">Inspection sheet</Option>
+          <Option value="Awaiting purchase order">
+            Awaiting purchase order
+          </Option>
+          <Option value="Job card created">Job card created</Option>
+          <Option value="Completed">Completed</Option>
         </Select>
       </div>
 
-      <Tabs defaultActiveKey="new">
-        <TabPane tab="New Tickets" key="new">
+      <Tabs defaultActiveKey="New Tickets" onChange={handleTabChange}>
+        <TabPane tab="New Tickets" key="New Tickets">
           <Table
             className="bg-white p-4 rounded-lg shadow-sm"
             columns={columns}
             dataSource={data}
             pagination={{
-              total: 50,
-              pageSize: 6,
-              current: 1,
+              total: data.total,
+              pageSize: 10,
+              current: data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -166,14 +204,14 @@ const TicketsPage = () => {
             })}
           />
         </TabPane>
-        <TabPane tab="Open Tickets" key="open">
+        <TabPane tab="Open Tickets" key="Open Tickets">
           <Table
             columns={columns}
             dataSource={data}
             pagination={{
-              total: 50,
-              pageSize: 6,
-              current: 1,
+              total: data.total,
+              pageSize: 10,
+              current: data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -181,14 +219,14 @@ const TicketsPage = () => {
             })}
           />
         </TabPane>
-        <TabPane tab="Past Tickets" key="past">
+        <TabPane tab="Past Tickets" key="Past Tickets">
           <Table
             columns={columns}
             dataSource={data}
             pagination={{
-              total: 50,
-              pageSize: 6,
-              current: 1,
+              total: data.total,
+              pageSize: 10,
+              current: data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -201,7 +239,7 @@ const TicketsPage = () => {
       <TicketModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        ticket={selectedTicket}
+        ticket={ticketDetail?.data}
       />
     </div>
   );
