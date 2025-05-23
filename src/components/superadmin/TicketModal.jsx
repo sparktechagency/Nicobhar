@@ -5,17 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
-const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
+const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
   const navigate = useNavigate();
-  const {
-    ticket_status = "Unknown",
-    ticket_number = "N/A",
-    asset = "N/A",
-    serial_number = "N/A",
-    organization = "N/A",
-    location = "N/A",
-    problem = "No description available.",
-  } = ticket;
+  console.log(ticket);
 
   return (
     <Modal
@@ -26,7 +18,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
       className="ticket-modal"
       title={
         <div className="modal-header">
-          <span className="status-badge">{ticket_status}</span>
+          <span className="status-badge">{ticket?.ticket_status}</span>
           <span className="header-title">Ticket Details</span>
         </div>
       }
@@ -35,7 +27,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
         <div className="form-group">
           <label>Ticket Number</label>
           <div className="input-with-copy">
-            <Input value={ticket_number} readOnly className="gray-bg" />
+            <Input value={ticket?.order_number} readOnly className="gray-bg" />
             <CopyOutlined className="copy-icon" />
           </div>
         </div>
@@ -44,14 +36,22 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
           <div className="form-group">
             <label>Asset</label>
             <div className="input-with-copy">
-              <Input value={asset.product} readOnly className="gray-bg" />
+              <Input
+                value={ticket?.asset.product}
+                readOnly
+                className="gray-bg"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
           <div className="form-group">
             <label>Serial Number</label>
             <div className="input-with-copy">
-              <Input value={serial_number} readOnly className="gray-bg" />
+              <Input
+                value={ticket?.asset?.serial_number}
+                readOnly
+                className="gray-bg"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
@@ -61,14 +61,22 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
           <div className="form-group">
             <label>Organization</label>
             <div className="input-with-copy">
-              <Input value={organization} readOnly className="gray-bg" />
+              <Input
+                value={ticket?.asset?.product}
+                readOnly
+                className="gray-bg"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
           <div className="form-group">
             <label>Location</label>
             <div className="input-with-copy">
-              <Input value={location} readOnly className="gray-bg" />
+              <Input
+                value={ticket?.user?.address}
+                readOnly
+                className="gray-bg"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
@@ -77,7 +85,12 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
         <div className="form-group">
           <label>Problem</label>
           <div className="input-with-copy">
-            <TextArea value={problem} readOnly rows={4} className="gray-bg" />
+            <TextArea
+              value={ticket?.problem}
+              readOnly
+              rows={4}
+              className="gray-bg"
+            />
             <CopyOutlined className="copy-icon textarea-copy" />
           </div>
         </div>
@@ -87,7 +100,10 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket = {} }) => {
             Send to Third-party Providers
           </button>
           <button
-            onClick={() => navigate("create-inspection")}
+            onClick={() => {
+              localStorage.setItem("ticket_insp_id", ticket?.id);
+              navigate("create-inspection");
+            }}
             className="btn btn-primary"
           >
             Create Inspection Sheet
@@ -102,13 +118,17 @@ TicketModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   ticket: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    order_number: PropTypes.string,
     ticket_status: PropTypes.string,
-    ticket_number: PropTypes.string,
-    asset: PropTypes.string,
-    serial_number: PropTypes.string,
-    organization: PropTypes.string,
-    location: PropTypes.string,
     problem: PropTypes.string,
+    asset: PropTypes.shape({
+      product: PropTypes.string,
+      serial_number: PropTypes.string,
+    }),
+    user: PropTypes.shape({
+      address: PropTypes.string,
+    }),
   }),
 };
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Table, Input, Select } from "antd";
 import MaintenceModal from "../components/superadmin/MaintenceModal";
+import { useGetMaintainsQuery } from "../redux/features/maintainance/maintainApi";
 
 const { Search } = Input;
 
@@ -12,15 +13,28 @@ export default function Maintenance() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
+  const { data, isLoading } = useGetMaintainsQuery();
+
+  if (isLoading) {
+    return <>Loading..</>;
+  }
+  console.log(data.data.data);
+
+  const priorityColors = {
+    Low: "bg-green-500",
+    Medium: "bg-yellow-500",
+    High: "bg-red-900",
+  };
   // Sample data
-  const data = Array.from({ length: 15 }, (_, i) => ({
-    key: (i + 1).toString(),
+  const datas = data.data.data.map((item, i) => ({
+    key: item.id,
     srNo: i + 1,
-    maintenanceItem: "Lorem ipsum dolor sit...",
-    priority: "Urgent",
-    lastMaintenanceDate: "12/20/2023",
-    technician: "Md. Abid",
-    nextSchedule: "12/20/2025",
+    maintenanceItem: item.maintainance_item,
+    priority: item.maintainance_type,
+    lastMaintenanceDate: item.last_maintainance_date,
+    technician: item.technician,
+    nextSchedule: item.next_schedule,
+    location: "location nai api e",
   }));
 
   const columns = [
@@ -34,10 +48,14 @@ export default function Maintenance() {
       title: "Maintenance Item List",
       dataIndex: "maintenanceItem",
       key: "maintenanceItem",
-      render: (text) => (
+      render: (text, render) => (
         <div className="flex items-center gap-2">
           {text}
-          <div className="w-2 h-2 rounded-full bg-red-500" />
+          <div
+            className={`w-2 h-2 rounded-full ${
+              priorityColors[render.priority] || "bg-gray-300"
+            }`}
+          />
         </div>
       ),
     },
@@ -58,9 +76,11 @@ export default function Maintenance() {
     },
   ];
 
-  const filteredData = data.filter((item) =>
+  const filteredData = datas.filter((item) =>
     Object.values(item).some(
-      (val) => typeof val === "string" && val.toLowerCase().includes(searchText.toLowerCase())
+      (val) =>
+        typeof val === "string" &&
+        val.toLowerCase().includes(searchText.toLowerCase())
     )
   );
 
