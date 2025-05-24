@@ -8,12 +8,15 @@ import { useGetMaintainsQuery } from "../redux/features/maintainance/maintainApi
 const { Search } = Input;
 
 export default function Maintenance() {
-  const [searchText, setSearchText] = useState("");
-  const [sortBy, setSortBy] = useState("date");
+  const [sortBy, setSortBy] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [search, setSearch] = useState("");
 
-  const { data, isLoading } = useGetMaintainsQuery();
+  const { data, isLoading } = useGetMaintainsQuery({
+    sort: sortBy,
+    search,
+  });
 
   if (isLoading) {
     return <>Loading..</>;
@@ -76,13 +79,7 @@ export default function Maintenance() {
     },
   ];
 
-  const filteredData = datas.filter((item) =>
-    Object.values(item).some(
-      (val) =>
-        typeof val === "string" &&
-        val.toLowerCase().includes(searchText.toLowerCase())
-    )
-  );
+  const filteredData = datas;
 
   const handleRowClick = (record) => {
     setSelectedTicket(record);
@@ -96,7 +93,7 @@ export default function Maintenance() {
           placeholder="Search assets..."
           allowClear
           className="max-w-md"
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -114,13 +111,14 @@ export default function Maintenance() {
             </div>
           </div>
           <Select
-            defaultValue="date"
+            defaultValue=""
             style={{ width: 120 }}
             onChange={(value) => setSortBy(value)}
             options={[
-              { value: "date", label: "Sort by Date" },
-              { value: "priority", label: "Sort by Priority" },
-              { value: "name", label: "Sort by Name" },
+              { value: "", label: "All" },
+              { value: "Low", label: "Low" },
+              { value: "Medium", label: "Medium" },
+              { value: "Urgent", label: "Urgent" },
             ]}
           />
         </div>

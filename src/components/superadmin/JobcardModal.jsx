@@ -17,7 +17,7 @@ const JobcardModal = ({ isOpen, onClose, ticket }) => {
       title={
         <div className="modal-header text-center w-full">
           <span className="status-badge">NEW</span>
-          <span className="header-title text-white flex  text-white text-[20px] font-normal">
+          <span className="header-title text-white flex text-[20px] font-normal">
             Job card for {ticket?.inspection_sheet?.ticket?.asset?.product} (
             {ticket.inspection_sheet?.ticket?.asset?.serial_number})
           </span>
