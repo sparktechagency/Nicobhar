@@ -37,7 +37,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
             <label>Asset</label>
             <div className="input-with-copy">
               <Input
-                value={ticket?.asset.product}
+                value={ticket?.asset?.product}
                 readOnly
                 className="gray-bg"
               />
