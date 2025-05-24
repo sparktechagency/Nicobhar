@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, } from "react-router-dom";
 import { useState } from 'react';
 import { Layout } from 'antd';
 import Sidebar from "../components/LayoutsComponents/Sidebar";
@@ -11,7 +11,6 @@ const { Content } = Layout;
 const SuperAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
     const user = useSelector((state) => state.auth.user);
-    console.log(user)
 
     if (!user) {
         return <Navigate to="/login" />;
@@ -23,6 +22,13 @@ const SuperAdmin = () => {
     // if (!allowedRoles.includes(user.role)) {
     //     return <Navigate to="/unauthorized" />;
     // }
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+    if (user.role !== 'super_admin') {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>
