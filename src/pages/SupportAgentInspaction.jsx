@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Tabs, Table, Input, Select, Checkbox, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Tabs, Table, Input, Select, Checkbox, Button, Pagination } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import InspactionModal from "../components/superadmin/InspactionModal";
 import avater from '../assets/avater.png'
@@ -16,11 +16,14 @@ const SupportAgentInspaction = () => {
     const [selectedRecords, setSelectedRecords] = useState([]);
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('New Sheets');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(8);
 
     const tabTitles = ['New Sheets', 'Open Sheets', 'Past Sheets'];
     const [activeTabKey, setActiveTabKey] = useState('0');
     const [searchValue, setSearchValue] = useState('');
-    const [location, setLocation] = useState('Dhaka');
+    const [sheetStatus, setSheetStatus] = useState("");
+
 
     // get tab value!--
     const handleTabChange = (key) => {
@@ -31,7 +34,9 @@ const SupportAgentInspaction = () => {
     // ========== rtk query use ===============
     const [createInspectionApi] = useCreateInspectionApiMutation() // create
     const [deleteInspectionApi] = useDeleteInspectionApiMutation() // delete
-    const { data: inspectionData } = useGetInspectionApiQuery(activeTabKey); // get
+
+    const { data: inspectionData, refetch } = useGetInspectionApiQuery({ search: searchValue, filter:sheetStatus, type:activeTabKey, per_page: perPage, page: currentPage }); // get
+
     const { data: inspectionDetailsData } = useGetDetailsInspectionApiQuery();
     const allInspectionSheet = inspectionData?.data?.data
     const detailsInspectionSheet = inspectionDetailsData
@@ -39,12 +44,6 @@ const SupportAgentInspaction = () => {
         ...item,
         key: item.id,
     }));
-
-
-
-
-
-
 
 
 
@@ -82,8 +81,8 @@ const SupportAgentInspaction = () => {
             key: "tickets",
             render: (_, record) => (
                 <div className="ticket-info text-center flex flex-col justify-start">
-                    <div className="ticket-number text-[#777777] text-[14px] ">#{record?.ticket?.id}</div>
-                    <div className="company-name text-[16px] font-semibold">{record?.ticket?.asset?.brand}</div>
+                    <div className="ticket-number text-[#777777] text-[14px] ">#{record?.ticket?.order_number}</div>
+                    <div className="company-name text-[16px] font-semibold">{record?.ticket?.asset?.product}</div>
                     <div className="model-number text-[16px] font-medium">{record?.ticket?.asset?.serial_number}</div>
                 </div>
             ),
@@ -156,6 +155,9 @@ const SupportAgentInspaction = () => {
 
 
 
+    useEffect(() => {
+        refetch(); // Refetch the data when searchText, currentPage, or perPage changes
+    }, [searchValue, sheetStatus, activeTabKey, perPage, currentPage, refetch]);
 
 
     const toggleSelectTicket = (key) => {
@@ -175,13 +177,14 @@ const SupportAgentInspaction = () => {
 
 
 
-                    <Checkbox onChange={(e) => setSelectMultiple(e.target.checked)}>Select multiple tickets</Checkbox>
+                    {/* <Checkbox onChange={(e) => setSelectMultiple(e.target.checked)}>Select multiple tickets</Checkbox> */}
 
 
 
-                    <Select defaultValue="Dhaka" onChange={(value) => setLocation(value)} className="location-select">
-                        <Select.Option value="Dhaka">Dhaka</Select.Option>
-                        <Select.Option value="Chittagong">Chittagong</Select.Option>
+                    <Select defaultValue="Filter By Status" onChange={(value) => setSheetStatus(value)} className="location-select">
+                        <Select.Option value="Unassigned">Unassigned</Select.Option>
+                        <Select.Option value="In-progress">In-progress</Select.Option>
+                        <Select.Option value="Completed">Completed</Select.Option>
                     </Select>
                 </div>
             </div>
@@ -193,12 +196,7 @@ const SupportAgentInspaction = () => {
                             className="bg-white p-4 rounded-lg shadow-sm"
                             columns={columns}
                             dataSource={processedData}
-                            pagination={{
-                                total: 50,
-                                pageSize: 10,
-                                current: 1,
-                                showSizeChanger: false
-                            }}
+                            pagination={false}
                             onRow={(record) => ({
                                 onClick: () => {
                                     if (selectMultiple) {
@@ -239,6 +237,19 @@ const SupportAgentInspaction = () => {
             )}
 
             <InspactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} ticket={selectedTicket} />
+
+
+            <div className="flex justify-end">
+                <Pagination
+                    current={currentPage}
+                    pageSize={perPage}
+                    total={allInspectionSheet?.data?.total || 0}
+                    onChange={(page, pageSize) => {
+                        setCurrentPage(page)
+                        setPerPage(pageSize)
+                    }}
+                />
+            </div>
         </div>
     );
 };
