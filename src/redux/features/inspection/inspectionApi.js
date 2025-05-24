@@ -19,8 +19,8 @@ export const inspectionApi = baseApi.injectEndpoints({
             invalidatesTags: ["inspection"],
         }),
         getInspectionApi: builder.query({
-            query: () => ({
-                url: `/inspection-list`,
+            query: (type) => ({
+                url: `/inspection-list?type=${type}`,
                 method: 'GET',
             }),
             invalidatesTags: ["inspection"],
