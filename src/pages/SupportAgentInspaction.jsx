@@ -11,24 +11,45 @@ const SupportAgentInspaction = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null);
-    const [selectedTickets, setSelectedTickets] = useState([]);
     const [selectMultiple, setSelectMultiple] = useState(false);
+    const [selectedTickets, setSelectedTickets] = useState([]);
+    const [selectedRecords, setSelectedRecords] = useState([]);
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('New Sheets');
 
+    const tabTitles = ['New Sheets', 'Open Sheets', 'Past Sheets'];
+    const [activeTabKey, setActiveTabKey] = useState('0');
+    const [searchValue, setSearchValue] = useState('');
+    const [location, setLocation] = useState('Dhaka');
+
+    // get tab value!--
+    const handleTabChange = (key) => {
+        setActiveTabKey(tabTitles[key]);
+
+    };
 
     // ========== rtk query use ===============
     const [createInspectionApi] = useCreateInspectionApiMutation() // create
     const [deleteInspectionApi] = useDeleteInspectionApiMutation() // delete
-    const { data: inspectionData } = useGetInspectionApiQuery(); // get
+    const { data: inspectionData } = useGetInspectionApiQuery(activeTabKey); // get
     const { data: inspectionDetailsData } = useGetDetailsInspectionApiQuery();
     const allInspectionSheet = inspectionData?.data?.data
     const detailsInspectionSheet = inspectionDetailsData
+    const processedData = allInspectionSheet?.map((item) => ({
+        ...item,
+        key: item.id,
+    }));
 
 
 
 
-    // data and time formate
+
+
+
+
+
+
+    // data and time formate!--
     function formatDateTime(datetimeStr) {
         if (!datetimeStr) return { date: "", time: "" };
         const dateObj = new Date(datetimeStr);
@@ -133,80 +154,74 @@ const SupportAgentInspaction = () => {
         },
     ];
 
-    const data = Array(6).fill().map((_, index) => ({
-        key: index,
-        ticketNumber: `7495${index}`,
-        modelNumber: "HFGS647HNSJU",
-        date: "25/12/2024",
-        time: "10:20 am",
-        location: "Rampura, Dhaka",
-        technician: { name: "John Doe", image: avater },
-        sheetStatus: "NEW",
-    }));
 
-    const handleRowClick = (record) => {
-        if (selectMultiple) {
-            toggleSelectTicket(record.key);
-        } else {
-            setSelectedTicket(record);
-            setIsModalOpen(true);
-        }
-    };
+
+
 
     const toggleSelectTicket = (key) => {
-        console.log(key)
         setSelectedTickets((prev) =>
             prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
         );
     };
 
-
-    const handleTabChange = (key) => {
-        setActiveTab(key);
-        console.log('Active tab:', key); // Will be "New Sheets", "Open Sheets", etc.
-    };
-
-    console.log(activeTab)
-
     return (
         <div className="tickets-page relative p-4">
             <div className="header flex justify-between items-center">
                 <div className="search-section">
-                    <Input prefix={<SearchOutlined />} placeholder="Search tickets..." className="search-input" />
+                    <Input value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)} prefix={<SearchOutlined />} placeholder="Search tickets..." className="search-input" />
                 </div>
                 <div className="flex items-center gap-4">
+
+
+
                     <Checkbox onChange={(e) => setSelectMultiple(e.target.checked)}>Select multiple tickets</Checkbox>
-                    <Select defaultValue="Dhaka" className="location-select">
+
+
+
+                    <Select defaultValue="Dhaka" onChange={(value) => setLocation(value)} className="location-select">
                         <Select.Option value="Dhaka">Dhaka</Select.Option>
                         <Select.Option value="Chittagong">Chittagong</Select.Option>
                     </Select>
                 </div>
             </div>
-            {/* <Tabs defaultActiveKey='New Sheets' onChange={handleTabChange}>
-                {['New Sheets', 'Open Sheets', 'Past Sheets'].map((tab, idx) => (
-                    <TabPane tab={tab} key={idx}>
-                        <Table
-                            className="bg-white p-4 rounded-lg shadow-sm"
-                            columns={columns}
-                            dataSource={allInspectionSheet}
-                            pagination={{ total: 50, pageSize: 6, current: 1, showSizeChanger: false }}
-                            rowSelection={selectMultiple ? { selectedRowKeys: selectedTickets, onChange: setSelectedTickets } : null}
-                            onRow={(record) => ({ onClick: () => handleRowClick(record) })}
-                        />
-                    </TabPane>
-                ))}
-            </Tabs> */}
 
-            <Tabs defaultActiveKey="New Sheets" onChange={handleTabChange}>
-                {['New Sheets', 'Open Sheets', 'Past Sheets'].map((tab) => (
-                    <TabPane tab={tab} key={tab}>
+            <Tabs defaultActiveKey="0" onChange={handleTabChange}>
+                {tabTitles.map((tab, idx) => (
+                    <TabPane tab={tab} key={idx.toString()}>
                         <Table
                             className="bg-white p-4 rounded-lg shadow-sm"
                             columns={columns}
-                            dataSource={allInspectionSheet}
-                            pagination={{ total: 50, pageSize: 6, current: 1, showSizeChanger: false }}
-                            rowSelection={selectMultiple ? { selectedRowKeys: selectedTickets, onChange: setSelectedTickets } : null}
-                            onRow={(record) => ({ onClick: () => handleRowClick(record) })}
+                            dataSource={processedData}
+                            pagination={{
+                                total: 50,
+                                pageSize: 10,
+                                current: 1,
+                                showSizeChanger: false
+                            }}
+                            onRow={(record) => ({
+                                onClick: () => {
+                                    if (selectMultiple) {
+                                        const alreadySelected = selectedTickets.includes(record.key);
+                                        if (!alreadySelected) {
+                                            setSelectedTickets([...selectedTickets, record.key]);
+                                            setSelectedRecords([...selectedRecords, record]);
+                                        }
+                                    }
+                                }
+                            })}
+                            rowSelection={
+                                selectMultiple
+                                    ? {
+                                        selectedRowKeys: selectedTickets,
+                                        onChange: (selectedKeys, selectedRows) => {
+                                            setSelectedTickets(selectedKeys);
+                                            setSelectedRecords(selectedRows);
+                                        }
+                                    }
+                                    : null
+                            }
+
                         />
                     </TabPane>
                 ))}

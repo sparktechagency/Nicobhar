@@ -11,18 +11,7 @@ const { Content } = Layout;
 const SuperAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
     const user = useSelector((state) => state.auth.user);
-
-    if (!user) {
-        return <Navigate to="/login" />;
-    }
-    if (user.role !== 'super_admin') {
-        return <Navigate to="/login" />;
-    }
-
-    // if (!allowedRoles.includes(user.role)) {
-    //     return <Navigate to="/unauthorized" />;
-    // }
-
+    
     if (!user) {
         return <Navigate to="/login" />;
     }

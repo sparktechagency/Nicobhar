@@ -19,12 +19,6 @@ const Supportagent = () => {
         return <Navigate to="/login" />;
     }
 
-    if (!user) {
-        return <Navigate to="/login" />;
-    }
-    if (user.role !== 'support_agent') {
-        return <Navigate to="/login" />;
-    }
 
     return (
         <div className=" !bg-white" style={{ backgroundColor: "white" }}>

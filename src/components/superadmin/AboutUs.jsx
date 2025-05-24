@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Editor } from "primereact/editor";
 import "primereact/resources/themes/saga-blue/theme.css"; // Theme CSS
 import "primereact/resources/primereact.min.css"; // PrimeReact CSS
@@ -25,7 +25,7 @@ const AboutUs = () => {
       <div className="flex items-center justify-end">
         <button
           onClick={handleSave}
-          className="mt-4 px-4 py-2 bg-secondary text-[16px] text-white rounded "
+          className="mt-4 px-4 py-2 bg-secondary text-[16px] text-white rounded"
         >
           Save
         </button>
