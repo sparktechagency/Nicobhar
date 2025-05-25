@@ -52,11 +52,14 @@ export default function CreateInspectionPage() {
       {/* Header */}
       <div className="text-center mb-8">
         <p className="text-[20px] text-primary font-semibold ">
-          Create Inspection Sheet For{" "}
+          Create inspection sheet for
           <span className="text-secondary font-semibold">
-            {detail.asset.product}
+            {/* {detail.asset.product} */}
+
+            ViewSonic
           </span>{" "}
-          ({detail.asset.serial_number})
+          {/* ({detail.asset.serial_number}) */}
+          (HFGS647HNSJU)
         </p>
       </div>
 
@@ -67,7 +70,7 @@ export default function CreateInspectionPage() {
           <Form.Item
             label="Asset"
             name="asset"
-            initialValue={detail.asset.product}
+          // initialValue={detail.asset.product}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -76,7 +79,7 @@ export default function CreateInspectionPage() {
           <Form.Item
             label="Serial Number"
             name="serialNumber"
-            initialValue={detail.asset.serial_number}
+          // initialValue={detail.asset.serial_number}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -85,7 +88,7 @@ export default function CreateInspectionPage() {
           <Form.Item
             label="Organization"
             name="organization"
-            initialValue={detail.asset.brand}
+          // initialValue={detail.asset.brand}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -94,27 +97,49 @@ export default function CreateInspectionPage() {
           <Form.Item
             label="Location"
             name="location"
-            initialValue="Rampura, Dhaka"
+          // initialValue="Rampura, Dhaka"
           >
             <Input style={{ width: "100%", height: "44px" }} />
           </Form.Item>
         </div>
 
-        {/* Problem */}
-        <Form.Item label="Problem" name="problem" className="mb-6">
-          <TextArea
-            rows={6}
-            placeholder="Describe the problem here..."
-            defaultValue={detail.problem}
-          />
-        </Form.Item>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Problem */}
+          <Form.Item label="Problem" name="problem" className="mb-6">
+            <TextArea
+              rows={6}
+              placeholder="Describe the problem here..."
+            // defaultValue={detail.problem}
+            />
+          </Form.Item>
+          {/* Comment */}
+          <Form.Item
+            label="Comment"
+            name="comment"
+          >
+            <TextArea
+              rows={6}
+              placeholder="Add your comment"
+            />
+          </Form.Item>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Form.Item
+            label="Status"
+            name="Status"
+          // initialValue={detail?.ticket_status}
+          >
+            <Input
+              style={{ width: "100%", height: "44px" }}
+              placeholder="New"
+            />
+          </Form.Item>
           {/* Assign Technician */}
           <Form.Item
             label="Assign Technician"
             name="technician"
-            initialValue={detail?.assigned_user.name}
+          // initialValue={detail?.assigned_user.name}
           >
             <Input
               style={{ width: "100%", height: "44px" }}
@@ -123,50 +148,25 @@ export default function CreateInspectionPage() {
               readOnly
             />
           </Form.Item>
-
-          {/* Comment */}
-          <Form.Item
-            label="Comment"
-            name="comment"
-            initialValue={detail?.user_comment}
-          >
-            <Input
-              style={{ width: "100%", height: "44px" }}
-              placeholder="Add your comment"
-              readOnly
-            />
-          </Form.Item>
         </div>
-        <div className="grid grid-cols-1 gap-6">
-          <Form.Item
-            label="Status"
-            name="Status"
-            initialValue={detail?.ticket_status}
-          >
-            <Input
-              style={{ width: "100%", height: "44px" }}
-              placeholder="New"
-            />
-          </Form.Item>
 
-          {/* <Form.Item className="mt-6">
-            <Button
-              style={{
-                width: "100%",
-                height: "44px",
-                fontSize: "16px",
-                fontWeight: "500",
-              }}
-              type="primary"
-              danger
-              htmlType="submit"
-              block
-            >
-              Send To Technician
-            </Button>
-          </Form.Item> */}
-        </div>
         {/* Submit Button */}
+        <Form.Item className="mt-6">
+          <Button
+            style={{
+              width: "100%",
+              height: "44px",
+              fontSize: "16px",
+              fontWeight: "500",
+            }}
+            type="primary"
+            danger
+            htmlType="submit"
+            block
+          >
+            Send To Technician
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );

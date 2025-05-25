@@ -83,7 +83,7 @@ const SupportAgentInspaction = () => {
         setIsModalOpen(true)
         console.log('click')
         if (activeTabKey === 'New Sheets') {
-           return navigate('/support-agent/create-inspection-sheet')
+           return navigate('/support-agent/create-inspection')
         }
         else if (activeTabKey === 'Open Sheets') {
           return  navigate(`/support-agent/open-sheet-details/${8}`)
