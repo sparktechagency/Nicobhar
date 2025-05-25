@@ -1,10 +1,7 @@
+import { Typography, List, Card } from "antd";
+import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
-import { Typography, List, Card } from "antd"
-import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons"
-
-const { Title } = Typography
-
-
+const { Title } = Typography;
 
 export default function NotificationsPage() {
   const notifications = [
@@ -53,7 +50,7 @@ export default function NotificationsPage() {
       date: "25/12/2024",
       time: "10:20 am",
     },
-  ]
+  ];
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -65,16 +62,28 @@ export default function NotificationsPage() {
         dataSource={notifications}
         renderItem={(item) => (
           <Card
-            className={`mb-4 overflow-hidden ${item.isInspection ? "bg-red-500 text-white" : "bg-white"}`}
+            className={`mb-4 overflow-hidden ${
+              item.isInspection ? "bg-red-500 text-white" : "bg-white"
+            }`}
             bodyStyle={{ padding: "16px" }}
           >
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className={`text-red-500 ${item.isInspection ? "text-white" : ""}`}>{item.type}</span>
+                <span
+                  className={`text-red-500 ${
+                    item.isInspection ? "text-white" : ""
+                  }`}
+                >
+                  {item.type}
+                </span>
                 <div className="mt-1">
                   <span className="font-medium">{item.title}</span>
                   {item.subtitle && (
-                    <div className={`text-sm ${item.isInspection ? "text-white/80" : "text-gray-500"}`}>
+                    <div
+                      className={`text-sm ${
+                        item.isInspection ? "text-white/80" : "text-gray-500"
+                      }`}
+                    >
                       {item.subtitle}
                     </div>
                   )}
@@ -82,7 +91,11 @@ export default function NotificationsPage() {
               </div>
 
               <div className="flex items-center gap-8">
-                <div className={`flex flex-col items-end ${item.isInspection ? "text-white/80" : "text-gray-500"}`}>
+                <div
+                  className={`flex flex-col items-end ${
+                    item.isInspection ? "text-white/80" : "text-gray-500"
+                  }`}
+                >
                   <div className="flex items-center gap-1">
                     <CalendarOutlined /> {item.date}
                   </div>
@@ -92,7 +105,11 @@ export default function NotificationsPage() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  {item.amount && <span className="text-white font-medium">{item.amount}</span>}
+                  {item.amount && (
+                    <span className="text-white font-medium">
+                      {item.amount}
+                    </span>
+                  )}
                   <button
                     className="text-orange-500 hover:text-orange-600 font-medium"
                     onClick={() => console.log("View clicked:", item)}
@@ -106,6 +123,5 @@ export default function NotificationsPage() {
         )}
       />
     </div>
-  )
+  );
 }
-
