@@ -54,6 +54,9 @@ import AboutUs from "../components/superadmin/AboutUs";
 import FAQ from "../components/superadmin/FAQ";
 import SupportAgentTicket from "../pages/SupportAgentTicket";
 import Unauthorized from "../components/shared/Unauthorized";
+import CreateInspectionSheet from "../pages/inspectionSheets/CreateInspectionSheet";
+import OpenSheetDetails from "../pages/inspectionSheets/OpenSheetDetails";
+import PastSheetDetails from "../pages/inspectionSheets/PastSheetDetails";
 
 
 // Define User Role (Replace with Actual Authentication Logic)
@@ -107,6 +110,9 @@ const router = createBrowserRouter([
       { path: "reports", element: <Reports /> },
       { path: "jobcards", element: <JobCards /> },
       { path: 'notification', element: <NotificationsPage /> },
+      { path: 'create-inspection-sheet', element: <CreateInspectionSheet /> },
+      { path: 'open-sheet-details/:id', element: <OpenSheetDetails /> },
+      { path: 'past-sheet-details/:id', element: <PastSheetDetails /> },
     ],
   },
 
@@ -128,8 +134,6 @@ const router = createBrowserRouter([
       { path: "create-inspection", element: <CreateInspectionPage /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
-
-
       { path: 'notification', element: <NotificationsPage /> },
     ],
   },
