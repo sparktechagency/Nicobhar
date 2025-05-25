@@ -19,15 +19,15 @@ export const supportedAgentDashboardApi = baseApi.injectEndpoints({
             providesTags: ["supted-agent"],
         }),
         getInspectionSheetStaticSupportedAgentDashboardApi: builder.query({
-            query: () => ({
-                url: `/inspection-sheet-statistics`,
+            query: ({start_date,end_date}) => ({
+                url: `/inspection-sheet-statistics?start_date=${start_date}&end_date=${end_date}`,
                 method: 'GET',
             }),
             providesTags: ["supted-agent"],
         }),
         getOverviewJobCurdSupportedAgentDashboardApi: builder.query({
-            query: () => ({
-                url: `/job-card-statistics`,
+            query: ({start_date,end_date}) => ({
+                url: `/job-card-statistics?start_date=${start_date}&end_date=${end_date}`,
                 method: 'GET',
             }),
             providesTags: ["supted-agent"],
@@ -36,4 +36,4 @@ export const supportedAgentDashboardApi = baseApi.injectEndpoints({
     }),
 });
 
-export const {useGetChartSupportedAgentDashboardApiQuery,useGetTicketActivitySupportedAgentDashboardApiQuery} = supportedAgentDashboardApi;
+export const {useGetChartSupportedAgentDashboardApiQuery,useGetTicketActivitySupportedAgentDashboardApiQuery,useGetInspectionSheetStaticSupportedAgentDashboardApiQuery,useGetOverviewJobCurdSupportedAgentDashboardApiQuery} = supportedAgentDashboardApi;
