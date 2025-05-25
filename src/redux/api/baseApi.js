@@ -19,7 +19,7 @@ export const baseApi = createApi({
         "ticket",
         "inspection",
         "jobCurd",
-        "supted-agent-dashboard",
+        "supted-agent",
     ],
     endpoints: () => ({}),
 });

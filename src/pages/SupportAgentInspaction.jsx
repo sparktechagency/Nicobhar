@@ -100,7 +100,7 @@ const SupportAgentInspaction = () => {
             dataIndex: "tickets",
             key: "tickets",
             render: (_, record) => (
-                <div onClick={() => handleNavigate(record)} className="bg-red-500 ticket-info text-center flex flex-col justify-start">
+                <div onClick={() => handleNavigate(record)} className=" ticket-info text-center flex flex-col justify-start">
                     <div className="ticket-number text-[#777777] text-[14px] ">#{record?.ticket?.order_number}</div>
                     <div className="company-name text-[16px] font-semibold">{record?.ticket?.asset?.product}</div>
                     <div className="model-number text-[16px] font-medium">{record?.ticket?.asset?.serial_number}</div>
