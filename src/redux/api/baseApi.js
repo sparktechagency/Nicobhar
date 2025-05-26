@@ -20,6 +20,7 @@ export const baseApi = createApi({
         "inspection",
         "jobCurd",
         "supted-agent",
+        "adminProfile",
     ],
     endpoints: () => ({}),
 });
