@@ -1,9 +1,36 @@
 import { Button, Input, Form } from "antd";
+import { useOpenDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 const { TextArea } = Input;
 
 const OpenSheetDetails = () => {
-   const [form] = Form.useForm();
+  const [formOne] = Form.useForm();
+  const {id} = useParams()
 
+
+  const { data,isLoading } = useOpenDetailsSupportedAgentDashboardApiQuery(parseInt(id));
+const openDetailsData = data?.data
+
+
+
+useEffect(()=>{
+  if(openDetailsData){
+formOne.setFieldsValue({
+  asset :openDetailsData?.ticket?.asset?.product,
+  serialNumber : openDetailsData?.ticket?.asset?.serial_number,
+  organization : openDetailsData?.ticket?.asset?.organization?.name,
+  location : openDetailsData?.ticket?.user?.address,
+  problem : openDetailsData?.ticket?.problem,
+  technician : openDetailsData?.technician?.name,
+  comment : openDetailsData?.support_agent_comment,
+  status : openDetailsData?.status
+})
+  }
+},[openDetailsData,formOne])
+
+
+  if(isLoading) return <p>Loading....</p>
   return (
     <div className=" p-6">
       {/* Back Button */}
@@ -36,24 +63,21 @@ const OpenSheetDetails = () => {
       {/* Header */}
       <div className="text-center mb-8">
         <p className="text-[20px] text-primary font-semibold ">
-         Inspection sheet of  
-          <span className="text-secondary font-semibold">
-            ViewSonic
-            {/* {detail.asset.product} */}
-          </span>{" "}
-          (HFGS647HNSJU)
-          {/* ({detail.asset.serial_number}) */}
+          Inspection sheet of
+          <span className="text-secondary font-semibold px-2">
+            {openDetailsData?.ticket?.asset?.product}
+          </span>
+          {(openDetailsData?.ticket?.asset?.serial_number)}
         </p>
       </div>
 
       {/* Form */}
-      <Form  layout="vertical">
+      <Form form={formOne} layout="vertical">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
           <Form.Item
             label="Asset"
             name="asset"
-          // initialValue={detail.asset.product}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -62,7 +86,6 @@ const OpenSheetDetails = () => {
           <Form.Item
             label="Serial Number"
             name="serialNumber"
-          // initialValue={detail.asset.serial_number}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -71,7 +94,6 @@ const OpenSheetDetails = () => {
           <Form.Item
             label="Organization"
             name="organization"
-          // initialValue={detail.asset.brand}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -80,7 +102,6 @@ const OpenSheetDetails = () => {
           <Form.Item
             label="Location"
             name="location"
-          // initialValue="Rampura, Dhaka"
           >
             <Input style={{ width: "100%", height: "44px" }} />
           </Form.Item>
@@ -91,7 +112,6 @@ const OpenSheetDetails = () => {
           <TextArea
             rows={6}
             placeholder="Describe the problem here..."
-          // defaultValue={detail.problem}
           />
         </Form.Item>
 
@@ -100,7 +120,6 @@ const OpenSheetDetails = () => {
           <Form.Item
             label="Assign Technician"
             name="technician"
-          // initialValue={detail?.assigned_user.name}
           >
             <Input
               style={{ width: "100%", height: "44px" }}
@@ -126,7 +145,7 @@ const OpenSheetDetails = () => {
         <div className="grid grid-cols-1 gap-6">
           <Form.Item
             label="Status"
-            name="Status"
+            name="status"
           // initialValue={detail?.ticket_status}
           >
             <Input
