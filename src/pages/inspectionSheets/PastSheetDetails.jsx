@@ -1,10 +1,36 @@
 
 import { Button, Input, Form } from "antd";
+import { usePastDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 const { TextArea } = Input;
 
 const PastSheetDetails = () => {
-  const [form] = Form.useForm();
+  const [formOne] = Form.useForm();
+  const { id } = useParams()
 
+
+  const { data, isLoading } = usePastDetailsSupportedAgentDashboardApiQuery(parseInt(id));
+  const pastDetailsData = data?.data
+
+
+
+  useEffect(() => {
+    if (pastDetailsData) {
+      formOne.setFieldsValue({
+        asset: pastDetailsData?.ticket?.asset?.product,
+        serialNumber: pastDetailsData?.ticket?.asset?.serial_number,
+        organization: pastDetailsData?.ticket?.asset?.organization?.name,
+        location: pastDetailsData?.ticket?.user?.address,
+        problem: pastDetailsData?.ticket?.problem,
+        technician: pastDetailsData?.technician?.name,
+        comment: pastDetailsData?.support_agent_comment,
+        status: pastDetailsData?.status
+      })
+    }
+  }, [pastDetailsData, formOne])
+
+  if (isLoading) return <p>Loading....</p>
   return (
     <div className=" p-6">
       {/* Back Button */}
@@ -38,23 +64,20 @@ const PastSheetDetails = () => {
       <div className="text-center mb-8">
         <p className="text-[20px] text-primary font-semibold ">
           Inspection sheet of
-          <span className="text-secondary font-semibold">
-            ViewSonic
-            {/* {detail.asset.product} */}
-          </span>{" "}
-          (HFGS647HNSJU)
-          {/* ({detail.asset.serial_number}) */}
+          <span className="text-secondary font-semibold px-2">
+            {pastDetailsData?.ticket?.asset?.product}
+          </span>
+          {(pastDetailsData?.ticket?.asset?.serial_number)}
         </p>
       </div>
 
       {/* Form */}
-      <Form layout="vertical">
+      <Form form={formOne} layout="vertical">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
           <Form.Item
             label="Asset"
             name="asset"
-          // initialValue={detail.asset.product}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -63,7 +86,6 @@ const PastSheetDetails = () => {
           <Form.Item
             label="Serial Number"
             name="serialNumber"
-          // initialValue={detail.asset.serial_number}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -72,7 +94,6 @@ const PastSheetDetails = () => {
           <Form.Item
             label="Organization"
             name="organization"
-          // initialValue={detail.asset.brand}
           >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
@@ -81,7 +102,6 @@ const PastSheetDetails = () => {
           <Form.Item
             label="Location"
             name="location"
-          // initialValue="Rampura, Dhaka"
           >
             <Input style={{ width: "100%", height: "44px" }} />
           </Form.Item>
@@ -92,7 +112,6 @@ const PastSheetDetails = () => {
           <TextArea
             rows={6}
             placeholder="Describe the problem here..."
-          // defaultValue={detail.problem}
           />
         </Form.Item>
 
@@ -101,7 +120,6 @@ const PastSheetDetails = () => {
           <Form.Item
             label="Assign Technician"
             name="technician"
-          // initialValue={detail?.assigned_user.name}
           >
             <Input
               style={{ width: "100%", height: "44px" }}
@@ -124,30 +142,16 @@ const PastSheetDetails = () => {
             />
           </Form.Item>
         </div>
-        <h1 className="text-2xl font-bold py-6 text-center">image and video show here</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <Form.Item
             label="Status"
-            name="Status"
-          // initialValue={detail?.ticket_status}
+            name="status"
           >
             <Input
               style={{ width: "100%", height: "44px" }}
               placeholder="New"
             />
           </Form.Item>
-
-          <Form.Item
-            label="Signature of location employee"
-            name=""
-          >
-            <Input
-              style={{ width: "100%", height: "44px" }}
-              placeholder="abid"
-            />
-          </Form.Item>
-
-
         </div>
         {/* Submit Button */}
       </Form>

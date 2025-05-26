@@ -175,7 +175,7 @@ const SupportAgentInspaction = () => {
             }),
             render: (text, record) => (
                 <div className=" ticket-status">
-                    <span className={`text-secondary text-lg font-semibold`}>{record.status}</span>
+                    <span className={`${record?.status === "Completed" ? 'text-green-600' : "text-secondary"}  text-lg font-semibold`}>{record.status}</span>
                     <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="13.5" cy="13.5" r="13.5" fill="#D9D9D9" />
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M17.071 14.071L11.414 19.728L10 18.314L14.95 13.364L10 8.414L11.414 7L17.071 12.657C17.2585 12.8445 17.3638 13.0988 17.3638 13.364C17.3638 13.6292 17.2585 13.8835 17.071 14.071Z" fill="black" />
@@ -256,139 +256,6 @@ const SupportAgentInspaction = () => {
                     </TabPane>
                 ))}
             </Tabs>
-
-            {/* {selectedTickets.length > 0 && (
-                <Button
-                    style={{ backgroundColor: "#ED1C24", color: "white", fontSize: "16px", border: "none" }}
-
-                    className="fixed bottom-6 h-[50px] right-12  text-white px-6 py-3 rounded-lg shadow-lg"
-                    onClick={() => navigate("create-inspection")}
-                >
-                    Create Combined Inspection Sheets
-                </Button>
-            )} */}
-
-            {/* <InspactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} ticket={selectedTicket} />
-
-
-            <Modal
-                open={isModalOpen}
-                onCancel={handleCancelModalOne}
-                footer={null}
-                width={700}
-                className="ticket-modal"
-                title={
-                    <div className="modal-header text-center w-full">
-                        <span className="status-badge">NEW</span>
-                        <span className="header-title flex  text-white text-[20px] font-normal">Inspection sheet of ViewSonic (HFGS647HNSJU)</span>
-                    </div>
-                }
-            >
-                <Form>
-                    <div className="modal-content bg-[#F2F2F2]">
-                        <div className="flex justify-between gap-4">
-                      
-                            <div className="form-group w-full  ">
-                                <div>
-                                    <label className="text-[16px] text-[#000000] font-medium">Asset</label>
-                                    <Form.Item>
-                                        <Input value="ViewSonic" readOnly className="bg-white h-[44px]" />
-                                    </Form.Item>
-                                </div>
-                            </div>
-
-                            <div className="form-group w-full">
-                                <div className="input-with-copy">
-                                    <label className="text-[16px] text-[#000000] font-medium">Serial number</label>
-                                    <Form.Item>
-                                        <Input value="HFGS647HNSJU" readOnly className="bg-white h-[44px]" />
-                                    </Form.Item>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className="form-group">
-                            <div className="input-with-copy ">
-                                <label className="text-[16px] text-[#000000] font-medium">Problem</label>
-                                <Form.Item>
-                                    <TextArea
-                                        value="Lorem ipsum dolor sit amet consectetur. Leo ultrices quis et et quisque ut turpis. Pharetra massa volutpat ultrices in eros sit. Vulputate risus lobortis nunc tristique mattis imperdiet cursus. Sociis mauris varius amet bibendum."
-                                        readOnly
-                                        rows={4}
-                                        className="bg-white text-[#777777] text-[16px] p-4 "
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                     
-                                <div className="input-with-copy">
-                                    <label className="text-[16px] text-[#000000] font-medium">Assigned by</label>
-                                    <Form.Item>
-                                        <Input value="Support agent name here" readOnly className="bg-white h-[44px]" />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            
-                            <div className="form-group">
-                                <label className="text-[16px] text-[#000000] font-medium">Technician</label>
-                                <div className="input-with-copy">
-                                    <Input value="Md. Abid" readOnly className="bg-white h-[44px]" />
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="form-group flex gap-4 ">
-                            <div className="form-group w-full">
-                                <label className="text-[16px] text-[#000000] font-medium">Comment</label>
-                                <div className="input-with-copy ">
-                                    <TextArea
-
-                                        placeholder="Technician’s comment"
-                                        readOnly
-                                        rows={4}
-                                        className="bg-white text-[#777777] text-[16px] p-4 "
-                                    />
-
-                                </div>
-                            </div>
-
-
-
-                            <div className="w-full">
-
-                                <div className="form-group ">
-                                    <label className="text-[16px] text-[#000000] font-medium">location</label>
-                                    <div className="input-with-copy">
-                                        <Input value="Dhaka" readOnly className="bg-white h-[44px]" />
-
-                                    </div>
-                                </div>
-                                <div className="form-group ">
-                                    <label className="text-[16px] text-[#000000] font-medium">Signature</label>
-                                    <div className="input-with-copy">
-                                        <Input value="Location employee name" readOnly className="bg-white h-[44px]" />
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div className="modal-footer">
-
-                            <button className="btn btn-primary">Send</button>
-                        </div>
-                    </div>
-                </Form>
-            </Modal> */}
-
-
             <div className="flex justify-end">
                 <Pagination
                     current={currentPage}

@@ -146,7 +146,6 @@ formOne.setFieldsValue({
           <Form.Item
             label="Status"
             name="status"
-          // initialValue={detail?.ticket_status}
           >
             <Input
               style={{ width: "100%", height: "44px" }}
