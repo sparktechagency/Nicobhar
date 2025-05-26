@@ -1,79 +1,122 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react"
-import { Button, Input, Modal } from "antd"
-import TextArea from "antd/es/input/TextArea"
-
-
-
-
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
+import { Button, Input, message, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import {
+  useAddFAQMutation,
+  useDeleteFAQMutation,
+  useGetFAQQuery,
+  useUpdateFAQMutation,
+} from "../../redux/features/faq/faqApi";
 
 export default function FAQ() {
-  const [faqs, setFaqs] = useState([
-    {
-      id: 1,
-      question: "Lorem ipsum dolor sit ?",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur. Conque porttitor massa tristique mauris porta dolor. Aliquet donec ullamcorper malesuada leo tempus eu porttitor consectetur. Felis dapibus nullam massa potenti sed malesuada urna. Vulputate pellentesque mattis morbi etiam a facilisi mi nunc. Sollicitudin amet id erat sollicitudin est amet eros porttitor at. Sed vulputate pharetra arcu donec id. Dignissim facilisi duis sagittis at amet sed phasellus in orci. Elit tincidunt diam placerat porttitor eu euismod. Lobortis amet tincidunt nulla mattis nisl eget eget",
-    },
-    {
-      id: 2,
-      question: "Lorem ipsum dolor sit ?",
-      answer: "Lorem ipsum dolor sit amet consectetur.",
-    },
-    {
-      id: 3,
-      question: "Lorem ipsum dolor sit ?",
-      answer: "Lorem ipsum dolor sit amet consectetur.",
-    },
-    {
-      id: 4,
-      question: "Lorem ipsum dolor sit ?",
-      answer: "Lorem ipsum dolor sit amet consectetur.",
-    },
-  ])
+  const [faqs, setFaqs] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
 
-  const [expandedId, setExpandedId] = useState(1)
-  const [editingFaq, setEditingFaq] = useState(null)
-  const [newFaq, setNewFaq] = useState({ question: "", answer: "" })
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  // editingFaq is a clone of the faq being edited (local editable copy)
+  const [editingFaq, setEditingFaq] = useState(null);
+
+  const [newFaq, setNewFaq] = useState({ question: "", answer: "" });
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const { data, isLoading, isSuccess, refetch } = useGetFAQQuery();
+  const [addFAQ] = useAddFAQMutation();
+  const [deleteFAQ] = useDeleteFAQMutation();
+  const [updateFAQ] = useUpdateFAQMutation();
+
+  useEffect(() => {
+    if (isSuccess && !isLoading) {
+      setFaqs(data.data.data);
+    }
+  }, [isSuccess, data, isLoading]);
+
+  if (isLoading) {
+    return <>Loading..</>;
+  }
 
   const handleToggle = (id) => {
-    setExpandedId(expandedId === id ? null : id)
-  }
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   const handleEdit = (faq) => {
-    setEditingFaq(faq)
-    setIsEditModalOpen(true)
-  }
+    // Clone the faq to avoid mutating original state directly
+    setEditingFaq({ ...faq });
+    setIsEditModalOpen(true);
+  };
 
-  const handleDelete = (id) => {
-    setFaqs(faqs.filter((faq) => faq.id !== id))
-  }
-
-  const handleSaveEdit = () => {
-    if (editingFaq) {
-      setFaqs(faqs.map((faq) => (faq.id === editingFaq.id ? editingFaq : faq)))
-      setIsEditModalOpen(false)
-      setEditingFaq(null)
+  const handleDelete = async (id) => {
+    try {
+      const response = await deleteFAQ({ id });
+      if (response?.data?.status) {
+        message.success("FAQ Deleted successfully!");
+      } else {
+        message.error(
+          response?.message || "Something went wrong while Deleting FAQ."
+        );
+      }
+    } catch (error) {
+      console.error("Delete FAQ Error:", error);
+      message.error("Failed to delete FAQ. Please try again.");
     }
-  }
+    refetch();
+  };
 
-  const handleAddNew = () => {
-    if (newFaq.question && newFaq.answer) {
-      setFaqs([
-        ...faqs,
-        {
-          id: Math.max(...faqs.map((f) => f.id)) + 1,
-          ...newFaq,
-        },
-      ])
-      setNewFaq({ question: "", answer: "" })
-      setIsAddModalOpen(false)
+  const handleSaveEdit = async () => {
+    if (!editingFaq || !editingFaq.answer.trim()) {
+      message.error("Answer field cannot be empty.");
+      return;
     }
-  }
+
+    try {
+      const readyData = {
+        id: editingFaq.id,
+        data: { answer: editingFaq.answer },
+      };
+      console.log("Updating FAQ with:", readyData);
+      const response = await updateFAQ(readyData);
+      console.log("Response:", response);
+
+      if (response?.data?.status) {
+        message.success("FAQ updated successfully!");
+        setIsEditModalOpen(false);
+        setEditingFaq(null);
+        refetch();
+      } else {
+        message.error(response?.message || "Failed to update FAQ.");
+      }
+    } catch (error) {
+      console.error("Update FAQ Error:", error);
+      message.error("An error occurred while updating FAQ.");
+    }
+  };
+
+  const handleAddNew = async () => {
+    if (!newFaq.question.trim() || !newFaq.answer.trim()) {
+      message.error("Please fill the question and answer input to add the FAQ");
+      return;
+    }
+
+    try {
+      const response = await addFAQ(newFaq);
+
+      if (response?.data?.status) {
+        message.success("FAQ added successfully!");
+        setNewFaq({ question: "", answer: "" }); // reset form
+        setIsAddModalOpen(false);
+        refetch();
+      } else {
+        message.error(
+          response?.message || "Something went wrong while adding FAQ."
+        );
+      }
+    } catch (error) {
+      console.error("Add FAQ Error:", error);
+      message.error("Failed to add FAQ. Please try again.");
+    }
+  };
 
   return (
     <div className="">
@@ -82,13 +125,16 @@ export default function FAQ() {
       <div className="space-y-4">
         {faqs.map((faq) => (
           <div key={faq.id} className="bg-white rounded-lg shadow-sm border">
-            <div className="flex items-center justify-between p-4 cursor-pointer" onClick={() => handleToggle(faq.id)}>
+            <div
+              className="flex items-center justify-between p-4 cursor-pointer"
+              onClick={() => handleToggle(faq.id)}
+            >
               <h3 className="font-medium">{faq.question}</h3>
               <div className="flex items-center gap-2">
                 <button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleEdit(faq)
+                    e.stopPropagation();
+                    handleEdit(faq);
                   }}
                   className="p-2 hover:bg-green-50 rounded-full"
                 >
@@ -96,8 +142,8 @@ export default function FAQ() {
                 </button>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleDelete(faq.id)
+                    e.stopPropagation();
+                    handleDelete(faq.id);
                   }}
                   className="p-2 hover:bg-red-50 rounded-full"
                 >
@@ -120,7 +166,14 @@ export default function FAQ() {
       </div>
 
       {/* Edit Modal */}
-      <Modal onCancel={() => setIsEditModalOpen(false)} open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+      <Modal
+        onCancel={() => {
+          setIsEditModalOpen(false);
+          setEditingFaq(null);
+        }}
+        open={isEditModalOpen}
+        footer={null}
+      >
         <div>
           <div>
             <h1>Edit FAQ</h1>
@@ -128,31 +181,47 @@ export default function FAQ() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Question</label>
-              <Input
-                value={editingFaq?.question || ""}
-                onChange={(e) => setEditingFaq((prev) => (prev ? { ...prev, question: e.target.value } : null))}
-              />
+              <Input value={editingFaq?.question || ""} readOnly />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Answer</label>
               <TextArea
                 value={editingFaq?.answer || ""}
-                onChange={(e) => setEditingFaq((prev) => (prev ? { ...prev, answer: e.target.value } : null))}
+                onChange={(e) =>
+                  setEditingFaq((prev) =>
+                    prev ? { ...prev, answer: e.target.value } : null
+                  )
+                }
                 rows={4}
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+              <Button
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setEditingFaq(null);
+                }}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleSaveEdit}>Save Changes</Button>
+              <Button
+                className="!bg-red-500"
+                type="primary"
+                onClick={handleSaveEdit}
+              >
+                Save Changes
+              </Button>
             </div>
           </div>
         </div>
       </Modal>
 
       {/* Add Modal */}
-      <Modal onCancel={() => setIsAddModalOpen(false)} open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+      <Modal
+        onCancel={() => setIsAddModalOpen(false)}
+        open={isAddModalOpen}
+        footer={null}
+      >
         <div>
           <div>
             <h1>Add New FAQ</h1>
@@ -162,31 +231,41 @@ export default function FAQ() {
               <label className="block text-sm font-medium mb-1">Question</label>
               <Input
                 value={newFaq.question}
-                onChange={(e) => setNewFaq((prev) => ({ ...prev, question: e.target.value }))}
+                onChange={(e) =>
+                  setNewFaq((prev) => ({ ...prev, question: e.target.value }))
+                }
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Answer</label>
               <TextArea
                 value={newFaq.answer}
-                onChange={(e) => setNewFaq((prev) => ({ ...prev, answer: e.target.value }))}
+                onChange={(e) =>
+                  setNewFaq((prev) => ({ ...prev, answer: e.target.value }))
+                }
                 rows={4}
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
-                Cancel
+              <Button onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
+              <Button
+                className="!bg-red-500"
+                type="primary"
+                onClick={handleAddNew}
+              >
+                Add FAQ
               </Button>
-              <Button onClick={handleAddNew}>Add FAQ</Button>
             </div>
           </div>
         </div>
       </Modal>
 
-      <Button onClick={() => setIsAddModalOpen(true)} className="mt-6 bg-red-600 hover:bg-red-700 text-white text-[16px]">
+      <Button
+        onClick={() => setIsAddModalOpen(true)}
+        className="mt-6 bg-red-600 hover:bg-red-700 text-white text-[16px]"
+      >
         Add more
       </Button>
     </div>
-  )
+  );
 }
-

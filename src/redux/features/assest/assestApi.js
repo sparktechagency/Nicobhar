@@ -1,10 +1,17 @@
 import { baseApi } from "../../api/baseApi";
 
-export const authApi = baseApi.injectEndpoints({
+export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAssest: builder.query({
-      query: () => ({
-        url: "/assest",
+    getAssestlist: builder.query({
+      query: ({ page, search, sort_by }) => ({
+        url: `/asset-list?page=${page}&search=${search}&sort_by=${sort_by}`,
+        method: "GET",
+      }),
+      providesTags: ["assest"],
+    }),
+    getAssetDetail: builder.query({
+      query: ({ id }) => ({
+        url: `/asset-details/${id}`,
         method: "GET",
       }),
       providesTags: ["assest"],
@@ -12,4 +19,4 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAssestQuery } = authApi;
+export const { useGetAssestlistQuery, useGetAssetDetailQuery } = assetApi;
