@@ -1,36 +1,36 @@
-
 import { Button, Input, Form } from "antd";
+import { useOpenDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const OpenSheetDetails = () => {
   const [formOne] = Form.useForm();
-  const { id } = useParams()
+  const {id} = useParams()
 
 
-  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery();
-  const newDetailsData = data?.data
+  const { data,isLoading } = useOpenDetailsSupportedAgentDashboardApiQuery(parseInt(id));
+const openDetailsData = data?.data
 
 
 
-  useEffect(() => {
-    if (newDetailsData) {
-      formOne.setFieldsValue({
-        asset: newDetailsData?.ticket?.asset?.product,
-        serialNumber: newDetailsData?.ticket?.asset?.serial_number,
-        organization: newDetailsData?.ticket?.asset?.organization?.name,
-        location: newDetailsData?.ticket?.user?.address,
-        problem: newDetailsData?.ticket?.problem,
-        technician: newDetailsData?.technician?.name,
-        comment: newDetailsData?.support_agent_comment,
-        status: newDetailsData?.status
-      })
-    }
-  }, [newDetailsData, formOne])
+useEffect(()=>{
+  if(openDetailsData){
+formOne.setFieldsValue({
+  asset :openDetailsData?.ticket?.asset?.product,
+  serialNumber : openDetailsData?.ticket?.asset?.serial_number,
+  organization : openDetailsData?.ticket?.asset?.organization?.name,
+  location : openDetailsData?.ticket?.user?.address,
+  problem : openDetailsData?.ticket?.problem,
+  technician : openDetailsData?.technician?.name,
+  comment : openDetailsData?.support_agent_comment,
+  status : openDetailsData?.status
+})
+  }
+},[openDetailsData,formOne])
 
-  if (isLoading) return <p>Loading....</p>
+
+  if(isLoading) return <p>Loading....</p>
   return (
     <div className=" p-6">
       {/* Back Button */}
@@ -65,9 +65,9 @@ const CreateInspactionPage = () => {
         <p className="text-[20px] text-primary font-semibold ">
           Inspection sheet of
           <span className="text-secondary font-semibold px-2">
-            {newDetailsData?.ticket?.asset?.product}
+            {openDetailsData?.ticket?.asset?.product}
           </span>
-          {(newDetailsData?.ticket?.asset?.serial_number)}
+          {(openDetailsData?.ticket?.asset?.serial_number)}
         </p>
       </div>
 
@@ -159,4 +159,4 @@ const CreateInspactionPage = () => {
   )
 }
 
-export default CreateInspactionPage
+export default OpenSheetDetails

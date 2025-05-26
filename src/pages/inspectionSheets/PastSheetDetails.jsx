@@ -1,34 +1,34 @@
 
 import { Button, Input, Form } from "antd";
+import { usePastDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const PastSheetDetails = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams()
 
 
-  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery();
-  const newDetailsData = data?.data
+  const { data, isLoading } = usePastDetailsSupportedAgentDashboardApiQuery(parseInt(id));
+  const pastDetailsData = data?.data
 
 
 
   useEffect(() => {
-    if (newDetailsData) {
+    if (pastDetailsData) {
       formOne.setFieldsValue({
-        asset: newDetailsData?.ticket?.asset?.product,
-        serialNumber: newDetailsData?.ticket?.asset?.serial_number,
-        organization: newDetailsData?.ticket?.asset?.organization?.name,
-        location: newDetailsData?.ticket?.user?.address,
-        problem: newDetailsData?.ticket?.problem,
-        technician: newDetailsData?.technician?.name,
-        comment: newDetailsData?.support_agent_comment,
-        status: newDetailsData?.status
+        asset: pastDetailsData?.ticket?.asset?.product,
+        serialNumber: pastDetailsData?.ticket?.asset?.serial_number,
+        organization: pastDetailsData?.ticket?.asset?.organization?.name,
+        location: pastDetailsData?.ticket?.user?.address,
+        problem: pastDetailsData?.ticket?.problem,
+        technician: pastDetailsData?.technician?.name,
+        comment: pastDetailsData?.support_agent_comment,
+        status: pastDetailsData?.status
       })
     }
-  }, [newDetailsData, formOne])
+  }, [pastDetailsData, formOne])
 
   if (isLoading) return <p>Loading....</p>
   return (
@@ -65,9 +65,9 @@ const CreateInspactionPage = () => {
         <p className="text-[20px] text-primary font-semibold ">
           Inspection sheet of
           <span className="text-secondary font-semibold px-2">
-            {newDetailsData?.ticket?.asset?.product}
+            {pastDetailsData?.ticket?.asset?.product}
           </span>
-          {(newDetailsData?.ticket?.asset?.serial_number)}
+          {(pastDetailsData?.ticket?.asset?.serial_number)}
         </p>
       </div>
 
@@ -159,4 +159,4 @@ const CreateInspactionPage = () => {
   )
 }
 
-export default CreateInspactionPage
+export default PastSheetDetails
