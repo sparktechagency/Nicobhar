@@ -10,9 +10,8 @@ const CreateInspactionPage = () => {
   const { id } = useParams()
 
 
-  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery();
+  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery(parseInt(id));
   const newDetailsData = data?.data
-
 
 
   useEffect(() => {

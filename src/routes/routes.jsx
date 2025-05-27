@@ -108,7 +108,7 @@ const router = createBrowserRouter([
       { path: "reports", element: <Reports /> },
       { path: "jobcards", element: <JobCards /> },
       { path: 'notification', element: <NotificationsPage /> },
-      { path: "create-inspection", element: <CreateInspectionPage /> },
+      { path: "create-inspection/:id", element: <CreateInspectionPage /> },
       { path: 'open-sheet-details/:id', element: <OpenSheetDetails /> },
       { path: 'past-sheet-details/:id', element: <PastSheetDetails /> },
     ],
@@ -173,6 +173,7 @@ const router = createBrowserRouter([
   },
 
   {
+
     path: "/",
     element: <AuthLayout />,
     children: [

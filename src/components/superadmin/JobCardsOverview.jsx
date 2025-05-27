@@ -32,18 +32,18 @@ const JobCardsOverview = () => {
   // Prepare bar chart data dynamically from total_job_card_per_date
   const barData = data
     ? Object.entries(data.total_job_card_per_date).map(([date, counts]) => ({
-        date, // can format date if you want (e.g. MM-DD-YY)
-        ...counts,
-      }))
+      date, // can format date if you want (e.g. MM-DD-YY)
+      ...counts,
+    }))
     : []
 
   // Prepare pie chart data from job_status array
   const pieData = data
     ? data.job_status.map((item, index) => ({
-        name: item.job_status,
-        value: item.count,
-        color: COLORS[index % COLORS.length],
-      }))
+      name: item.job_status,
+      value: item.count,
+      color: COLORS[index % COLORS.length],
+    }))
     : []
 
   // Handlers
@@ -112,20 +112,39 @@ const JobCardsOverview = () => {
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           icon={<Settings className="h-6 w-6 text-orange-500" />}
-          title="Created Cards"
-          value={data?.total_created_card ?? 0}
+          title={
+            <span className="text-lg">Created Cards</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+              {data?.total_created_card ?? 0}
+            </span>
+          }
           bgColor="bg-orange-50"
         />
         <MetricCard
           icon={<Clock className="h-6 w-6 text-blue-500" />}
-          title="Running Cards"
-          value={data?.total_running_card ?? 0}
+
+          title={
+            <span className="text-lg">Running Cards</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+              {data?.total_running_card ?? 0}
+            </span>
+          }
           bgColor="bg-blue-50"
         />
         <MetricCard
           icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-          title="Completed Cards"
-          value={data?.total_Completed_card ?? 0}
+              title={
+            <span className="text-lg">Completed Cards</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+             {data?.total_Completed_card ?? 0}
+            </span>
+          }
           bgColor="bg-green-50"
         />
       </div>

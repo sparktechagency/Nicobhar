@@ -28,7 +28,7 @@ const InspactionAcvity = () => {
     end_date: endDate
   });
 
-  
+
   const handleStartDateChange = (e) => {
     const date = e.target.value
     setStartDate(date)
@@ -135,21 +135,40 @@ const InspactionAcvity = () => {
       {/* Metric Cards */}
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          icon={<Settings className="h-6 w-6 text-orange-500" />}
-          title="Created Sheets"
-          value={data?.total_created_sheet || 0}
+          icon={<Settings className="h-6 w-6  text-orange-500" />}
+          title={
+            <span className="text-lg">Created Sheets</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+              {data?.total_created_sheet || 0}
+            </span>
+          }
           bgColor="bg-orange-50"
+
         />
         <MetricCard
           icon={<Clock className="h-6 w-6 text-blue-500" />}
-          title="Running Sheets"
-          value={data?.total_running_sheet || 0}
+          title={
+            <span className="text-lg">Running Sheets</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+              {data?.total_running_sheet || 0}
+            </span>
+          }
           bgColor="bg-blue-50"
         />
         <MetricCard
           icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-          title="Completed Sheets"
-          value={data?.total_Completed_sheet || 0}
+          title={
+            <span className="text-lg">Completed Sheets</span>
+          }
+          value={
+            <span className="text-3xl font-bold text-gray-800">
+              {data?.total_Completed_sheet || 0}
+            </span>
+          }
           bgColor="bg-green-50"
         />
       </div>
@@ -166,8 +185,8 @@ const InspactionAcvity = () => {
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
-                <Bar dataKey="completed" fill="#fbbf24" radius={[2, 2, 0, 0]} />
-                <Bar dataKey="created" fill="#3b82f6" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="completed" fill="#EF4444" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="created" fill="#F59E0B" radius={[2, 2, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

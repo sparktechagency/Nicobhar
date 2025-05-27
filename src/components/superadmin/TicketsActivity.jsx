@@ -27,6 +27,8 @@ const TicketsActivity = () => {
       _refresh: refreshKey, // Add this to force refresh
     })
 
+    console.log(activityData)
+
   // Transform API data into Recharts-friendly format
   const transformData = (data) => {
     if (!data || !data.tickets) return []

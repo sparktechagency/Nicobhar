@@ -18,9 +18,16 @@ export const dashboardApi = baseApi.injectEndpoints({
             }),
             providesTags: ["super-admin"],
         }),
+        getTicketStatusDashboardApi: builder.query({
+            query: ({start_date,end_date}) => ({
+                url: `/ticket-activity-super?start_date=${start_date}&end_date=${end_date}`,
+                method: 'GET',
+            }),
+            providesTags: ["super-admin"],
+        }),
 
 
     }),
 });
 
-export const {useGetOverviewDashboardApiQuery,useGetStaticChartDashboardApiQuery} = dashboardApi;
+export const {useGetOverviewDashboardApiQuery,useGetStaticChartDashboardApiQuery,useGetTicketStatusDashboardApiQuery} = dashboardApi;
