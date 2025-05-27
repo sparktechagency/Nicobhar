@@ -88,7 +88,7 @@ export default function ChatPage() {
       {/* Left Sidebar */}
       <div className="w-80 border-r flex flex-col">
         <div className="p-4 border-b">
-          <div className="flex space-x-4 mb-4">
+          <div className="flex flex-wrap space-x-4 mb-4">
             <button
               className={`px-4 py-2 rounded-full ${
                 activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
@@ -96,6 +96,14 @@ export default function ChatPage() {
               onClick={() => setActiveTab("organization")}
             >
               Organization
+            </button>
+            <button
+              className={`px-4 py-2 rounded-full ${
+                activeTab === "Location-employee" ? "bg-red-500 text-white" : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("Location-employee")}
+            >
+              Location employee
             </button>
             <button
               className={`px-4 py-2 rounded-full ${
@@ -129,7 +137,7 @@ export default function ChatPage() {
       </div>
    
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col h-[650px]">
         <ChatHeader user={selectedUser} />
         {selectedUser ? (
           <>

@@ -23,6 +23,7 @@ export const baseApi = createApi({
         "adminProfile",
         "super-admin",
         "organization",
+        "message",
     ],
     endpoints: () => ({}),
 });
