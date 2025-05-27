@@ -7,18 +7,14 @@ import { Button, Card, DatePicker, Form, Input, Modal, Select } from "antd"
 import { useState } from "react"
 import TextArea from "antd/es/input/TextArea"
 import { IoPlayBackOutline } from "react-icons/io5"
+import { useGetOrganizationDashboardApiQuery } from "../redux/features/organizationDashboard/dashboardApi"
 
 const overviewData = [
   {
     title: "Asset",
     value: "22.5k",
-    icon: (
-      <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M24.375 7.3125H17.875C17.444 7.3125 17.0307 7.48371 16.726 7.78845C16.4212 8.0932 16.25 8.50653 16.25 8.93751V21.1251C16.25 21.556 16.4212 21.9694 16.726 22.2741C17.0307 22.5789 17.444 22.7501 17.875 22.7501H24.375C24.806 22.7501 25.2193 22.5789 25.5241 22.2741C25.8288 21.9694 26 21.556 26 21.1251V8.93751C26 8.50653 25.8288 8.0932 25.5241 7.78845C25.2193 7.48371 24.806 7.3125 24.375 7.3125ZM24.375 8.93751V19.5H17.875V8.93751H24.375Z" fill="#ED1C24" />
-        <path d="M21.1251 0H1.62501C1.19403 0 0.780701 0.171205 0.475953 0.475953C0.171205 0.780701 0 1.19403 0 1.62501V14.6251C0 15.056 0.171205 15.4694 0.475953 15.7741C0.780701 16.0789 1.19403 16.2501 1.62501 16.2501H8.12503V17.8751H5.94752C5.6986 17.8468 5.44834 17.9154 5.24865 18.0667C5.04897 18.2179 4.91517 18.4403 4.87502 18.6876C4.91517 18.9349 5.04897 19.1572 5.24865 19.3085C5.44834 19.4598 5.6986 19.5284 5.94752 19.5001H14.5601V19.1994H14.6251V14.6251H1.62501V1.62501H21.1251V5.68752H22.7501V1.62501C22.7501 1.19403 22.5789 0.780701 22.2741 0.475953C21.9694 0.171205 21.5561 0 21.1251 0Z" fill="#ED1C24" />
-      </svg>
-    ),
-    description: "Total asset of your organization",
+
+    description: "",
   },
   {
     title: "Tickets",
@@ -82,13 +78,14 @@ const ticketData = [
 ]
 
 export default function OrganizationDashbord() {
-
-
-
-
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isprinmodalopen, setispringmodalopen] = useState(false)
   const [form] = Form.useForm()
+
+  const { data: organization } = useGetOrganizationDashboardApiQuery()
+  const organizationData = organization?.data
+
+
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -98,10 +95,6 @@ export default function OrganizationDashbord() {
     setIsModalOpen(false)
     form.resetFields()
   }
-
-
-
-
   const handleprinmodal = () => {
     setIsModalOpen(false)
     setispringmodalopen(true)
@@ -118,6 +111,11 @@ export default function OrganizationDashbord() {
   const handlePrint = () => {
     window.print()
   }
+
+
+
+
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -125,7 +123,7 @@ export default function OrganizationDashbord() {
         <button onClick={showModal} className="bg-red-500 text-white px-4 py-2 rounded-lg text-[16px] font-normal">+ Create Report</button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {overviewData.map((item) => (
           <Card key={item.title}>
             <div className="p-6">
@@ -138,11 +136,98 @@ export default function OrganizationDashbord() {
                   <p className="text-xl font-bold text-muted-foreground">{item.title}</p>
                 </div>
                 <p className="text-xs text-muted-foreground">{item.description}</p>
-                <div className="text-2xl font-bold">{item.value}</div>
+                <div className="text-2xl font-bold">{organizationData?.total_asset}</div>
               </div>
             </div>
           </Card>
         ))}
+      </div> */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        {/* card one */}
+        <Card>
+          <div className="p-6">
+            <div className="flex flex-col space-y-2 text-center">
+              <div className="text-center">
+                <div className="bg-[#FFF0F0] px-2 py-2 text-white  rounded-full w-fit mx-auto mb-2">
+                  <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.375 7.3125H17.875C17.444 7.3125 17.0307 7.48371 16.726 7.78845C16.4212 8.0932 16.25 8.50653 16.25 8.93751V21.1251C16.25 21.556 16.4212 21.9694 16.726 22.2741C17.0307 22.5789 17.444 22.7501 17.875 22.7501H24.375C24.806 22.7501 25.2193 22.5789 25.5241 22.2741C25.8288 21.9694 26 21.556 26 21.1251V8.93751C26 8.50653 25.8288 8.0932 25.5241 7.78845C25.2193 7.48371 24.806 7.3125 24.375 7.3125ZM24.375 8.93751V19.5H17.875V8.93751H24.375Z" fill="#ED1C24" />
+                    <path d="M21.1251 0H1.62501C1.19403 0 0.780701 0.171205 0.475953 0.475953C0.171205 0.780701 0 1.19403 0 1.62501V14.6251C0 15.056 0.171205 15.4694 0.475953 15.7741C0.780701 16.0789 1.19403 16.2501 1.62501 16.2501H8.12503V17.8751H5.94752C5.6986 17.8468 5.44834 17.9154 5.24865 18.0667C5.04897 18.2179 4.91517 18.4403 4.87502 18.6876C4.91517 18.9349 5.04897 19.1572 5.24865 19.3085C5.44834 19.4598 5.6986 19.5284 5.94752 19.5001H14.5601V19.1994H14.6251V14.6251H1.62501V1.62501H21.1251V5.68752H22.7501V1.62501C22.7501 1.19403 22.5789 0.780701 22.2741 0.475953C21.9694 0.171205 21.5561 0 21.1251 0Z" fill="#ED1C24" />
+                  </svg>
+                </div>
+                <p className="text-xl font-bold text-muted-foreground">Asset</p>
+              </div>
+              <p className="text-xs text-muted-foreground">Total asset of your organization</p>
+
+              {/* dynamic data by server-site */}
+              <div className="text-2xl font-bold">{organizationData?.total_asset}</div>
+            </div>
+          </div>
+        </Card>
+
+        {/* card two */}
+        <Card>
+          <div className="p-6">
+            <div className="flex flex-col space-y-2 text-center">
+              <div className="text-center">
+                <div className="bg-[#FFF0F0] px-2 py-2 text-white  rounded-full w-fit mx-auto mb-2">
+                  <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.375 7.3125H17.875C17.444 7.3125 17.0307 7.48371 16.726 7.78845C16.4212 8.0932 16.25 8.50653 16.25 8.93751V21.1251C16.25 21.556 16.4212 21.9694 16.726 22.2741C17.0307 22.5789 17.444 22.7501 17.875 22.7501H24.375C24.806 22.7501 25.2193 22.5789 25.5241 22.2741C25.8288 21.9694 26 21.556 26 21.1251V8.93751C26 8.50653 25.8288 8.0932 25.5241 7.78845C25.2193 7.48371 24.806 7.3125 24.375 7.3125ZM24.375 8.93751V19.5H17.875V8.93751H24.375Z" fill="#ED1C24" />
+                    <path d="M21.1251 0H1.62501C1.19403 0 0.780701 0.171205 0.475953 0.475953C0.171205 0.780701 0 1.19403 0 1.62501V14.6251C0 15.056 0.171205 15.4694 0.475953 15.7741C0.780701 16.0789 1.19403 16.2501 1.62501 16.2501H8.12503V17.8751H5.94752C5.6986 17.8468 5.44834 17.9154 5.24865 18.0667C5.04897 18.2179 4.91517 18.4403 4.87502 18.6876C4.91517 18.9349 5.04897 19.1572 5.24865 19.3085C5.44834 19.4598 5.6986 19.5284 5.94752 19.5001H14.5601V19.1994H14.6251V14.6251H1.62501V1.62501H21.1251V5.68752H22.7501V1.62501C22.7501 1.19403 22.5789 0.780701 22.2741 0.475953C21.9694 0.171205 21.5561 0 21.1251 0Z" fill="#ED1C24" />
+                  </svg>
+                </div>
+                <p className="text-xl font-bold text-muted-foreground">Asset</p>
+              </div>
+              <p className="text-xs text-muted-foreground">Total asset of your organization</p>
+
+              {/* dynamic data by server-site */}
+              <div className="text-2xl font-bold">{organizationData?.total_asset}</div>
+            </div>
+          </div>
+        </Card>
+
+        {/* card three */}
+        <Card>
+          <div className="p-6">
+            <div className="flex flex-col space-y-2 text-center">
+              <div className="text-center">
+                <div className="bg-[#FFF0F0] px-2 py-2 text-white  rounded-full w-fit mx-auto mb-2">
+                  <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.375 7.3125H17.875C17.444 7.3125 17.0307 7.48371 16.726 7.78845C16.4212 8.0932 16.25 8.50653 16.25 8.93751V21.1251C16.25 21.556 16.4212 21.9694 16.726 22.2741C17.0307 22.5789 17.444 22.7501 17.875 22.7501H24.375C24.806 22.7501 25.2193 22.5789 25.5241 22.2741C25.8288 21.9694 26 21.556 26 21.1251V8.93751C26 8.50653 25.8288 8.0932 25.5241 7.78845C25.2193 7.48371 24.806 7.3125 24.375 7.3125ZM24.375 8.93751V19.5H17.875V8.93751H24.375Z" fill="#ED1C24" />
+                    <path d="M21.1251 0H1.62501C1.19403 0 0.780701 0.171205 0.475953 0.475953C0.171205 0.780701 0 1.19403 0 1.62501V14.6251C0 15.056 0.171205 15.4694 0.475953 15.7741C0.780701 16.0789 1.19403 16.2501 1.62501 16.2501H8.12503V17.8751H5.94752C5.6986 17.8468 5.44834 17.9154 5.24865 18.0667C5.04897 18.2179 4.91517 18.4403 4.87502 18.6876C4.91517 18.9349 5.04897 19.1572 5.24865 19.3085C5.44834 19.4598 5.6986 19.5284 5.94752 19.5001H14.5601V19.1994H14.6251V14.6251H1.62501V1.62501H21.1251V5.68752H22.7501V1.62501C22.7501 1.19403 22.5789 0.780701 22.2741 0.475953C21.9694 0.171205 21.5561 0 21.1251 0Z" fill="#ED1C24" />
+                  </svg>
+                </div>
+                <p className="text-xl font-bold text-muted-foreground">Asset</p>
+              </div>
+              <p className="text-xs text-muted-foreground">Total asset of your organization</p>
+
+              {/* dynamic data by server-site */}
+              <div className="text-2xl font-bold">{organizationData?.total_asset}</div>
+            </div>
+          </div>
+        </Card>
+
+        {/* card four */}
+        <Card>
+          <div className="p-6">
+            <div className="flex flex-col space-y-2 text-center">
+              <div className="text-center">
+                <div className="bg-[#FFF0F0] px-2 py-2 text-white  rounded-full w-fit mx-auto mb-2">
+                  <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.375 7.3125H17.875C17.444 7.3125 17.0307 7.48371 16.726 7.78845C16.4212 8.0932 16.25 8.50653 16.25 8.93751V21.1251C16.25 21.556 16.4212 21.9694 16.726 22.2741C17.0307 22.5789 17.444 22.7501 17.875 22.7501H24.375C24.806 22.7501 25.2193 22.5789 25.5241 22.2741C25.8288 21.9694 26 21.556 26 21.1251V8.93751C26 8.50653 25.8288 8.0932 25.5241 7.78845C25.2193 7.48371 24.806 7.3125 24.375 7.3125ZM24.375 8.93751V19.5H17.875V8.93751H24.375Z" fill="#ED1C24" />
+                    <path d="M21.1251 0H1.62501C1.19403 0 0.780701 0.171205 0.475953 0.475953C0.171205 0.780701 0 1.19403 0 1.62501V14.6251C0 15.056 0.171205 15.4694 0.475953 15.7741C0.780701 16.0789 1.19403 16.2501 1.62501 16.2501H8.12503V17.8751H5.94752C5.6986 17.8468 5.44834 17.9154 5.24865 18.0667C5.04897 18.2179 4.91517 18.4403 4.87502 18.6876C4.91517 18.9349 5.04897 19.1572 5.24865 19.3085C5.44834 19.4598 5.6986 19.5284 5.94752 19.5001H14.5601V19.1994H14.6251V14.6251H1.62501V1.62501H21.1251V5.68752H22.7501V1.62501C22.7501 1.19403 22.5789 0.780701 22.2741 0.475953C21.9694 0.171205 21.5561 0 21.1251 0Z" fill="#ED1C24" />
+                  </svg>
+                </div>
+                <p className="text-xl font-bold text-muted-foreground">Asset</p>
+              </div>
+              <p className="text-xs text-muted-foreground">Total asset of your organization</p>
+
+              {/* dynamic data by server-site */}
+              <div className="text-2xl font-bold">{organizationData?.total_asset}</div>
+            </div>
+          </div>
+        </Card>
       </div>
 
       <h2 className="text-2xl font-bold mt-8">Metrics view</h2>
@@ -353,7 +438,7 @@ export default function OrganizationDashbord() {
           </div>
 
           <div className="flex items-center justify-center">
-            <Button  onClick={handlePrint}   style={{backgroundColor: "#ED1C24",color:"white"}} className="w-fit h-[44px] text-[18px] font-semibold text-white mt-4  bg-[#ED1C24] hover:bg-[#ED1C24]">
+            <Button onClick={handlePrint} style={{ backgroundColor: "#ED1C24", color: "white" }} className="w-fit h-[44px] text-[18px] font-semibold text-white mt-4  bg-[#ED1C24] hover:bg-[#ED1C24]">
 
               Print Report
               <svg width="28" height="25" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">

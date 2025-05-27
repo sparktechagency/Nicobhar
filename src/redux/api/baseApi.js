@@ -22,6 +22,7 @@ export const baseApi = createApi({
         "supted-agent",
         "adminProfile",
         "super-admin",
+        "organization",
     ],
     endpoints: () => ({}),
 });
