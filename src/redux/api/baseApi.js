@@ -21,6 +21,7 @@ export const baseApi = createApi({
         "jobCurd",
         "supted-agent",
         "adminProfile",
+        "super-admin",
     ],
     endpoints: () => ({}),
 });
