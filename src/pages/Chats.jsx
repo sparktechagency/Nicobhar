@@ -148,12 +148,7 @@ export default function ChatPage() {
           <div className="flex-1 flex items-center justify-center text-gray-500">Select a chat to start messaging</div>
         )}
       </div>
-
-
-      
     </div>
-
-
   )
 }
 

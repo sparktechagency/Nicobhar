@@ -17,3 +17,4 @@ server: {
 // install some packages
 1. redux install
 2. npm i jwt-decode
+3. npm i socket.io-client
