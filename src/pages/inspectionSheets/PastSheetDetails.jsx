@@ -12,7 +12,7 @@ const PastSheetDetails = () => {
 
   const { data, isLoading } = usePastDetailsSupportedAgentDashboardApiQuery(parseInt(id));
   const pastDetailsData = data?.data
-
+  console.log(pastDetailsData)
 
 
   useEffect(() => {
@@ -25,7 +25,8 @@ const PastSheetDetails = () => {
         problem: pastDetailsData?.ticket?.problem,
         technician: pastDetailsData?.technician?.name,
         comment: pastDetailsData?.support_agent_comment,
-        status: pastDetailsData?.status
+        status: pastDetailsData?.status,
+        location_employee_signature: pastDetailsData?.location_employee_signature,
       })
     }
   }, [pastDetailsData, formOne])
@@ -142,7 +143,8 @@ const PastSheetDetails = () => {
             />
           </Form.Item>
         </div>
-        <div className="grid grid-cols-1 gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Form.Item
             label="Status"
             name="status"
@@ -152,6 +154,18 @@ const PastSheetDetails = () => {
               placeholder="New"
             />
           </Form.Item>
+          {
+            pastDetailsData?.location_employee_signature && <Form.Item
+              label="Signature of location employee"
+              name="location_employee_signature"
+            >
+              <Input
+                style={{ width: "100%", height: "44px" }}
+                placeholder="New"
+              />
+            </Form.Item>
+          }
+
         </div>
         {/* Submit Button */}
       </Form>
