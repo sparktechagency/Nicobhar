@@ -7,7 +7,7 @@ import {
   useUpdateUserMutation,
 } from "../../redux/features/providers/providersApi";
 
-const OrganizationModal = ({ isOpen, onClose, type, org }) => {
+const UserModal = ({ isOpen, onClose, type, org, role }) => {
   const [form] = Form.useForm();
   const [documentFileList, setDocumentFileList] = useState([]);
   const [logoFile, setLogoFile] = useState(null);
@@ -20,9 +20,8 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
   useEffect(() => {
     if (isOpen && type === "edit" && org) {
       form.setFieldsValue({
-        organizationId: org?.organization?.id,
-        organizationName: org?.name,
-        organizationOwner: org.name,
+        organizationId: org?.organization_id,
+        name: org?.name,
         location: org.address,
         email: org.email,
       });
@@ -104,10 +103,10 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
       const formData = new FormData();
 
       // Common fields
-      formData.append("name", values.organizationName);
+      formData.append("name", values.name);
       formData.append("address", values.location);
       formData.append("email", values.email);
-      formData.append("role", "organization");
+      formData.append("role", role);
 
       if (values.password) {
         formData.append("password", values.password);
@@ -177,7 +176,7 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
       <div className="p-6 bg-white rounded-lg">
         {/* Header */}
         <h2 className="text-lg font-semibold text-center">
-          {type === "add" ? "Add" : "Edit"} {org?.role}
+          {type === "add" ? "Add" : "Edit"} {String(role).toLocaleUpperCase()}
         </h2>
 
         <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -219,18 +218,18 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
           {/* Form Fields */}
           <div className="space-y-4">
             <Form.Item
-              label="Organization name:"
-              name="organizationName"
+              label="Name:"
+              name="name"
               rules={[
                 {
                   required: true,
-                  message: "Please input the organization name!",
+                  message: "Please input the name!",
                 },
               ]}
             >
-              <Input placeholder="Organization name" className="h-10" />
+              <Input placeholder="Name" className="h-10" />
             </Form.Item>
-            {type === "edit" && org.role != "organization" && !isLoading && (
+            {!isLoading && (
               <Form.Item
                 label="Organization"
                 name="organizationID" // This name holds the ID when selected
@@ -249,18 +248,6 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
                 />
               </Form.Item>
             )}
-            <Form.Item
-              label="Organization owner:"
-              name="organizationOwner"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input the organization owner!",
-                },
-              ]}
-            >
-              <Input placeholder="Owner name" className="h-10" />
-            </Form.Item>
             <Form.Item
               label="Location:"
               name="location"
@@ -326,4 +313,4 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
   );
 };
 
-export default OrganizationModal;
+export default UserModal;

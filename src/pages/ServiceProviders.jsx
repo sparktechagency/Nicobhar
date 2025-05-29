@@ -5,11 +5,13 @@ import Swal from "sweetalert2";
 import ProvidersProfile from "../components/superadmin/ProvidersProfile";
 import OrganizationModal from "../components/superadmin/OrganizationModal";
 import { useGetProvidersQuery } from "../redux/features/providers/providersApi";
+import UserModal from "../components/superadmin/userModal";
 
 const { Option } = Select;
 
 export default function ServiceProviderTable() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [iseditDetailsModalopen, setiseditdetsilsModalopen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,7 +64,11 @@ export default function ServiceProviderTable() {
 
   const handleEdit = (item) => {
     setSelectedItem(item);
-    setiseditdetsilsModalopen(true);
+    if (activeTab === "organization") {
+      setiseditdetsilsModalopen(true);
+    } else {
+      setIsUserModalOpen(true);
+    }
   };
 
   const handleDelete = (id) => {
@@ -102,7 +108,12 @@ export default function ServiceProviderTable() {
             onClick={() => {
               setEditableTicket(null);
               setModSituation("add");
-              setiseditdetsilsModalopen(true);
+
+              if (activeTab === "organization") {
+                setiseditdetsilsModalopen(true);
+              } else {
+                setIsUserModalOpen(true);
+              }
             }}
           >
             + Add
@@ -305,6 +316,15 @@ export default function ServiceProviderTable() {
         type={modSituation}
         ticket={selectedItem}
         org={editableTicket ? editableTicket : null}
+      />
+
+      <UserModal
+        isOpen={isUserModalOpen}
+        onClose={() => setIsUserModalOpen(false)}
+        type={modSituation}
+        ticket={selectedItem}
+        org={editableTicket ? editableTicket : null}
+        role={activeTab}
       />
     </div>
   );
