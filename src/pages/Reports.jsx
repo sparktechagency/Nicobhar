@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Input, Dropdown, Button, Modal, Form } from "antd";
+import { Input, Dropdown, Button, Modal, Form, message } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import { useGetReportQuery } from "../redux/features/reports/reportsApi";
@@ -24,7 +24,7 @@ export const Reports = () => {
 
   const [form] = Form.useForm(); // Initialize form instance
 
-  const { data, isLoading } = useGetReportQuery(queryParams, {
+  const { data, isLoading, isError, error } = useGetReportQuery(queryParams, {
     skip: !queryParams, // <- only run when queryParams is set
   });
 
@@ -35,8 +35,13 @@ export const Reports = () => {
     }
   }, [data]);
 
+  console.log("response--------", data);
+
   if (isLoading) {
     return <>Loading..</>;
+  }
+  if (isError) {
+    message.error(error?.data?.message || "something went wrong try again ..");
   }
   const onFinish = (values) => {
     try {
@@ -44,6 +49,7 @@ export const Reports = () => {
       if (!key) throw new Error("Unknown type: " + currentType);
 
       const queryObj = { [key]: values.id };
+      console.log("query-----------", queryObj);
       setQueryParams(queryObj); // this triggers the query
 
       console.log("Query Params:", queryObj);

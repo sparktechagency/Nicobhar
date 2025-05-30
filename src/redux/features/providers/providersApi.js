@@ -22,6 +22,7 @@ export const providersApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["prov"],
     }),
     updateUser: builder.mutation({
       query: ({ id, data }) => {

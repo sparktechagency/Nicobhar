@@ -6,6 +6,7 @@ import { CheckCircleFilled, BellFilled, LeftOutlined } from "@ant-design/icons";
 import { Calendar } from "antd"; // Import Calendar component
 import bellicon from "../assets/Animation - 1739102667768.json";
 import Lottie from "lottie-react";
+import { useUpdateMaintainsMutation } from "../redux/features/maintainance/maintainApi";
 const { Title } = Typography;
 
 const MaintenanceSchedule = () => {
@@ -33,6 +34,8 @@ const MaintenanceSchedule = () => {
     next_schedule: null,
   });
 
+  console.log(maintenanceData);
+
   // State for modals
   const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
@@ -45,6 +48,8 @@ const MaintenanceSchedule = () => {
   const [lastMaintenanceDate, setLastMaintenanceDate] = useState(null);
   const [nextScheduleDate, setNextScheduleDate] = useState(null);
   const [reminderCategory, setReminderCategory] = useState("Weekly");
+
+  const [updateMaintains] = useUpdateMaintainsMutation();
 
   const assetOptions = [
     { value: "ViewSonic", label: "ViewSonic" },

@@ -8,7 +8,13 @@ export const ticketApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateMaintains: builder.mutation({
+      query: ({ id }) => ({
+        url: `/update-maintainance/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useGetMaintainsQuery } = ticketApi;
+export const { useGetMaintainsQuery, useUpdateMaintainsMutation } = ticketApi;

@@ -228,9 +228,9 @@ const JobcardModal = ({ isOpen, onClose, ticket }) => {
           </div>
         </div> */}
 
-        <div className="modal-footer">
+        {/* <div className="modal-footer">
           <button className="btn btn-primary">Send</button>
-        </div>
+        </div> */}
       </div>
     </Modal>
   );

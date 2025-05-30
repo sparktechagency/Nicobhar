@@ -1,10 +1,13 @@
 import { useState } from "react";
 
-import { Input, Select, Button, Image } from "antd";
+import { Input, Select, Button, Image, message } from "antd";
 import Swal from "sweetalert2";
 import ProvidersProfile from "../components/superadmin/ProvidersProfile";
 import OrganizationModal from "../components/superadmin/OrganizationModal";
-import { useGetProvidersQuery } from "../redux/features/providers/providersApi";
+import {
+  useDeleteUserMutation,
+  useGetProvidersQuery,
+} from "../redux/features/providers/providersApi";
 import UserModal from "../components/superadmin/userModal";
 
 const { Option } = Select;
@@ -22,11 +25,14 @@ export default function ServiceProviderTable() {
   const [modSituation, setModSituation] = useState("add");
   const [editableTicket, setEditableTicket] = useState(null);
 
+  const [selectDel, setSelectDel] = useState(-1);
+
   const { data, isLoading } = useGetProvidersQuery({
     role: activeTab,
     search: searchQuery,
     sort: sortBy,
   });
+  const [deleteUser] = useDeleteUserMutation();
 
   if (!isLoading) {
     console.log(data.data.data);
@@ -80,10 +86,20 @@ export default function ServiceProviderTable() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // Perform delete action here
-        console.log("Deleted item with ID:", id);
+        try {
+          const res = await deleteUser({ id: id });
+          console.log(res);
+
+          if (!res?.data?.status) {
+            message.error(res?.data?.message);
+            return;
+          }
+          message.success(res?.data?.message);
+        } catch (error) {
+          console.error(error);
+        }
       }
     });
   };
@@ -245,7 +261,10 @@ export default function ServiceProviderTable() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDelete(provider.id)}
+                          onClick={() => {
+                            setSelectDel(provider.id);
+                            handleDelete(provider.id);
+                          }}
                           className="text-red-400 hover:text-red-600"
                         >
                           <svg
