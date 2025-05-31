@@ -1,6 +1,4 @@
 
-
-
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
 import { FileText, Ticket, BriefcaseIcon, ClipboardCheck, ArrowLeft, Printer } from "lucide-react"
 import { Button, Card, DatePicker, Form, Input, Modal, Select } from "antd"
@@ -10,31 +8,6 @@ import { IoPlayBackOutline } from "react-icons/io5"
 import { useGetOrganizationDashboardApiQuery } from "../redux/features/organizationDashboard/dashboardApi"
 
 
-
-const assetData = [
-  { name: "Monitor", value: 1569, color: "#4364E8" },
-  { name: "Keyboard", value: 5245, color: "#FFA500" },
-  { name: "Mouse", value: 2456, color: "#32CD32" },
-  { name: "Headphone", value: 1234, color: "#FF69B4" },
-  { name: "Cable", value: 2569, color: "#D3D3D3" },
-]
-
-const warrantyData = [
-  { name: "Monitor", value: 20, color: "#4364E8", expiry: "Expire in 3 months" },
-  { name: "Keyboard", value: 20, color: "#FFA500", expiry: "Expire in 3 months" },
-  { name: "Mouse", value: 20, color: "#32CD32", expiry: "Expire in 3 months" },
-  { name: "Headphone", value: 20, color: "#FF69B4", expiry: "Expire in 3 months" },
-  { name: "Cable", value: 20, color: "#D3D3D3", expiry: "Expire in 3 months" },
-]
-
-const ticketData = [
-  { name: "New", value: 1569, color: "#4364E8" },
-  { name: "Assigned", value: 5245, color: "#FFA500" },
-  { name: "Awaiting approval", value: 2456, color: "#32CD32" },
-  { name: "On-hold", value: 1234, color: "#FF69B4" },
-  { name: "Completed", value: 2569, color: "#D3D3D3" },
-]
-
 export default function OrganizationDashbord() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isprinmodalopen, setispringmodalopen] = useState(false)
@@ -42,6 +15,42 @@ export default function OrganizationDashbord() {
 
   const { data: organization } = useGetOrganizationDashboardApiQuery()
   const organizationData = organization?.data
+
+
+
+
+
+
+  const assetData = [
+    { name: "Monitor", value: 1569, color: "#4364E8" },
+    { name: "Keyboard", value: 5245, color: "#FFA500" },
+    { name: "Mouse", value: 2456, color: "#32CD32" },
+    { name: "Headphone", value: 1234, color: "#FF69B4" },
+    { name: "Cable", value: 2569, color: "#D3D3D3" },
+  ]
+
+  const warrantyData = [
+    { name: "Monitor", value: 20, color: "#4364E8", expiry: "Expire in 3 months" },
+    { name: "Keyboard", value: 20, color: "#FFA500", expiry: "Expire in 3 months" },
+    { name: "Mouse", value: 20, color: "#32CD32", expiry: "Expire in 3 months" },
+    { name: "Headphone", value: 20, color: "#FF69B4", expiry: "Expire in 3 months" },
+    { name: "Cable", value: 20, color: "#D3D3D3", expiry: "Expire in 3 months" },
+  ]
+
+  const ticketData = [
+    { name: "New", value: 1569, color: "#4364E8" },
+    { name: "Assigned", value: 5245, color: "#FFA500" },
+    { name: "Awaiting approval", value: 2456, color: "#32CD32" },
+    { name: "On-hold", value: 1234, color: "#FF69B4" },
+    { name: "Completed", value: 2569, color: "#D3D3D3" },
+  ]
+
+
+
+
+  
+
+
 
 
 
@@ -180,7 +189,9 @@ export default function OrganizationDashbord() {
           color="bg-blue-500"
           columns={["Asset", "Expiry Date"]}
         />
-        <MetricsCard title="Ticket Status" data={ticketData} color="bg-orange-500" columns={["Tickets", "Quantity"]} />
+        <MetricsCard title="Ticket Status"
+          data={ticketData}
+          color="bg-orange-500" columns={["Tickets", "Quantity"]} />
       </div>
 
 
@@ -391,7 +402,7 @@ export default function OrganizationDashbord() {
 
 function MetricsCard({ title, data, color, columns }) {
   return (
-    <div className="flex items-center gap-4 rounded-lg bg-white shadow-sm">
+    <div className="flex items-center gap-4 rounded-lg bg-white shadow-sm ">
       <div className={`${color} text-white p-6 h-full rounded-lg`}>
         <h1 className="text-[16px] font-semibold p-4">{title}</h1>
       </div>
@@ -400,8 +411,15 @@ function MetricsCard({ title, data, color, columns }) {
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={data} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                  {data.map((entry, index) => (
+                <Pie
+                  data={data}
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                >
+                  {data?.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
