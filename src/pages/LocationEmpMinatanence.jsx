@@ -69,6 +69,8 @@ const MaintenanceSchedule = () => {
       }
       return item;
     });
+    console.log("Record id:", record.key); // Logs the entire record object
+    console.log("Tapped day key:", day); // This logs the key of the day that was tapped
     setMaintenanceData(newData);
   };
 
@@ -172,7 +174,7 @@ const MaintenanceSchedule = () => {
         width={800}
       >
         <div className="space-y-4 ">
-          <h2 className="text-2xl font-bold text-gray-800 bg-secondary p-4 text-white absolute top-0 left-0 rounded-t-lg w-full text-center">
+          <h2 className="text-2xl font-bold text-gray-800 bg-secondary p-4 absolute top-0 left-0 rounded-t-lg w-full text-center">
             Set a annual reminder
           </h2>
           <div className="">

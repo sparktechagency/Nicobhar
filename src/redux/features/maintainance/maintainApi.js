@@ -14,6 +14,13 @@ export const ticketApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    updateDay: builder.mutation({
+      query: (data) => ({
+        url: `/update-maintainance-day`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
