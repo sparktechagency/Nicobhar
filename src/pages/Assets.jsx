@@ -65,10 +65,10 @@ const AssetManagement = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 rounded-md bg-[#326280] px-4 py-2 text-white">
+          {/* <button className="flex items-center gap-2 rounded-md bg-[#326280] px-4 py-2 text-white">
             <Import className="h-4 w-4" />
             Import
-          </button>
+          </button> */}
         </div>
       </div>
 
