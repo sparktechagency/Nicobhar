@@ -7,14 +7,12 @@ import ThirdpartySidebar from "../components/LayoutsComponents/ThirdpartySidebar
 import { useSelector } from "react-redux";
 
 
-
 const { Content } = Layout;
 
 
 const ThirdpartyLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
         const user = useSelector((state) => state.auth.user);
-
 
     if (!user) {
         return <Navigate to="/login" />;

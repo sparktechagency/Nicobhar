@@ -37,7 +37,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
             <label>Asset</label>
             <div className="input-with-copy">
               <Input
-                value={ticket?.asset.product}
+                value={ticket?.asset?.product}
                 readOnly
                 className="gray-bg"
               />
@@ -96,9 +96,9 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-outline">
+          {/* <button className="btn btn-outline">
             Send to Third-party Providers
-          </button>
+          </button> */}
           <button
             onClick={() => {
               localStorage.setItem("ticket_insp_id", ticket?.id);

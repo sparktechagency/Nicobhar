@@ -7,8 +7,6 @@ import TextArea from "antd/es/input/TextArea"
 const InspactionModal = ({ isOpen, onClose, ticket }) => {
   return (
     <Modal
-
-
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -18,7 +16,7 @@ const InspactionModal = ({ isOpen, onClose, ticket }) => {
       title={
         <div className="modal-header text-center w-full">
           <span className="status-badge">NEW</span>
-          <span className="header-title text-white flex  text-white text-[20px] font-normal">Inspection sheet of ViewSonic (HFGS647HNSJU)</span>
+          <span className="header-title flex  text-white text-[20px] font-normal">Inspection sheet of ViewSonic (HFGS647HNSJU)</span>
         </div>
       }
     >

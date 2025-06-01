@@ -1,8 +1,10 @@
 import { Modal, Input } from "antd";
 import { CopyOutlined, CloseOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import { useNavigate } from "react-router-dom";
 
 const MaintenceModal = ({ isOpen, onClose, ticket }) => {
+  const navig = useNavigate();
   console.log(ticket);
 
   return (
@@ -95,7 +97,14 @@ const MaintenceModal = ({ isOpen, onClose, ticket }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-primary">Contact with Technician</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              navig("/chats");
+            }}
+          >
+            Contact with Technician
+          </button>
         </div>
       </div>
     </Modal>

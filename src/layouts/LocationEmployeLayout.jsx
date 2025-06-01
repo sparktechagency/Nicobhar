@@ -6,14 +6,12 @@ import LocationEmployeSidebar from "../components/LayoutsComponents/LocationEmpl
 import { useSelector } from "react-redux";
 
 
-
 const { Content } = Layout;
 
 
 const LocationEmployeLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const user = useSelector((state) => state.auth.user);
-
 
     if (!user) {
         return <Navigate to="/login" />;
