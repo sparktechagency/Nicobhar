@@ -217,8 +217,11 @@ const SupportAgentInspaction = () => {
 
 
                     <Select defaultValue="Filter By Status" onChange={(value) => setSheetStatus(value)} className="location-select">
-                        <Select.Option value="Unassigned">Unassigned</Select.Option>
+                        <Select.Option value="New">New</Select.Option>
                         <Select.Option value="In-progress">In-progress</Select.Option>
+                        <Select.Option value="Contract with user">Contract with user</Select.Option>
+                        <Select.Option value="View the problem">View the problem</Select.Option>
+                        <Select.Option value="Solve the problem">Solve the problem</Select.Option>
                         <Select.Option value="Completed">Completed</Select.Option>
                     </Select>
                 </div>

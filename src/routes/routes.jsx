@@ -129,7 +129,7 @@ const router = createBrowserRouter([
       { path: "tickets-activity", element: <TicketsActivity /> },
       { path: "inspections-activity", element: <InspactionAcvity /> },
       { path: "jobcards-overview", element: <JobCardsOverview /> },
-      { path: "create-inspection", element: <CreateInspectionPage /> },
+      { path: "create-inspection/:id", element: <CreateInspectionPage /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
       { path: 'notification', element: <NotificationsPage /> },

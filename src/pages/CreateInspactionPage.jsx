@@ -7,8 +7,9 @@ const { TextArea } = Input;
 const CreateInspactionPage = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams();
+  const convertId = parseInt(id)
 
-  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery();
+  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery(convertId);
   const newDetailsData = data?.data;
 
   useEffect(() => {
@@ -111,7 +112,7 @@ const CreateInspactionPage = () => {
           <Form.Item
             label="Comment"
             name="comment"
-            // initialValue={detail?.user_comment}
+          // initialValue={detail?.user_comment}
           >
             <Input
               style={{ width: "100%", height: "44px" }}
