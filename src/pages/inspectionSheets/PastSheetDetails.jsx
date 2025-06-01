@@ -12,7 +12,7 @@ const PastSheetDetails = () => {
 
   const { data, isLoading } = usePastDetailsSupportedAgentDashboardApiQuery(parseInt(id));
   const pastDetailsData = data?.data
-  console.log(pastDetailsData)
+  console.log(pastDetailsData?.image.map(item => console.log(item)))
 
 
   useEffect(() => {
@@ -116,7 +116,88 @@ const PastSheetDetails = () => {
           />
         </Form.Item>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        {
+          pastDetailsData?.video?.length > 0 && pastDetailsData?.image?.length > 0 && <div className="flex flex-col gap-8">
+            <div className="w-full border rounded-md">
+              {
+                pastDetailsData?.image?.length > 0 && pastDetailsData?.image?.length < 2 && <div className=" p-2 flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    {
+                      pastDetailsData?.image.map((item, index) => {
+                        return (
+                          <div key={index} className="rounded-lg">
+                            <img src={item} alt="" className="w-[251px] h-[200px] object-cover rounded-md" />
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              }
+
+              {/*  image lenght gater then two */}
+              {
+                pastDetailsData?.image?.length >= 2 && <div className=" p-2 flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    {
+                      pastDetailsData?.image.map((item, index) => {
+                        return (
+                          <div key={index} className="rounded-lg">
+                            <img src={item} alt="" className="w-[251px] h-[200px] object-cover rounded-md" />
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+
+            {/* video */}
+            <div className="w-full border rounded-md">
+              {
+                pastDetailsData?.video?.length > 0 && pastDetailsData?.video?.length < 2 && <div className="p-2 flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    {
+                      pastDetailsData?.video.map((vid, index) => {
+                        return (
+                          <div key={index} className="rounded-lg">
+                            <video width="303" height="400" controls>
+                              <source src={vid} type="video/mp4" />
+                            </video>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              }
+
+              {
+                pastDetailsData?.video?.length >= 2 && <div className="p-2 flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    {
+                      pastDetailsData?.video.map((vid, index) => {
+                        return (
+                          <div key={index} className="rounded-lg">
+                            <video width="303" height="400" controls>
+                              <source src={vid} type="video/mp4" />
+                            </video>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
           {/* Assign Technician */}
           <Form.Item
             label="Assign Technician"
