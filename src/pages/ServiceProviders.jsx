@@ -35,7 +35,7 @@ export default function ServiceProviderTable() {
   const [deleteUser] = useDeleteUserMutation();
 
   if (!isLoading) {
-    console.log(data.data.data);
+    console.log(data?.data?.data);
   }
 
   // if(isLoading)
