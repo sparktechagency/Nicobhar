@@ -8,12 +8,14 @@ import { ChatInput } from "../components/superadmin/chat/ChatInput"
 import { ChatHeader } from "../components/superadmin/chat/Chat-header"
 import { TiPlusOutline } from "react-icons/ti"
 import { ChatList } from "../components/superadmin/chat/ChatList"
+import { useGetAdminProfileQuery } from "../redux/features/adminProfile/adminProfileApi"
+import { useGetSearchNewUserQuery } from "../redux/features/message/messageDashboardApi"
 
 const MOCK_USERS = [
   {
     id: "1",
     name: "Liam O'Sullivan",
-    avatar:'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
+    avatar: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
     role: "Buyer",
     lastMessage: "We gathered yesterday.",
     lastMessageTime: "10:45 AM",
@@ -21,14 +23,14 @@ const MOCK_USERS = [
   {
     id: "2",
     name: "Aisha Patel",
-    avatar:'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
+    avatar: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
     lastMessage: "We convened yesterday.",
     lastMessageTime: "10:45 AM",
   },
   {
     id: "3",
     name: "Liam O'Sullivan",
-    avatar:'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
+    avatar: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
     role: "Buyer",
     lastMessage: "We gathered yesterday.",
     lastMessageTime: "10:45 AM",
@@ -36,12 +38,12 @@ const MOCK_USERS = [
   {
     id: "4",
     name: "Aisha Patel",
-    avatar:'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
+    avatar: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3445.jpg',
     lastMessage: "We convened yesterday.",
     lastMessageTime: "10:45 AM",
   },
 
-  
+
   // Add more mock users as needed
 ]
 
@@ -73,6 +75,21 @@ export default function ChatPage() {
   const [messages, setMessages] = useState(MOCK_MESSAGES)
   const [activeTab, setActiveTab] = useState("organization")
 
+  const { data: loginUser, isLoading } = useGetAdminProfileQuery() // GET LOGEDIN USER
+  const role = loginUser?.data?.role
+
+  const { data: roleBasedData } = useGetSearchNewUserQuery(role)
+  const roleBasedNewUserData = roleBasedData?.data
+
+  console.log(roleBasedNewUserData)
+
+
+
+
+
+
+
+
   const handleSendMessage = (text) => {
     const newMessage = {
       id: Date.now(),
@@ -83,37 +100,186 @@ export default function ChatPage() {
     setMessages([...messages, newMessage])
   }
 
+  if (isLoading) {
+    return <p>Loading...</p>
+  }
   return (
     <div className="flex h-screen bg-white">
       {/* Left Sidebar */}
       <div className="w-80 border-r flex flex-col">
         <div className="p-4 border-b">
           <div className="flex flex-wrap space-x-4 mb-4">
-            <button
-              className={`px-4 py-2 rounded-full ${
-                activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("organization")}
-            >
-              Organization
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full ${
-                activeTab === "Location-employee" ? "bg-red-500 text-white" : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("Location-employee")}
-            >
-              Location employee
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full ${
-                activeTab === "third-party" ? "bg-red-500 text-white" : "text-gray-500"
-              }`}
-              onClick={() => setActiveTab("third-party")}
-            >
-              Third Party
-            </button>
+            {/* super admin access */}
+            {
+              role === "super_admin" && (
+                <div>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("organization")}
+                  >
+                    Organization
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "third-party" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("third-party")}
+                  >
+                    Third Party
+                  </button>
+
+                </div>
+              )
+            }
+
+            {
+              role === "support_agent" && (
+                <div>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("organization")}
+                  >
+                    Organization
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "location_employee" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("location_employee")}
+                  >
+                    Location Employee
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "technician" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("technician")}
+                  >
+                    Technician
+                  </button>
+                </div>
+              )
+            }
+
+            {
+              role === "location_employee" && (
+                <div>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("organization")}
+                  >
+                    Organization
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "suport_agent" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("suport_agent")}
+                  >
+                    Support Agent
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "technician" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("technician")}
+                  >
+                    Technician
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "my-contact" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("my-contact")}
+                  >
+                    My Contact
+                  </button>
+                </div>
+              )
+            }
+
+            {
+              role === "third_party" && (
+                <div>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "organization" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("organization")}
+                  >
+                    Organization
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "suport_agent" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("suport_agent")}
+                  >
+                    Support Agent
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "location_employee" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("location_employee")}
+                  >
+                    Location Employee
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "technician" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("technician")}
+                  >
+                    Technician
+                  </button>
+                </div>
+              )
+            }
+
+            {
+              role === "organization" && (
+                <div>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "super_admin" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("super_admin")}
+                  >
+                    Super Admin
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "suport_agent" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("suport_agent")}
+                  >
+                    Support Agent
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "location_employee" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("location_employee")}
+                  >
+                    Location Employee
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "technician" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("technician")}
+                  >
+                    Technician
+                  </button>
+
+                  <button
+                    className={`px-4 py-2 rounded-full ${activeTab === "third-party" ? "bg-red-500 text-white" : "text-gray-500"
+                      }`}
+                    onClick={() => setActiveTab("third-party")}
+                  >
+                    Third Party
+                  </button>
+                </div>
+              )
+            }
           </div>
+
           <div className="relative">
             <input
               type="text"
@@ -122,20 +288,22 @@ export default function ChatPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full p-2 pr-10 rounded-lg bg-gray-100 focus:outline-none"
             />
-            <button  onClick={() => setIsModalOpen(true)} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white">
+            <button onClick={() => setIsModalOpen(true)} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white">
               <TiPlusOutline className="w-4 h-4" />
             </button>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
+          <h1 className="text-2xl font-bold text-green-700 py-3">Role : {role}</h1>
+          <h1 className="text-2xl font-bold text-green-700 py-3">roleBasedNewUserData : {roleBasedNewUserData?.length}</h1>
           <ChatList
-            users={MOCK_USERS.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))}
+            users={roleBasedNewUserData?.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))}
             selectedUser={selectedUser}
             onSelectUser={setSelectedUser}
           />
         </div>
       </div>
-   
+
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-[650px]">
         <ChatHeader user={selectedUser} />
