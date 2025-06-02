@@ -294,8 +294,6 @@ export default function ChatPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
-          <h1 className="text-2xl font-bold text-green-700 py-3">Role : {role}</h1>
-          <h1 className="text-2xl font-bold text-green-700 py-3">roleBasedNewUserData : {roleBasedNewUserData?.length}</h1>
           <ChatList
             users={roleBasedNewUserData?.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))}
             selectedUser={selectedUser}
