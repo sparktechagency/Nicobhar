@@ -7,6 +7,8 @@ import { Button, Card, DatePicker, Form, Input, Modal, Select } from "antd"
 import { useState } from "react"
 import TextArea from "antd/es/input/TextArea"
 import { IoPlayBackOutline } from "react-icons/io5"
+import { useNavigate } from "react-router-dom"
+import { useGetAdminProfileQuery } from "../redux/features/adminProfile/adminProfileApi"
 
 const overviewData = [
   {
@@ -82,8 +84,9 @@ const ticketData = [
 ]
 
 export default function OrganizationDashbord() {
-
-
+  const navigate = useNavigate()
+  const { data } = useGetAdminProfileQuery()
+  const loginUser = data?.data
 
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -91,7 +94,7 @@ export default function OrganizationDashbord() {
   const [form] = Form.useForm()
 
   const showModal = () => {
-    setIsModalOpen(true)
+    navigate('/organization/jobcards')
   }
 
   const handleCancel = () => {
@@ -353,7 +356,7 @@ export default function OrganizationDashbord() {
           </div>
 
           <div className="flex items-center justify-center">
-            <Button  onClick={handlePrint}   style={{backgroundColor: "#ED1C24",color:"white"}} className="w-fit h-[44px] text-[18px] font-semibold text-white mt-4  bg-[#ED1C24] hover:bg-[#ED1C24]">
+            <Button onClick={handlePrint} style={{ backgroundColor: "#ED1C24", color: "white" }} className="w-fit h-[44px] text-[18px] font-semibold text-white mt-4  bg-[#ED1C24] hover:bg-[#ED1C24]">
 
               Print Report
               <svg width="28" height="25" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -9,7 +9,7 @@ const AssetManagement = () => {
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const user = useSelector((state) => state?.auth?.user);
-  console.log(user);
+
   const { data, isLoading } = useGetAssestlistQuery({
     page: currentPage,
     search: searchQuery,
