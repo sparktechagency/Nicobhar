@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 const { TextArea } = Input;
 
-const PastSheetDetails = () => {
+const SuperAdminPastInspectDetails = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams()
 
@@ -254,4 +254,4 @@ const PastSheetDetails = () => {
   )
 }
 
-export default PastSheetDetails
+export default SuperAdminPastInspectDetails

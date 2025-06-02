@@ -1,33 +1,39 @@
+
 import { Button, Input, Form } from "antd";
+
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useOpenDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const ThirdpartyOpenInspectDetails = () => {
   const [formOne] = Form.useForm();
-  const { id } = useParams();
-  const convertId = parseInt(id)
+  const { id } = useParams()
 
-  const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery(convertId);
-  const newDetailsData = data?.data;
+
+  const { data, isLoading } = useOpenDetailsSupportedAgentDashboardApiQuery(parseInt(id));
+  const openDetailsData = data?.data
+
+
 
   useEffect(() => {
-    if (newDetailsData) {
+    if (openDetailsData) {
       formOne.setFieldsValue({
-        asset: newDetailsData?.ticket?.asset?.product,
-        serialNumber: newDetailsData?.ticket?.asset?.serial_number,
-        organization: newDetailsData?.ticket?.asset?.organization?.name,
-        location: newDetailsData?.ticket?.user?.address,
-        problem: newDetailsData?.ticket?.problem,
-        technician: newDetailsData?.technician?.name,
-        comment: newDetailsData?.support_agent_comment,
-        status: newDetailsData?.status,
-      });
+        asset: openDetailsData?.ticket?.asset?.product,
+        serialNumber: openDetailsData?.ticket?.asset?.serial_number,
+        organization: openDetailsData?.ticket?.asset?.organization?.name,
+        location: openDetailsData?.ticket?.user?.address,
+        problem: openDetailsData?.ticket?.problem,
+        technician: openDetailsData?.technician?.name,
+        comment: openDetailsData?.support_agent_comment,
+        status: openDetailsData?.status
+      })
     }
-  }, [newDetailsData, formOne]);
+  }, [openDetailsData, formOne])
 
-  if (isLoading) return <p>Loading....</p>;
+
+  if (isLoading) return <p>Loading....</p>
   return (
     <div className=" p-6">
       {/* Back Button */}
@@ -62,9 +68,9 @@ const CreateInspactionPage = () => {
         <p className="text-[20px] text-primary font-semibold ">
           Inspection sheet of
           <span className="text-secondary font-semibold px-2">
-            {newDetailsData?.ticket?.asset?.product}
+            {openDetailsData?.ticket?.asset?.product}
           </span>
-          {newDetailsData?.ticket?.asset?.serial_number}
+          {(openDetailsData?.ticket?.asset?.serial_number)}
         </p>
       </div>
 
@@ -72,34 +78,52 @@ const CreateInspactionPage = () => {
       <Form form={formOne} layout="vertical">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
-          <Form.Item label="Asset" name="asset">
+          <Form.Item
+            label="Asset"
+            name="asset"
+          >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
 
           {/* Right Column */}
-          <Form.Item label="Serial Number" name="serialNumber">
+          <Form.Item
+            label="Serial Number"
+            name="serialNumber"
+          >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
 
           {/* Organization */}
-          <Form.Item label="Organization" name="organization">
+          <Form.Item
+            label="Organization"
+            name="organization"
+          >
             <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
 
           {/* Location */}
-          <Form.Item label="Location" name="location">
+          <Form.Item
+            label="Location"
+            name="location"
+          >
             <Input style={{ width: "100%", height: "44px" }} />
           </Form.Item>
         </div>
 
         {/* Problem */}
         <Form.Item label="Problem" name="problem" className="mb-6">
-          <TextArea rows={6} placeholder="Describe the problem here..." />
+          <TextArea
+            rows={6}
+            placeholder="Describe the problem here..."
+          />
         </Form.Item>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Assign Technician */}
-          <Form.Item label="Assign Technician" name="technician">
+          <Form.Item
+            label="Assign Technician"
+            name="technician"
+          >
             <Input
               style={{ width: "100%", height: "44px" }}
               showSearch
@@ -122,7 +146,10 @@ const CreateInspactionPage = () => {
           </Form.Item>
         </div>
         <div className="grid grid-cols-1 gap-6">
-          <Form.Item label="Status" name="status">
+          <Form.Item
+            label="Status"
+            name="status"
+          >
             <Input
               style={{ width: "100%", height: "44px" }}
               placeholder="New"
@@ -132,7 +159,7 @@ const CreateInspactionPage = () => {
         {/* Submit Button */}
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateInspactionPage;
+export default ThirdpartyOpenInspectDetails

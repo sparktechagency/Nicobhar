@@ -23,10 +23,10 @@ const SupportAgentInspaction = () => {
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('New Sheets');
     const [currentPage, setCurrentPage] = useState(1);
-    const [perPage, setPerPage] = useState(8);
+    const [perPage, setPerPage] = useState(6);
 
     const tabTitles = ['New Sheets', 'Open Sheets', 'Past Sheets'];
-    const [activeTabKey, setActiveTabKey] = useState('0');
+    const [activeTabKey, setActiveTabKey] = useState('New Sheets');
     const [searchValue, setSearchValue] = useState('');
     const [sheetStatus, setSheetStatus] = useState("");
 
@@ -80,8 +80,9 @@ const SupportAgentInspaction = () => {
 
 
     const handleNavigate = (record) => {
+        console.log(activeTabKey)
         if (activeTabKey === 'New Sheets') {
-            return navigate('/support-agent/create-inspection')
+            return navigate(`/support-agent/create-inspection/${record?.id}`)
         }
         else if (activeTabKey === 'Open Sheets') {
             return navigate(`/support-agent/open-sheet-details/${record?.id}`)
@@ -155,10 +156,6 @@ const SupportAgentInspaction = () => {
                 <div className="technician flex items-center gap-2">
                     <div className="image h-[40px] w-[40px] rounded-full ">
                         <img className="w-[40px] h-[40px] rounded-full" src={record?.technician?.image}
-                            onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/404.jpg";
-                            }} alt="technician"
                         />
                     </div>
                     <div className="name">
@@ -189,7 +186,7 @@ const SupportAgentInspaction = () => {
 
     useEffect(() => {
         refetch(); // Refetch the data when searchText, currentPage, or perPage changes
-    }, [searchValue, sheetStatus, activeTabKey, perPage, currentPage, refetch]);
+    }, [searchValue, sheetStatus, activeTabKey, perPage, currentPage,setCurrentPage, refetch]);
 
 
     const toggleSelectTicket = (key) => {
@@ -197,6 +194,8 @@ const SupportAgentInspaction = () => {
             prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
         );
     };
+
+    const totalCount = inspectionData?.total || inspectionData?.data?.total || 0;
 
     return (
         <div className="tickets-page relative p-4">
@@ -214,8 +213,11 @@ const SupportAgentInspaction = () => {
 
 
                     <Select defaultValue="Filter By Status" onChange={(value) => setSheetStatus(value)} className="location-select">
-                        <Select.Option value="Unassigned">Unassigned</Select.Option>
+                        <Select.Option value="New">New</Select.Option>
                         <Select.Option value="In-progress">In-progress</Select.Option>
+                        <Select.Option value="Contract with user">Contract with user</Select.Option>
+                        <Select.Option value="View the problem">View the problem</Select.Option>
+                        <Select.Option value="Solve the problem">Solve the problem</Select.Option>
                         <Select.Option value="Completed">Completed</Select.Option>
                     </Select>
                 </div>
@@ -260,7 +262,7 @@ const SupportAgentInspaction = () => {
                 <Pagination
                     current={currentPage}
                     pageSize={perPage}
-                    total={allInspectionSheet?.data?.total || 0}
+                    total={totalCount}
                     onChange={(page, pageSize) => {
                         setCurrentPage(page)
                         setPerPage(pageSize)

@@ -1,16 +1,18 @@
 import { Button, Input, Form } from "antd";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useNewDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const SuperAdminCreateInspectDetails = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams();
   const convertId = parseInt(id)
 
   const { data, isLoading } = useNewDetailsSupportedAgentDashboardApiQuery(convertId);
   const newDetailsData = data?.data;
+
 
   useEffect(() => {
     if (newDetailsData) {
@@ -58,7 +60,8 @@ const CreateInspactionPage = () => {
       </Button>
 
       {/* Header */}
-      <div className="text-center mb-8">
+      <div className="flex items-center justify-center text-center space-x-3 mb-8">
+        <p className="text-[20px] text-primary font-semibold">{newDetailsData?.status}</p>
         <p className="text-[20px] text-primary font-semibold ">
           Inspection sheet of
           <span className="text-secondary font-semibold px-2">
@@ -135,4 +138,4 @@ const CreateInspactionPage = () => {
   );
 };
 
-export default CreateInspactionPage;
+export default SuperAdminCreateInspectDetails;

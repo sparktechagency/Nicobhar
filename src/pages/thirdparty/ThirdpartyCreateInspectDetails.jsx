@@ -1,10 +1,13 @@
+
 import { Button, Input, Form } from "antd";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useNewDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+
+
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const ThirdpartyCreateInspectDetails = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams();
   const convertId = parseInt(id)
@@ -135,4 +138,4 @@ const CreateInspactionPage = () => {
   );
 };
 
-export default CreateInspactionPage;
+export default ThirdpartyCreateInspectDetails;

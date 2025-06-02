@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 const ChangePassword = () => {
   const [formOne] = useForm();
   const [formTwo] = useForm();
-  const [imageUrl, setImageUrl] = useState(profileIMg); 
+  const [imageUrl, setImageUrl] = useState(null); 
 
   const [updateAdminProfile] = useUpdateAdminProfileMutation();
   const [updatePasswordAdminProfile] = useUpdatePasswordAdminProfileMutation();
@@ -252,9 +252,9 @@ const ChangePassword = () => {
         </div>
 
 
-        <h3 className="font-roboto font-medium text-[30px]">{profileData?.name || 'John Doe'}</h3>
+        <h3 className="font-roboto font-medium text-[30px]">{profileData?.name}</h3>
         <p className="text-[#B1A8A8] font-roboto font-medium text-xl">
-          {profileData?.email || 'example@gmail.com'}
+          {profileData?.email}
         </p>
       </div>
 

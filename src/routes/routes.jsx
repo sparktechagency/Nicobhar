@@ -56,6 +56,18 @@ import SupportAgentTicket from "../pages/SupportAgentTicket";
 import Unauthorized from "../components/shared/Unauthorized";
 import OpenSheetDetails from "../pages/inspectionSheets/OpenSheetDetails";
 import PastSheetDetails from "../pages/inspectionSheets/PastSheetDetails";
+import SuperAdminCreateInspectDetails from "../pages/superAdminDetails/SuperAdminCreateInspectDetails";
+import SuperAdminOpenInspectDetails from "../pages/superAdminDetails/SuperAdminOpenInspectDetails";
+import SuperAdminPastInspectDetails from "../pages/superAdminDetails/SuperAdminPastInspectDetails";
+import LocationEmployeeCreateInspectDetails from "../pages/locationEmployee/LocationEmployeeCreateInspectDetails";
+import LocationEmployeeOpenInspectDetails from "../pages/locationEmployee/LocationEmployeeOpenInspectDetails";
+import LocationEmployeePastInspectDetails from "../pages/locationEmployee/LocationEmployeePastInspectDetails";
+import ThirdpartyCreateInspectDetails from "../pages/thirdparty/ThirdpartyCreateInspectDetails";
+import ThirdpartyOpenInspectDetails from "../pages/thirdparty/ThirdpartyOpenInspectDetails";
+import ThirdpartyPastInspectDetails from "../pages/thirdparty/ThirdpartyPastInspectDetails";
+import OrganizationNewDetails from "../pages/organizationDetails/OrganizationNewDetails";
+import OrganizationOpenDetails from "../pages/organizationDetails/OrganizationOpenDetails";
+import OrganizationPastDetails from "../pages/organizationDetails/OrganizationPastDetails";
 
 
 // Define User Role (Replace with Actual Authentication Logic)
@@ -84,15 +96,15 @@ const router = createBrowserRouter([
       { path: "user-management", element: <UserManagement /> },
       { path: 'notification', element: <NotificationsPage /> },
       { path: "tickets/create-inspection", element: <CreateInspectionPage /> },
+      { path: "create-inspection/:id", element: <SuperAdminCreateInspectDetails/> },
+      { path: "open-sheet-details/:id", element: <SuperAdminOpenInspectDetails/> },
+      { path: "past-sheet-details/:id", element: <SuperAdminPastInspectDetails/> },
       { path: "aboutus", element: <AboutUs /> },
       { path: "faq", element: <FAQ /> },
     ],
   },
 
   // SUPPORT AGENT-DASHBOARD ROUTES 
-
-
-
   {
     path: "/support-agent",
     element: <Supportagent />,
@@ -108,7 +120,7 @@ const router = createBrowserRouter([
       { path: "reports", element: <Reports /> },
       { path: "jobcards", element: <JobCards /> },
       { path: 'notification', element: <NotificationsPage /> },
-      { path: "create-inspection", element: <CreateInspectionPage /> },
+      { path: "create-inspection/:id", element: <CreateInspectionPage /> }, 
       { path: 'open-sheet-details/:id', element: <OpenSheetDetails /> },
       { path: 'past-sheet-details/:id', element: <PastSheetDetails /> },
     ],
@@ -129,7 +141,10 @@ const router = createBrowserRouter([
       { path: "tickets-activity", element: <TicketsActivity /> },
       { path: "inspections-activity", element: <InspactionAcvity /> },
       { path: "jobcards-overview", element: <JobCardsOverview /> },
-      { path: "create-inspection", element: <CreateInspectionPage /> },
+      // { path: "create-inspection/:id", element: <CreateInspectionPage /> },
+      { path: "create-inspection/:id", element: <LocationEmployeeCreateInspectDetails /> },
+      { path: "open-sheet-details/:id", element: <LocationEmployeeOpenInspectDetails /> },
+      { path: "past-sheet-details/:id", element: <LocationEmployeePastInspectDetails /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
       { path: 'notification', element: <NotificationsPage /> },
@@ -146,6 +161,9 @@ const router = createBrowserRouter([
       { path: 'notification', element: <NotificationsPage /> },
       { path: "chats", element: <Chats /> },
       { path: "inspectionsheets", element: <ThirdpartyInspaction /> },
+      { path: "create-inspection/:id", element: <ThirdpartyCreateInspectDetails /> },
+      { path: "open-sheet-details/:id", element: <ThirdpartyOpenInspectDetails /> },
+      { path: "past-sheet-details/:id", element: <ThirdpartyPastInspectDetails /> },
       { path: "jobcards", element: <ThirdPartyJobcards /> },
     ]
   },
@@ -165,6 +183,9 @@ const router = createBrowserRouter([
       { path: "service-providers", element: <OrgserviceProvider /> },
       { path: "jobcards", element: <OrganizationJobcarda /> },
       { path: "jobcards/jobcards-overview", element: <OrganizationJobCardsOverview /> },
+      { path: "create-inspection/:id", element: <OrganizationNewDetails /> },
+      { path: "open-sheet-details/:id", element: <OrganizationOpenDetails /> },
+      { path: "past-sheet-details/:id", element: <OrganizationPastDetails /> },
       { path: "maintenance", element: <OrganizMaintenance /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "notification", element: <NotificationsPage /> },
@@ -173,6 +194,7 @@ const router = createBrowserRouter([
   },
 
   {
+
     path: "/",
     element: <AuthLayout />,
     children: [

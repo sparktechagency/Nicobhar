@@ -1,11 +1,13 @@
 
 import { Button, Input, Form } from "antd";
-import { usePastDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { usePastDetailsSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+
 const { TextArea } = Input;
 
-const PastSheetDetails = () => {
+const OrganizationPastDetails = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams()
 
@@ -254,4 +256,4 @@ const PastSheetDetails = () => {
   )
 }
 
-export default PastSheetDetails
+export default OrganizationPastDetails
