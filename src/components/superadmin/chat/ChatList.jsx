@@ -47,7 +47,6 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
             }`}
         >
           <div className="relative w-10 h-10">
-            {/* <img preview={false} src={user.avatar || "/placeholder.svg"} alt={user.name} className="rounded-full" fill /> */}
             <img src={user?.image} alt="" className="w-10 h-10 rounded-full" />
           </div>
           <div className="flex-1 text-left">

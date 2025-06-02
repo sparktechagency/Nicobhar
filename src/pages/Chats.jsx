@@ -81,7 +81,7 @@ export default function ChatPage() {
   const { data: roleBasedData } = useGetSearchNewUserQuery(role)
   const roleBasedNewUserData = roleBasedData?.data
 
-  console.log(roleBasedNewUserData)
+
 
 
 

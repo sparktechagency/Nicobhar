@@ -1,13 +1,14 @@
 
 
 const ChatHeader = ({ user, isOnline, isTyping }) => {
+    console.log(user)
     return (
         <div>
             <div className="p-4 border-b flex items-center">
                 <div className="relative">
                     <img
-                        src={user.avatar}
-                        alt={user.name}
+                        src={user?.image}
+                        alt={user?.name}
                         className="w-10 h-10 rounded-full"
                     />
                     {isOnline && (
@@ -15,7 +16,7 @@ const ChatHeader = ({ user, isOnline, isTyping }) => {
                     )}
                 </div>
                 <div className="ml-3">
-                    <h3 className="font-semibold">{user.name}</h3>
+                    <h3 className="font-semibold">{user?.name}</h3>
                     <p className="text-xs text-gray-500">
                         {isTyping ? "Typing..." : isOnline ? "Online" : "Offline"}
                     </p>
