@@ -9,7 +9,7 @@ After cloning the repository and installing dependencies, follow the steps below
 
 ```js
 server: {
-    host: "YOUR_LOCAL_IP_ADDRESS", // Replace with your IP address
+    host: "YOUR_LOCAL_IP_ADDRESS", /// Replace with your IP address
     port: "3000",
 }
 
