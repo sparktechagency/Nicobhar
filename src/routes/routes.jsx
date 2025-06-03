@@ -68,13 +68,12 @@ import ThirdpartyPastInspectDetails from "../pages/thirdparty/ThirdpartyPastInsp
 import OrganizationNewDetails from "../pages/organizationDetails/OrganizationNewDetails";
 import OrganizationOpenDetails from "../pages/organizationDetails/OrganizationOpenDetails";
 import OrganizationPastDetails from "../pages/organizationDetails/OrganizationPastDetails";
-
+import SuppCreateInspectionPage from "../pages/suppAgentCreateInsp";
 
 // Define User Role (Replace with Actual Authentication Logic)
 
 const router = createBrowserRouter([
-
-  // SUPER ADMIN-DASHBOARD ROUTES 
+  // SUPER ADMIN-DASHBOARD ROUTES
   {
     path: "",
     element: <SuperAdmin />,
@@ -94,17 +93,26 @@ const router = createBrowserRouter([
       { path: "chats", element: <Chats /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "user-management", element: <UserManagement /> },
-      { path: 'notification', element: <NotificationsPage /> },
+      { path: "notification", element: <NotificationsPage /> },
       { path: "tickets/create-inspection", element: <CreateInspectionPage /> },
-      { path: "create-inspection/:id", element: <SuperAdminCreateInspectDetails/> },
-      { path: "open-sheet-details/:id", element: <SuperAdminOpenInspectDetails/> },
-      { path: "past-sheet-details/:id", element: <SuperAdminPastInspectDetails/> },
+      {
+        path: "create-inspection/:id",
+        element: <SuperAdminCreateInspectDetails />,
+      },
+      {
+        path: "open-sheet-details/:id",
+        element: <SuperAdminOpenInspectDetails />,
+      },
+      {
+        path: "past-sheet-details/:id",
+        element: <SuperAdminPastInspectDetails />,
+      },
       { path: "aboutus", element: <AboutUs /> },
       { path: "faq", element: <FAQ /> },
     ],
   },
 
-  // SUPPORT AGENT-DASHBOARD ROUTES 
+  // SUPPORT AGENT-DASHBOARD ROUTES
   {
     path: "/support-agent",
     element: <Supportagent />,
@@ -114,15 +122,19 @@ const router = createBrowserRouter([
       { path: "tickets-activity", element: <TicketsActivity /> },
       { path: "inspections-activity", element: <InspactionAcvity /> },
       { path: "jobcards-overview", element: <JobCardsOverview /> },
+      {
+        path: "tickets/create-inspection/:id",
+        element: <SuppCreateInspectionPage />,
+      },
       { path: "inspectionsheets", element: <SupportAgentInspaction /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
       { path: "reports", element: <Reports /> },
       { path: "jobcards", element: <JobCards /> },
-      { path: 'notification', element: <NotificationsPage /> },
-      { path: "create-inspection/:id", element: <CreateInspectionPage /> }, 
-      { path: 'open-sheet-details/:id', element: <OpenSheetDetails /> },
-      { path: 'past-sheet-details/:id', element: <PastSheetDetails /> },
+      { path: "notification", element: <NotificationsPage /> },
+      { path: "create-inspection/:id", element: <CreateInspectionPage /> },
+      { path: "open-sheet-details/:id", element: <OpenSheetDetails /> },
+      { path: "past-sheet-details/:id", element: <PastSheetDetails /> },
     ],
   },
 
@@ -142,12 +154,21 @@ const router = createBrowserRouter([
       { path: "inspections-activity", element: <InspactionAcvity /> },
       { path: "jobcards-overview", element: <JobCardsOverview /> },
       // { path: "create-inspection/:id", element: <CreateInspectionPage /> },
-      { path: "create-inspection/:id", element: <LocationEmployeeCreateInspectDetails /> },
-      { path: "open-sheet-details/:id", element: <LocationEmployeeOpenInspectDetails /> },
-      { path: "past-sheet-details/:id", element: <LocationEmployeePastInspectDetails /> },
+      {
+        path: "create-inspection/:id",
+        element: <LocationEmployeeCreateInspectDetails />,
+      },
+      {
+        path: "open-sheet-details/:id",
+        element: <LocationEmployeeOpenInspectDetails />,
+      },
+      {
+        path: "past-sheet-details/:id",
+        element: <LocationEmployeePastInspectDetails />,
+      },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
-      { path: 'notification', element: <NotificationsPage /> },
+      { path: "notification", element: <NotificationsPage /> },
     ],
   },
   // THIRD PARTY-DASHBOARD ROUTES
@@ -158,14 +179,23 @@ const router = createBrowserRouter([
       { path: "", element: <ThirdPartyTickets /> },
       { path: "service-providers", element: <ThirdPartyServiceProvider /> },
       { path: "profile", element: <AdminProfile /> },
-      { path: 'notification', element: <NotificationsPage /> },
+      { path: "notification", element: <NotificationsPage /> },
       { path: "chats", element: <Chats /> },
       { path: "inspectionsheets", element: <ThirdpartyInspaction /> },
-      { path: "create-inspection/:id", element: <ThirdpartyCreateInspectDetails /> },
-      { path: "open-sheet-details/:id", element: <ThirdpartyOpenInspectDetails /> },
-      { path: "past-sheet-details/:id", element: <ThirdpartyPastInspectDetails /> },
+      {
+        path: "create-inspection/:id",
+        element: <ThirdpartyCreateInspectDetails />,
+      },
+      {
+        path: "open-sheet-details/:id",
+        element: <ThirdpartyOpenInspectDetails />,
+      },
+      {
+        path: "past-sheet-details/:id",
+        element: <ThirdpartyPastInspectDetails />,
+      },
       { path: "jobcards", element: <ThirdPartyJobcards /> },
-    ]
+    ],
   },
 
   // ORGANIZATION ROUTES
@@ -175,14 +205,23 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <OrganizationDashbord /> }, // Default for /organization
       { path: "tickets", element: <OrganizationTickets /> },
-      { path: "tickets/tickets-activity", element: <OrganizationTicketsActivity /> },
+      {
+        path: "tickets/tickets-activity",
+        element: <OrganizationTicketsActivity />,
+      },
       { path: "assets", element: <OrganizationAssets /> },
       { path: "assets/asset-history/:id", element: <AssetHistory /> },
       { path: "inspectionsheets", element: <OrganizInspaction /> },
-      { path: "inspectionsheets/inspections-activity", element: <OrganizaInspactionAcvity /> },
+      {
+        path: "inspectionsheets/inspections-activity",
+        element: <OrganizaInspactionAcvity />,
+      },
       { path: "service-providers", element: <OrgserviceProvider /> },
       { path: "jobcards", element: <OrganizationJobcarda /> },
-      { path: "jobcards/jobcards-overview", element: <OrganizationJobCardsOverview /> },
+      {
+        path: "jobcards/jobcards-overview",
+        element: <OrganizationJobCardsOverview />,
+      },
       { path: "create-inspection/:id", element: <OrganizationNewDetails /> },
       { path: "open-sheet-details/:id", element: <OrganizationOpenDetails /> },
       { path: "past-sheet-details/:id", element: <OrganizationPastDetails /> },
@@ -190,27 +229,25 @@ const router = createBrowserRouter([
       { path: "profile", element: <AdminProfile /> },
       { path: "notification", element: <NotificationsPage /> },
       { path: "chats", element: <Chats /> },
-    ]
+    ],
   },
 
   {
-
     path: "/",
     element: <AuthLayout />,
     children: [
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <Signup /> },
       { path: "/reset-password", element: <ResetPassword /> },
-      { path: '/otp-verification', element: <OtpVerification /> },
-      { path: '/create-new-password', element: <CreateNewPassword /> },
-
-    ]
+      { path: "/otp-verification", element: <OtpVerification /> },
+      { path: "/create-new-password", element: <CreateNewPassword /> },
+    ],
   },
 
   {
     path: "/unauthorized",
     element: <Unauthorized />,
-  }
+  },
 ]);
 
 export default router;

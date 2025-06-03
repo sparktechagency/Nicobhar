@@ -102,7 +102,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
           <button
             onClick={() => {
               localStorage.setItem("ticket_insp_id", ticket?.id);
-              navigate("create-inspection");
+              navigate(`create-inspection/${ticket?.id}`);
             }}
             className="btn btn-primary"
           >

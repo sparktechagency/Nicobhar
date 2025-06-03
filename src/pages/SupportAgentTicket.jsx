@@ -29,6 +29,7 @@ const TicketsPage = () => {
   if (isLoading) {
     return <>loading...</>;
   }
+
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
@@ -191,11 +192,11 @@ const TicketsPage = () => {
         >
           <Option value="New">New</Option>
           <Option value="Assigned">Assigned</Option>
-          {/* <Option value="Inspection sheet">Inspection sheet</Option>
+          <Option value="Inspection sheet">Inspection sheet</Option>
           <Option value="Awaiting purchase order">
             Awaiting purchase order
           </Option>
-          <Option value="Job card created">Job card created</Option> */}
+          <Option value="Job card created">Job card created</Option>
           <Option value="Completed">Completed</Option>
         </Select>
       </div>

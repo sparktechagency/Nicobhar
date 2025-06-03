@@ -1,18 +1,22 @@
-import { Button, Input, Form } from "antd";
+import { Button, Input, Form, Select, message } from "antd";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useNewDetailsSupportedAgentDashboardApiQuery } from "../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
+import { useGetTechnicianQuery } from "../redux/features/maintainance/maintainApi";
+import { useCreateInspectionApiMutation } from "../redux/features/inspection/inspectionApi";
 const { TextArea } = Input;
 
-const CreateInspactionPage = () => {
+const SuppCreateInspectionPage = () => {
   const [formOne] = Form.useForm();
   const { id } = useParams();
   const convertId = parseInt(id);
+  const navig = useNavigate();
 
   const { data, isLoading } =
     useNewDetailsSupportedAgentDashboardApiQuery(convertId);
   const newDetailsData = data?.data;
-
+  const { data: techs } = useGetTechnicianQuery();
+  const [createInsp] = useCreateInspectionApiMutation();
   useEffect(() => {
     if (newDetailsData) {
       formOne.setFieldsValue({
@@ -21,7 +25,6 @@ const CreateInspactionPage = () => {
         organization: newDetailsData?.ticket?.asset?.organization?.name,
         location: newDetailsData?.ticket?.user?.address,
         problem: newDetailsData?.ticket?.problem,
-        technician: newDetailsData?.technician?.name,
         comment: newDetailsData?.support_agent_comment,
         status: newDetailsData?.status,
       });
@@ -29,6 +32,38 @@ const CreateInspactionPage = () => {
   }, [newDetailsData, formOne]);
 
   if (isLoading) return <p>Loading....</p>;
+  if (techs) {
+    console.log(techs.data);
+  }
+  const onFinish = async (values) => {
+    console.log("Success:", values);
+
+    try {
+      // const res = await
+      const finalData = {
+        ticket_id: String(convertId),
+        technician_id: String(values?.technician),
+        support_agent_comment: values?.comment,
+      };
+
+      const res = await createInsp(finalData);
+      console.log(res);
+
+      if (!res?.data?.status) {
+        message.error("Failed to create inspection sheet");
+        return;
+      }
+      message.success("Inspection Sheet created successfully!");
+      navig("/support-agent/inspectionsheets");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <div className=" p-6">
       {/* Back Button */}
@@ -57,20 +92,19 @@ const CreateInspactionPage = () => {
       >
         Back To Sheets
       </Button>
-
       {/* Header */}
       <div className="text-center mb-8">
         <p className="text-[20px] text-primary font-semibold ">
-          Inspection sheet of
-          <span className="text-secondary font-semibold px-2">
-            {newDetailsData?.ticket?.asset?.product}
-          </span>
-          {newDetailsData?.ticket?.asset?.serial_number}
+          Create Inspection Sheet
         </p>
       </div>
-
       {/* Form */}
-      <Form form={formOne} layout="vertical">
+      <Form
+        form={formOne}
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column */}
           <Form.Item label="Asset" name="asset">
@@ -101,11 +135,15 @@ const CreateInspactionPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Assign Technician */}
           <Form.Item label="Assign Technician" name="technician">
-            <Input
+            <Select
               style={{ width: "100%", height: "44px" }}
               showSearch
               placeholder="Search technician"
-              readOnly
+              options={
+                techs
+                  ? techs.data.map((x) => ({ label: x?.name, value: x?.id }))
+                  : []
+              }
             />
           </Form.Item>
 
@@ -118,22 +156,23 @@ const CreateInspactionPage = () => {
             <Input
               style={{ width: "100%", height: "44px" }}
               placeholder="Add your comment"
-              readOnly
-            />
-          </Form.Item>
-        </div>
-        <div className="grid grid-cols-1 gap-6">
-          <Form.Item label="Status" name="status">
-            <Input
-              style={{ width: "100%", height: "44px" }}
-              placeholder="New"
             />
           </Form.Item>
         </div>
         {/* Submit Button */}
+        <Button
+          className="mx-auto block w-1/3"
+          color="danger"
+          type="primary"
+          variant="solid"
+          size="large"
+          htmlType="submit"
+        >
+          Submit
+        </Button>
       </Form>
     </div>
   );
 };
 
-export default CreateInspactionPage;
+export default SuppCreateInspectionPage;

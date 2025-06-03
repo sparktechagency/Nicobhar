@@ -14,7 +14,7 @@ const AboutUs = () => {
     data: aboutUs,
     isLoading,
     refetch,
-  } = useGetSettingQuery({ type: "About Us" });
+  } = useGetSettingQuery({ type: "AboutUs" });
   const [createSetting] = useCreateSettingMutation();
   useEffect(() => {
     if (!isLoading) {
@@ -30,7 +30,7 @@ const AboutUs = () => {
   const handleSave = async () => {
     try {
       const response = await createSetting({
-        type: "About Us",
+        type: "AboutUs",
         description: text,
       });
       console.log(response);
