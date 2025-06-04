@@ -25,7 +25,6 @@ const SuppCreateInspectionPage = () => {
         organization: newDetailsData?.ticket?.asset?.organization?.name,
         location: newDetailsData?.ticket?.user?.address,
         problem: newDetailsData?.ticket?.problem,
-        comment: newDetailsData?.support_agent_comment,
         status: newDetailsData?.status,
       });
     }
@@ -123,7 +122,7 @@ const SuppCreateInspectionPage = () => {
 
           {/* Location */}
           <Form.Item label="Location" name="location">
-            <Input style={{ width: "100%", height: "44px" }} />
+            <Input style={{ width: "100%", height: "44px" }} readOnly />
           </Form.Item>
         </div>
 
