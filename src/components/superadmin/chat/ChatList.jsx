@@ -1,7 +1,6 @@
-import { Image } from "antd";
-
 
 export function ChatList({ users, selectedUser, onSelectUser }) {
+
 
   const formatDate = (dateString) => {
     if (!dateString) return 'Invalid date';
@@ -22,6 +21,7 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
     return `${day} ${month}, ${year}`;
   };
 
+
   const getOnlyTime = (dateString) => {
     if (!dateString) return 'Invalid time';
 
@@ -39,22 +39,27 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
 
   return (
     <div className="flex flex-col space-y-2">
-      {users?.map((user, index) => (
+
+      {users?.map((singleUser, index) => (
         <button
           key={index}
-          onClick={() => onSelectUser(user)}
-          className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${selectedUser?.id === user.id ? "bg-gray-100" : ""
+          onClick={() => onSelectUser(singleUser?.user)}
+          className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${singleUser?.User?.id === singleUser?.user.id ? "bg-gray-100" : ""
             }`}
         >
           <div className="relative w-10 h-10">
-            <img src={user?.image} alt="" className="w-10 h-10 rounded-full" />
+            <img src={singleUser?.user?.image} alt="" className="w-10 h-10 rounded-full" />
           </div>
           <div className="flex-1 text-left">
             <div className="flex justify-between items-center">
-              <h3 className="font-medium">{user.name}</h3>
-              <span className="text-xs text-gray-500">{getOnlyTime(user?.created_at)}</span>
+              <h3 className="font-medium">{singleUser?.user.name}</h3>
+              <span className="text-xs text-gray-500">{getOnlyTime(singleUser?.created_at)}</span>
             </div>
-            <p className="text-sm text-gray-500 truncate">{"lastMessage"}</p>
+            <p className="text-sm text-gray-500">
+              {singleUser?.message?.length > 20
+                ? `${singleUser.message.slice(0, 20)}...`
+                : singleUser?.message}
+            </p>
           </div>
         </button>
       ))}

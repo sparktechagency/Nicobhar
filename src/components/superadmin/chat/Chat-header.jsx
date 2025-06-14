@@ -1,9 +1,3 @@
-import { Image } from "antd"
-
-
-
-
-
 
 
 export function ChatHeader({ user }) {
@@ -12,7 +6,7 @@ export function ChatHeader({ user }) {
   return (
     <div className="flex items-center space-x-3 p-4 border-b">
       <div className="relative w-10 h-10">
-        <Image preview={false} src={user.avatar || "/placeholder.svg"} alt={user.name} className="rounded-full" fill />
+        <img src={user.image || "/placeholder.svg"} alt={user.name} className="w-[40px] h-[40px] rounded-full"  />
       </div>
       <div>
         <h2 className="font-medium">{user.name}</h2>

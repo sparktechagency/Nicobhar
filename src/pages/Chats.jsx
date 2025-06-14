@@ -1,6 +1,6 @@
 
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 import { ChatMessages } from "../components/superadmin/chat/ChatMessages"
@@ -9,7 +9,8 @@ import { ChatHeader } from "../components/superadmin/chat/Chat-header"
 import { TiPlusOutline } from "react-icons/ti"
 import { ChatList } from "../components/superadmin/chat/ChatList"
 import { useGetAdminProfileQuery } from "../redux/features/adminProfile/adminProfileApi"
-import { useGetSearchNewUserQuery } from "../redux/features/message/messageDashboardApi"
+import { useGetChartQuery, useGetMessQuery, useGetSearchNewUserQuery } from "../redux/features/message/messageDashboardApi"
+import { skipToken } from "@reduxjs/toolkit/query"
 
 const MOCK_USERS = [
   {
@@ -69,25 +70,46 @@ const CURRENT_USER = {
   avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCUTe0G9p0yhk8iL7Ji9en6vPqzSyaijLcTQ&s",
 }
 
+
 export default function ChatPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedUser, setSelectedUser] = useState(null)
   const [messages, setMessages] = useState(MOCK_MESSAGES)
-  const [activeTab, setActiveTab] = useState("organization")
+  const [activeTab, setActiveTab] = useState(null)
 
   const { data: loginUser, isLoading } = useGetAdminProfileQuery() // GET LOGEDIN USER
   const role = loginUser?.data?.role
 
-  const { data: roleBasedData } = useGetSearchNewUserQuery(role)
-  const roleBasedNewUserData = roleBasedData?.data
+
+  const { data: chartListData } = useGetChartQuery(activeTab ? { role: activeTab, search: searchQuery || "" } : skipToken)  // GET ROLE BASE USER
+  const allChartList = chartListData?.chat_list
+
+
+  const { data: messageData } = useGetMessQuery(
+    selectedUser?.id ? selectedUser.id : skipToken  // all message data get
+  );
+  const allMessageData = messageData?.data?.data
 
 
 
 
 
-
-
-
+  // active role setup
+  useEffect(() => {
+    if (role) {
+      if (role === "super_admin") {
+        setActiveTab("organization");
+      } else if (role === "support_agent") {
+        setActiveTab("organization");
+      } else if (role === "location_employee") {
+        setActiveTab("organization");
+      } else if (role === "third_party") {
+        setActiveTab("technician");
+      } else if (role === "organization") {
+        setActiveTab("super_admin");
+      }
+    }
+  }, [role]);
 
 
   const handleSendMessage = (text) => {
@@ -294,8 +316,12 @@ export default function ChatPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
+          {/* <ChatList
+            users={allChartList}
+
+          /> */}
           <ChatList
-            users={roleBasedNewUserData?.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))}
+            users={allChartList?.filter((singleUser) => singleUser.user.name.toLowerCase().includes(searchQuery.toLowerCase()))}
             selectedUser={selectedUser}
             onSelectUser={setSelectedUser}
           />
@@ -307,7 +333,7 @@ export default function ChatPage() {
         <ChatHeader user={selectedUser} />
         {selectedUser ? (
           <>
-            <ChatMessages messages={messages} currentUser={CURRENT_USER} selectedUser={selectedUser} />
+            <ChatMessages messages={allMessageData} currentUser={CURRENT_USER} selectedUser={selectedUser} />
             <ChatInput onSendMessage={handleSendMessage} />
           </>
         ) : (
