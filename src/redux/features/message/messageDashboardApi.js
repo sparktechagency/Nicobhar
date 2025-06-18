@@ -1,12 +1,14 @@
 import { baseApi } from "../../api/baseApi";
 
 
+
 export const dashboardMessageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postMess: builder.mutation({
-      query: () => ({
+      query: (sendAbleData) => ({
         url: `/send-message`,
         method: "POST",
+        body:sendAbleData
       }),
       invalidatesTags: ["message"],
     }),

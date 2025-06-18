@@ -60,6 +60,8 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
                 ? `${singleUser.message.slice(0, 20)}...`
                 : singleUser?.message}
             </p>
+            <p>sender_id----- : {singleUser?.sender_id}</p>
+            <p>receiver_id-----: {singleUser?.receiver_id}</p>
           </div>
         </button>
       ))}

@@ -16,14 +16,14 @@ export function ChatInput({ onSendMessage }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-t">
-      <div className="flex items-center space-x-2">
+    <form onSubmit={handleSubmit} className="p-2 border-t">
+      <div className="flex items-center space-x-2 ">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 p-2 rounded-lg bg-gray-100 focus:outline-none"
+          className="flex-1 py-4 px-4 rounded-lg bg-gray-100 focus:outline-none"
         />
         <button type="submit" className="p-2 rounded-lg text-red-500 hover:bg-gray-100 transition-colors">
           <Send className="w-5 h-5" />
