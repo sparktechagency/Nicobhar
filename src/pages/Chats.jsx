@@ -9,16 +9,20 @@ import { useGetAdminProfileQuery } from "../redux/features/adminProfile/adminPro
 import {
   useGetChartQuery,
   useGetMessQuery,
+  useGetSearchNewUserQuery,
   usePostMessMutation,
 } from "../redux/features/message/messageDashboardApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { connectSocket, getSocket } from "../socket/socket";
 import { Modal } from "antd";
 import '../pages/thirdparty/chart.css'
+import { FiSearch } from "react-icons/fi";
+
 
 
 export default function ChatPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryTwo, setSearchQueryTwo] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -41,6 +45,11 @@ export default function ChatPage() {
   const allMessageData = messageData?.data?.data;
 
 
+  const { data: searchUserData } = useGetSearchNewUserQuery({ role: activeTab, search: searchQueryTwo });
+  const allSearchData = searchUserData?.data
+
+  console.log(allSearchData)
+
 
   const showModal = () => {
     setModalOpen(true)
@@ -57,6 +66,7 @@ export default function ChatPage() {
 
 
 
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
@@ -65,7 +75,7 @@ export default function ChatPage() {
       const socket = connectSocket(userId);
 
       socket.on("connect", () => {
-        console.log("✅ Connected with ID:", socket.id);
+        // console.log("✅ Connected with ID:", socket.id);
         setIsConnected(true);
       });
 
@@ -152,6 +162,20 @@ export default function ChatPage() {
     }
   }, [role]);
 
+
+  const handleNavigate = (id) => {
+    setModalOpen(false)
+  }
+
+
+
+
+
+
+
+
+
+
   if (isLoading) return <p>Loading...</p>;
 
 
@@ -217,9 +241,9 @@ export default function ChatPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full p-4 pr-10 rounded-lg bg-gray-100 focus:outline-none"
               />
-              <button 
-              onClick={showModal}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white">
+              <button
+                onClick={showModal}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white">
                 <TiPlusOutline className="w-4 h-4" />
               </button>
             </div>
@@ -259,17 +283,52 @@ export default function ChatPage() {
 
       {/* modal */}
       <Modal
+        centered
         open={modalOpen}
         onCancel={handleCancelModalOne}
         footer={null}
-        width={500}
-        className="chart-modal"
-        //   closeIcon={<CloseOutlined className="close-icon" />}
+        width={700}
+        className="ticket-modal"
         title={
-          <p>title</p>
-        }>
+          <div className="modal-header flex justify-center">
+            <span className="text-[#fff]">Chat With New User</span>
+          </div>
+        }
+      >
 
-        dfd
+        <div className="p-4 ">
+          <div className="relative py-1">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQueryTwo}
+              onChange={(e) => setSearchQueryTwo(e.target.value)}
+              className="w-full p-4 pr-10 rounded-lg bg-gray-100 focus:outline-none"
+            />
+            <button
+              onClick={showModal}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full ">
+              <FiSearch />
+            </button>
+          </div>
+
+          <div className="mt-8 space-y-1">
+
+            {
+              allSearchData?.map((user, index) => {
+                return (
+                  <div onClick={() => handleNavigate(user?.id)} key={index} className="cursor-pointer hover:bg-gray-200 flex items-center gap-3  py-2 px-2 rounded-lg">
+                    <img src={user?.image} alt="" className="w-8 h-8 rounded-full" />
+                    <div>
+                      <h2 className=" font-medium">{user?.name}</h2>
+                      <p className="text-gray-500 font-medium">Tap to send message.</p>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
 
       </Modal>
     </div>

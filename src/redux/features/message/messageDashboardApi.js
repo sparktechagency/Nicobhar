@@ -13,8 +13,8 @@ export const dashboardMessageApi = baseApi.injectEndpoints({
       invalidatesTags: ["message"],
     }),
     getSearchNewUser: builder.query({
-      query: (role) => ({
-        url: `/search-new-user?role=${role}`,
+      query: ({role,search=""}) => ({
+        url: `/search-new-user?role=${role}&search=${search}`,
         method: "GET",
       }),
       providesTags: ["message"],

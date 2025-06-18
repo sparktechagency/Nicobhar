@@ -38,13 +38,13 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
 
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-2 mt-8">
 
       {users?.map((singleUser, index) => (
         <button
           key={index}
           onClick={() => onSelectUser(singleUser?.user)}
-          className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors ${singleUser?.User?.id === singleUser?.user.id ? "bg-gray-100" : ""
+          className={`flex items-center space-x-3 mx-2 p-3 rounded-lg hover:bg-gray-100 transition-colors ${singleUser?.User?.id === singleUser?.user.id ? "bg-gray-100" : ""
             }`}
         >
           <div className="relative w-10 h-10">
@@ -55,13 +55,13 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
               <h3 className="font-medium">{singleUser?.user.name}</h3>
               <span className="text-xs text-gray-500">{getOnlyTime(singleUser?.created_at)}</span>
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 ">
               {singleUser?.message?.length > 20
                 ? `${singleUser.message.slice(0, 20)}...`
                 : singleUser?.message}
             </p>
-            <p>sender_id----- : {singleUser?.sender_id}</p>
-            <p>receiver_id-----: {singleUser?.receiver_id}</p>
+            {/* <p>sender_id----- : {singleUser?.sender_id}</p>
+            <p>receiver_id-----: {singleUser?.receiver_id}</p> */}
           </div>
         </button>
       ))}
