@@ -117,7 +117,6 @@ export default function ChatPage() {
 
 
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log('user_id:------->', user.id)
     const socket = getSocket();
     const messageData = {
       message: text,
@@ -226,6 +225,7 @@ export default function ChatPage() {
 
 
       <div className="flex ">
+
         {/* Left Sidebar */}
         <div className="w-80 border-r flex flex-col">
           <div className="px-4">
@@ -261,16 +261,29 @@ export default function ChatPage() {
 
 
         {/* Right side content */}
-        <div className="w-full flex flex-col ">
+        <div className="h-[81vh]  w-full flex flex-col justify-between ">
           {selectedUser ? (
             <>
-              <ChatHeader user={selectedUser} />
-              <ChatMessages
-                messages={allMessageData?.concat(messages)}
-                currentUser={loginUser?.data}
-                selectedUser={selectedUser}
-              />
-              <ChatInput onSendMessage={handleSendMessage} />
+              <div className="">
+
+                <div>
+                  <ChatHeader user={selectedUser} />
+                </div>
+
+
+                <div>
+                  <ChatMessages
+                    messages={allMessageData?.concat(messages)}
+                    currentUser={loginUser?.data}
+                    selectedUser={selectedUser}
+                  />
+                </div>
+
+              </div>
+
+              <div>
+                <ChatInput onSendMessage={handleSendMessage} />
+              </div>
             </>
           ) : (
             <div className="flex justify-center items-center text-gray-500">
