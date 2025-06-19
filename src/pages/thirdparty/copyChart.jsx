@@ -173,15 +173,19 @@ export default function ChatPage() {
 
 
 
+
+
+
+
   if (isLoading) return <p>Loading...</p>;
 
 
 
   return (
-    <div className="h-[88vh] bg-white overflow-y-hidden">
+    <div className="h-[86vh] bg-white overflow-y-hidden">
 
       {/* Role-Based Tabs */}
-      <div className="flex items-center space-x-4 py-6">
+      <div className="flex items-center flex-wrap space-x-4 py-3 mb-4 ">
         <p className="pl-4 text-lg font-semibold">Chat with</p>
         {/* Generate buttons based on role */}
         {role === "super_admin" && (
@@ -225,7 +229,7 @@ export default function ChatPage() {
       </div>
 
 
-      <div className="flex ">
+      <div className="flex">
         {/* Left Sidebar */}
         <div className="w-80 border-r flex flex-col">
           <div className="px-4">
@@ -258,10 +262,8 @@ export default function ChatPage() {
           </div>
         </div>
 
-
-
-        {/* Right side content */}
-        <div className="w-full flex flex-col ">
+        {/* Main Chat Area */}
+        <div className="flex-1 flex flex-col ">
           {selectedUser ? (
             <>
               <ChatHeader user={selectedUser} />
@@ -279,14 +281,6 @@ export default function ChatPage() {
           )}
         </div>
       </div>
-
-
-
-
-
-
-
-
 
       {/* modal */}
       <Modal

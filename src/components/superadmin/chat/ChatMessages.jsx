@@ -13,14 +13,15 @@ export function ChatMessages({ messages, currentUser, selectedUser }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const logInUserId = user?.id;
 
-console.log('messages--->', messages)
-console.log('currentUser--->', currentUser)
-console.log('selectedUser--->', selectedUser)
+  // console.log('messages--->', messages)
+  // console.log('currentUser--->', currentUser)
+  // console.log('selectedUser--->', selectedUser)
 
 
+  console.log(selectedUser)
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className=" flex-1 overflow-y-auto p-2 space-y-4 ">
       {messages?.map((message) => {
         const isCurrentUser = message.sender_id === logInUserId
         return (

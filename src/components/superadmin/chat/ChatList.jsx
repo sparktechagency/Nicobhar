@@ -1,25 +1,6 @@
 
-export function ChatList({ users, selectedUser, onSelectUser }) {
+export function ChatList({ users,onSelectUser }) {
 
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Invalid date';
-
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return 'Invalid date';
-
-    const parts = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }).formatToParts(date);
-
-    const day = parts.find(p => p.type === 'day')?.value;
-    const month = parts.find(p => p.type === 'month')?.value;
-    const year = parts.find(p => p.type === 'year')?.value;
-
-    return `${day} ${month}, ${year}`;
-  };
 
 
   const getOnlyTime = (dateString) => {
@@ -37,8 +18,10 @@ export function ChatList({ users, selectedUser, onSelectUser }) {
 
 
 
+
+
   return (
-    <div className="flex flex-col space-y-2 mt-8">
+    <div className="h-full flex flex-col  space-y-2 ">
 
       {users?.map((singleUser, index) => (
         <button

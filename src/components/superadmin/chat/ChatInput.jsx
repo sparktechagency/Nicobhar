@@ -16,7 +16,7 @@ export function ChatInput({ onSendMessage }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-2 border-t">
+    <form onSubmit={handleSubmit} className=" p-2 border-t">
       <div className="flex items-center space-x-2 ">
         <input
           type="text"
