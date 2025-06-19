@@ -1,7 +1,4 @@
 
-
-
-import { Image } from "antd"
 import { useEffect, useRef } from "react"
 
 
@@ -12,31 +9,38 @@ export function ChatMessages({ messages, currentUser, selectedUser }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [])
 
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const logInUserId = user?.id;
+
+  // console.log('messages--->', messages)
+  // console.log('currentUser--->', currentUser)
+  // console.log('selectedUser--->', selectedUser)
+
+
+  console.log(selectedUser)
+
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4">
-      {messages.map((message) => {
-        const isCurrentUser = message.senderId === currentUser.id
+    <div className=" flex-1 overflow-y-auto p-2 space-y-4 ">
+      {messages?.map((message) => {
+        const isCurrentUser = message.sender_id === logInUserId
         return (
           <div
             key={message.id}
             className={`flex items-start space-x-2 ${isCurrentUser ? "flex-row-reverse space-x-reverse" : ""}`}
           >
             <div className="relative w-8 h-8 flex-shrink-0">
-              <Image
-              preview={false}
-                src={isCurrentUser ? currentUser.avatar : selectedUser.avatar}
+              <img
+                src={isCurrentUser ? currentUser.image : selectedUser.image}
                 alt={isCurrentUser ? currentUser.name : selectedUser.name}
-                className="rounded-full"
-                fill
+                className="w-[40px] h-[30px] rounded-full"
               />
             </div>
             <div
-              className={`p-3 rounded-lg max-w-[70%] ${
-                isCurrentUser ? "bg-red-500 text-white" : message.isEmoji ? "bg-transparent" : "bg-gray-100"
-              }`}
+              className={`p-3 rounded-lg max-w-[50%] ${isCurrentUser ? "bg-gray-200 " : message.isEmoji ? "bg-transparent" : "bg-gray-100"
+                }`}
             >
-              <p className={message.isEmoji ? "text-2xl" : ""}>{message.text}</p>
-              <span className="text-xs text-gray-500 mt-1 block">{message.timestamp}</span>
+              <p className={message.isEmoji ? "text-2xl" : ""}>{message.message}</p>
             </div>
           </div>
         )
@@ -45,4 +49,6 @@ export function ChatMessages({ messages, currentUser, selectedUser }) {
     </div>
   )
 }
+
+
 

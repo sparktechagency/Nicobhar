@@ -1,25 +1,27 @@
 import { baseApi } from "../../api/baseApi";
 
 
+
 export const dashboardMessageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postMess: builder.mutation({
-      query: () => ({
+      query: (sendAbleData) => ({
         url: `/send-message`,
         method: "POST",
+        body:sendAbleData
       }),
       invalidatesTags: ["message"],
     }),
     getSearchNewUser: builder.query({
-      query: (role) => ({
-        url: `/search-new-user?role=${role}`,
+      query: ({role,search=""}) => ({
+        url: `/search-new-user?role=${role}&search=${search}`,
         method: "GET",
       }),
       providesTags: ["message"],
     }),
     getMess: builder.query({
-      query: () => ({
-        url: `/get-message?receiver_id=15&per_page=10`,
+      query: (id) => ({
+        url: `/get-message?receiver_id=${id}`,
         method: "GET",
       }),
       providesTags: ["message"],
@@ -33,14 +35,14 @@ export const dashboardMessageApi = baseApi.injectEndpoints({
     }),
     getMarkRead: builder.query({
       query: () => ({
-        url: `/get-message?receiver_id=2`,
+        url: `/get-message?receiver_id=5`,
         method: "GET",
       }),
       providesTags: ["message"],
     }),
     getChart: builder.query({
-      query: () => ({
-        url: `/chat-list`,
+      query: ({ role, search = "" }) => ({
+        url: `/chat-list?role=${role}&search=${search}`,
         method: "GET",
       }),
       providesTags: ["message"],
@@ -48,4 +50,4 @@ export const dashboardMessageApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {usePostMessMutation,useGetSearchNewUserQuery,useGetMessQuery,useGetOrganizationQuery,useGetMarkReadQuery,useGetChartQuery} = dashboardMessageApi;
+export const { usePostMessMutation, useGetSearchNewUserQuery, useGetMessQuery, useGetOrganizationQuery, useGetMarkReadQuery, useGetChartQuery } = dashboardMessageApi;

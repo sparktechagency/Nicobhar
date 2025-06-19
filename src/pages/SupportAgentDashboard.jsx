@@ -19,24 +19,35 @@ const SupportAgentDashboard = () => {
   const [filterType, setFilterType] = useState("weekly");
 
   const { data, isLoading } = useGetChartSupportedAgentDashboardApiQuery(filterType);
+  console.log('all data---->', data)
 
 
 
 
-  const formatChartData = (rawData) => {
+
+
+  const formatChartData = (rawData,) => {
     if (!rawData) return [];
 
-    const statuses = ["New", "In-Progress", "Completed"];
-    return statuses.map((status, index) => ({
-      name: status.replace("-", " "), // Replace with space for label
-      value: rawData[status]?.count || 0,
-      color: CHART_COLORS[index],
-    }));
+    const statuses = Object.keys(rawData); // Dynamically extract all status keys
+    return statuses.map((status, index) => (
+      {
+        name: status.replace(" "), // Display-friendly label
+        value: rawData[status]?.count || 0,
+        percentage: rawData[status]?.percentage,
+        color: CHART_COLORS[index % CHART_COLORS.length], // Cycle through colors
+      }));
   };
 
+
+
+  // ✅ Generate chart data for each category
   const inspectionsData = formatChartData(data?.inspections);
   const jobCardProgressData = formatChartData(data?.job_card_progress);
   const ticketStatusData = formatChartData(data?.ticket_status);
+
+
+
 
   return (
     <div className="p-6 space-y-6 bg-gray-100">
@@ -50,6 +61,12 @@ const SupportAgentDashboard = () => {
     </div>
   );
 };
+
+const isChartDataEmpty = (data) => {
+  if (!data || !Array.isArray(data)) return true;
+  return data.every(item => item.value === 0);
+};
+
 
 const Statistics = ({
   inspectionsData,
@@ -67,7 +84,7 @@ const Statistics = ({
         onChange={(e) => setFilterType(e.target.value)}
       >
         {["weekly", "monthly", "yearly"].map((option) => (
-          <option key={option} value={option} 
+          <option key={option} value={option}
           >
             {option.charAt(0).toUpperCase() + option.slice(1)}
           </option>
@@ -76,25 +93,31 @@ const Statistics = ({
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <DonutChart
-        title="Ticket Status"
-        staticsLink="tickets-activity"
-        data={ticketStatusData}
-      />
-      <DonutChart
-        title="Inspections"
-        staticsLink="inspections-activity"
-        data={inspectionsData}
-      />
-      <DonutChart
-        title="Job Card Progress"
-        staticsLink="jobcards-overview"
-        data={jobCardProgressData}
-      />
-{/* <DonutChart title="Asset Status" staticsLink="#" data={assetStatusData} /> */}
-    </div>
+  {!isChartDataEmpty(ticketStatusData) && (
+    <DonutChart
+      title="Ticket Status"
+      staticsLink="tickets-activity"
+      data={ticketStatusData}
+    />
+  )}
+  {!isChartDataEmpty(inspectionsData) && (
+    <DonutChart
+      title="Inspections"
+      staticsLink="inspections-activity"
+      data={inspectionsData}
+    />
+  )}
+  {!isChartDataEmpty(jobCardProgressData) && (
+    <DonutChart
+      title="Job Card Progress"
+      staticsLink="jobcards-overview"
+      data={jobCardProgressData}
+    />
+  )}
+</div>
   </div>
 );
+
 
 const renderCustomLabel = ({ percent }) => `${(percent * 100).toFixed(1)}%`;
 
@@ -128,6 +151,7 @@ const DonutChart = ({ title, data, staticsLink }) => (
         </button>
       </Link>
     </div>
+    
 
     <ResponsiveContainer width="100%" height={240}>
       <PieChart>
@@ -141,9 +165,13 @@ const DonutChart = ({ title, data, staticsLink }) => (
           paddingAngle={5}
           dataKey="value"
         >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
-          ))}
+          {
+            data.map((entry, index) => (
+              <Cell  
+              key={`cell-${index}`} fill={entry.color}
+               />
+            ))
+          }
         </Pie>
         <Legend
           iconType="circle"
@@ -157,3 +185,5 @@ const DonutChart = ({ title, data, staticsLink }) => (
 );
 
 export default SupportAgentDashboard;
+
+
