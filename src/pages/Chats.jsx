@@ -31,21 +31,21 @@ export default function ChatPage() {
 
   const [postMess] = usePostMessMutation()
 
-  const { data: loginUser, isLoading } = useGetAdminProfileQuery();
+  const { data: loginUser, isLoading  } = useGetAdminProfileQuery();
   const role = loginUser?.data?.role;
 
-  const { data: chartListData } = useGetChartQuery(
+  const { data: chartListData , refetch : allUserChatListRefetch } = useGetChartQuery(
     activeTab ? { role: activeTab, search: searchQuery || "" } : skipToken
   );
   const allChartList = chartListData?.chat_list;
 
-  const { data: messageData } = useGetMessQuery(
+  const { data: messageData , refetch : messageDataRefetch } = useGetMessQuery(
     selectedUser?.id ? selectedUser.id : skipToken
   );
   const allMessageData = messageData?.data?.data;
 
 
-  const { data: searchUserData } = useGetSearchNewUserQuery({ role: activeTab, search: searchQueryTwo });
+  const { data: searchUserData  } = useGetSearchNewUserQuery({ role: activeTab, search: searchQueryTwo });
   const allSearchData = searchUserData?.data
 
   // console.log(allSearchData)
@@ -71,11 +71,11 @@ export default function ChatPage() {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
 
+    const socket = connectSocket(userId);
     if (userId) {
-      const socket = connectSocket(userId);
 
       socket.on("connect", () => {
-        // console.log("✅ Connected with ID:", socket.id);
+        console.log("✅ Sokiet Connected with ID:", socket.id);
         setIsConnected(true);
       });
 
@@ -84,8 +84,9 @@ export default function ChatPage() {
         setIsConnected(false);
       });
 
-      socket.on("receive_message", (data) => {
-        setMessages((prev) => [...prev, data]);
+      socket.on("private-message", () => {
+        allUserChatListRefetch()
+        messageDataRefetch()
       });
 
       return () => {
@@ -103,41 +104,21 @@ export default function ChatPage() {
       receiver_id: selectedUser?.id,
       message: text
     }
-
-
     try {
       const res = await postMess(sendAbleData).unwrap()
       console.log(res)
     } catch (error) {
       console.log(error)
     }
-
-
-
-
-
-    const user = JSON.parse(localStorage.getItem("user"));
     const socket = getSocket();
     const messageData = {
       message: text,
-      senderId: user?.id,
       receiverId: selectedUser?.id,
     };
 
     if (socket && socket.connected) {
-      socket.emit("send_message", messageData);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          senderId: user?.id,
-          text,
-          timestamp: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
+      socket.emit("private-message", messageData);
+     
     }
   };
 

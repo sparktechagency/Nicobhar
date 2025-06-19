@@ -18,8 +18,6 @@ export function ChatMessages({ messages, currentUser, selectedUser }) {
   // console.log('selectedUser--->', selectedUser)
 
 
-  console.log(selectedUser)
-
   return (
     <div className=" flex-1 overflow-y-auto p-2 space-y-4 ">
       {messages?.map((message) => {
@@ -42,6 +40,7 @@ export function ChatMessages({ messages, currentUser, selectedUser }) {
             >
               <p className={message.isEmoji ? "text-2xl" : ""}>{message.message}</p>
             </div>
+            
           </div>
         )
       })}
