@@ -95,10 +95,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
           </div>
         </div>
 
-        <div className="modal-footer">
-          {/* <button className="btn btn-outline">
-            Send to Third-party Providers
-          </button> */}
+        {/* <div className="modal-footer">
           <button
             onClick={() => {
               localStorage.setItem("ticket_insp_id", ticket?.id);
@@ -108,7 +105,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
           >
             Create Inspection Sheet
           </button>
-        </div>
+        </div> */}
       </div>
     </Modal>
   );

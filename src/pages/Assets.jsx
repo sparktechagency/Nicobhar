@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Import } from "lucide-react";
+import { Search, Import, HistoryIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -9,7 +9,7 @@ import {
   useUpdateAssetMutation,
 } from "../redux/features/assest/assestApi";
 import { PlusIcon } from "lucide-react";
-import { Button, Form, Input, message, Modal, Select } from "antd";
+import { Button, Card, Form, Input, message, Modal, Select } from "antd";
 import { useGetOrganizationQuery } from "../redux/features/providers/providersApi";
 const AssetManagement = () => {
   const navigate = useNavigate();
@@ -17,6 +17,8 @@ const AssetManagement = () => {
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalCardOpen, setIsModalCardOpen] = useState(false);
+
   const [situation, setSituation] = useState("add");
   const [editableId, setEditableId] = useState(-1);
   const user = useSelector((state) => state?.auth?.user);
@@ -35,6 +37,18 @@ const AssetManagement = () => {
   if (isLoading) {
     return <>loading..</>;
   }
+
+  const showModalCard = () => {
+    setIsModalCardOpen(true);
+  };
+
+  const handleOkCard = () => {
+    setIsModalCardOpen(false);
+  };
+
+  const handleCancelCard = () => {
+    setIsModalCardOpen(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -167,7 +181,7 @@ const AssetManagement = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <button
+            {/* <button
               className="flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-white"
               onClick={() => {
                 form.resetFields();
@@ -177,7 +191,7 @@ const AssetManagement = () => {
             >
               <PlusIcon className="h-4 w-4" />
               Add
-            </button>
+            </button> */}
             <label
               htmlFor="imp"
               className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-[#326280] px-4 py-2 text-white"
@@ -195,7 +209,17 @@ const AssetManagement = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end pb-4">
+        <div className="flex items-center justify-end pb-4 gap-2">
+          <Button
+            color="red"
+            shape="circle"
+            className=""
+            onClick={() => {
+              showModalCard(true);
+            }}
+          >
+            <HistoryIcon className="size-5" />
+          </Button>
           <Selecter options={sortOptions} value={sort} onChange={setSort} />
         </div>
 
@@ -380,7 +404,7 @@ const AssetManagement = () => {
           </div>
         }
         closable={{ "aria-label": "Custom Close Button" }}
-        className="ticket-modal"
+        className="ticket-modal !w-[40dvw]"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -406,7 +430,7 @@ const AssetManagement = () => {
             >
               <Input className="w-full" />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Serial No."
               className="col-span-2"
               name="serial_number"
@@ -415,7 +439,7 @@ const AssetManagement = () => {
               ]}
             >
               <Input className="w-full" />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item label="QR Code" name="qr_code">
               <Input className="w-full" />
             </Form.Item>
@@ -480,6 +504,26 @@ const AssetManagement = () => {
               {situation === "add" ? "Add Asset" : "Save changes"}
             </Button>
           </Form>
+        </div>
+      </Modal>
+      <Modal
+        title={
+          <div className="modal-header flex justify-center items-center">
+            <span className="header-title capitalize">Maintenance History</span>
+          </div>
+        }
+        className="ticket-modal !w-[90dvw]"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalCardOpen}
+        onOk={handleOkCard}
+        onCancel={handleCancelCard}
+        footer={null}
+      >
+        <div className="p-6">
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-green-600 rounded" />
+            <p>Open (2)</p>
+          </div>
         </div>
       </Modal>
     </>
