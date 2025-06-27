@@ -181,7 +181,7 @@ export default function FAQ() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Question</label>
-              <Input value={editingFaq?.question || ""} readOnly />
+              <Input defaultValue={editingFaq?.question || ""} />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Answer</label>

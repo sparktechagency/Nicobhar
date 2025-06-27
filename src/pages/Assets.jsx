@@ -9,7 +9,7 @@ import {
   useUpdateAssetMutation,
 } from "../redux/features/assest/assestApi";
 import { PlusIcon } from "lucide-react";
-import { Button, Card, Form, Input, message, Modal, Select } from "antd";
+import { Button, Card, Form, Input, message, Modal, Select, Table } from "antd";
 import { useGetOrganizationQuery } from "../redux/features/providers/providersApi";
 const AssetManagement = () => {
   const navigate = useNavigate();
@@ -448,16 +448,6 @@ const AssetManagement = () => {
             </Form.Item>
 
             <Form.Item
-              label="Brand"
-              name="brand"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
-            >
-              <Input className="w-full" />
-            </Form.Item>
-
-            <Form.Item
               label="Unit Price"
               name="unit_price"
               rules={[
@@ -466,7 +456,15 @@ const AssetManagement = () => {
             >
               <Input className="w-full" />
             </Form.Item>
-
+            <Form.Item
+              label="Current spend"
+              name="current_spend"
+              rules={[
+                { required: true, message: "Please input your username!" },
+              ]}
+            >
+              <Input className="w-full" />
+            </Form.Item>
             <Form.Item
               label="Max Spend"
               name="max_spend"
@@ -519,15 +517,103 @@ const AssetManagement = () => {
         onCancel={handleCancelCard}
         footer={null}
       >
-        <div className="p-6">
+        <div className="p-6 space-y-6">
           <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
             <div className="h-4 w-4 bg-green-600 rounded" />
             <p>Open (2)</p>
           </div>
+          <Table dataSource={dataSource} columns={columns} />
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Technician Deployed (0)</p>
+          </div>
+          <p>There are no technician deployed tickets</p>
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Parts Required (0)</p>
+          </div>
+          <p>There are no technician deployed tickets</p>
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Closed (2)</p>
+          </div>
+          <Table dataSource={dataSource} columns={columns} />
         </div>
       </Modal>
     </>
   );
 };
+const dataSource = [
+  {
+    key: "1",
+    ticketNumber: "W3487530",
+    description: "ViewSonic",
+    serialNumber: "DH734875",
+    opened: "Md. Abid",
+    serviceProvider: "MiFitness",
+    tipHours: "520.13",
+    ttoHours: "520.13",
+  },
+  {
+    key: "2",
+    ticketNumber: "W3487530",
+    description: "ViewSonic",
+    serialNumber: "DH734875",
+    opened: "Md. Abid",
+    serviceProvider: "MiFitness",
+    tipHours: "520.13",
+    ttoHours: "520.13",
+  },
+];
 
+const columns = [
+  {
+    title: "Ticket Number",
+    dataIndex: "ticketNumber",
+    key: "ticketNumber",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+  },
+  {
+    title: "Serial Number",
+    dataIndex: "serialNumber",
+    key: "serialNumber",
+  },
+  {
+    title: "Opened by",
+    dataIndex: "opened",
+    key: "opened",
+  },
+  {
+    title: "Service Provider",
+    dataIndex: "serviceProvider",
+    key: "serviceProvider",
+    render: (text) => (
+      <div className="flex flex-row items-center gap-2">
+        <div className="h-3.5 w-3.5 bg-blue-600 rounded"></div> {text}
+      </div>
+    ),
+  },
+  {
+    title: "T.I.P (Hours)",
+    dataIndex: "tipHours",
+    key: "tipHours",
+    render: (text) => (
+      <div className="flex flex-col items-center gap-2">
+        {text}
+        <div className="bg-green-700 rounded px-3 py-1 border-2 border-green-500 text-white font-semibold text-xs">
+          BELOW SLA
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "T.T.O (Hours)",
+    dataIndex: "ttoHours",
+    key: "ttoHours",
+  },
+];
 export default AssetManagement;

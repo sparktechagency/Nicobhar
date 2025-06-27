@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Tabs, Table, Input, Select } from "antd";
+import { Tabs, Table, Input, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import TicketModal from "../components/superadmin/TicketModal";
 import {
   useGetTicketDetailsQuery,
   useGetTicketListQuery,
 } from "../redux/features/ticket/ticketApi";
+import { CircleArrowOutUpRight } from "lucide-react";
 
+import TicketModal from "../components/Support/TicketModal";
 const { TabPane } = Tabs;
 const { Option } = Select;
 
@@ -29,7 +30,6 @@ const TicketsPage = () => {
   if (isLoading) {
     return <>loading...</>;
   }
-
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
@@ -183,6 +183,9 @@ const TicketsPage = () => {
             }}
           />
         </div>
+        <Button className="mr-2" type="primary" href="tickets/tickets-activity">
+          Ticket activity <CircleArrowOutUpRight className="size-4" />
+        </Button>
         <Select
           defaultValue="New"
           className="location-select"
@@ -250,11 +253,14 @@ const TicketsPage = () => {
         </TabPane>
       </Tabs>
 
-      <TicketModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        ticket={ticketDetail?.data}
-      />
+      {ticketDetail?.data && (
+        <TicketModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          ticket={ticketDetail?.data.ticket}
+          opened={activeTab === "Open Tickets" ? true : false}
+        />
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Input, Dropdown, Button, Modal, Form, message } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import { useGetReportQuery } from "../redux/features/reports/reportsApi";
+import { DownloadIcon } from "lucide-react";
 
 const sortOptions = [
   { key: "1", label: "Newest" },
@@ -50,7 +51,7 @@ export const Reports = () => {
 
       const queryObj = { [key]: values.id };
       console.log("query-----------", queryObj);
-      setQueryParams(queryObj); // this triggers the query
+      setQueryParams(queryObj);
 
       console.log("Query Params:", queryObj);
       // 🚫 Don't try to use `data` here
@@ -303,6 +304,12 @@ export const Reports = () => {
                     ? data?.data?.technician_comment
                     : "N/A"}
                 </p>
+                <a href="https://example.com/file.pdf" download>
+                  <Button className="w-full mt-6">
+                    <DownloadIcon className="size-4 mr-2" />
+                    Download
+                  </Button>
+                </a>
               </div>
             </Modal>
           </div>

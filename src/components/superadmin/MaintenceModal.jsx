@@ -88,9 +88,8 @@ const MaintenceModal = ({ isOpen, onClose, ticket }) => {
               <Input
                 type="date"
                 placeholder="12/20/2025"
-                readOnly
                 className="bg-[#F0F0F0] text-[#777777] h-[44px]"
-                value={ticket?.nextSchedule}
+                defaultValue={ticket?.nextSchedule}
               />
             </div>
           </div>

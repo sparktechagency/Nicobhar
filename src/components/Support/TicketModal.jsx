@@ -7,7 +7,13 @@ import { useGetTicketDetailsQuery } from "../../redux/features/ticket/ticketApi"
 
 const { TextArea } = Input;
 
-const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
+const TicketModal = ({
+  isOpen = false,
+  onClose = () => {},
+  ticket,
+  opened,
+  pasted,
+}) => {
   const navigate = useNavigate();
   const { data, isLoading } = useGetTicketDetailsQuery({ id: ticket?.id });
   console.log(ticket);
@@ -126,7 +132,7 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
             <Button
               type="primary"
               className="w-full py-5 font-semibold"
-              variant="solid"
+              variant={opened ? "outlined" : "solid"}
               color="red"
               onClick={() => {
                 // localStorage.setItem("ticket_insp_id", ticket?.id);
@@ -135,7 +141,18 @@ const TicketModal = ({ isOpen = false, onClose = () => {}, ticket }) => {
               }}
             >
               See Inspection Sheets
-            </Button>
+            </Button>{" "}
+            {opened && (
+              <Button
+                type="primary"
+                className="w-full py-5 font-semibold"
+                variant="solid"
+                color="red"
+                onClick={() => {}}
+              >
+                Create Quotation
+              </Button>
+            )}
           </div>
         </div>
       </Modal>

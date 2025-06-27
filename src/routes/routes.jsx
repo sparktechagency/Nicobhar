@@ -69,6 +69,7 @@ import OrganizationNewDetails from "../pages/organizationDetails/OrganizationNew
 import OrganizationOpenDetails from "../pages/organizationDetails/OrganizationOpenDetails";
 import OrganizationPastDetails from "../pages/organizationDetails/OrganizationPastDetails";
 import SuppCreateInspectionPage from "../pages/suppAgentCreateInsp";
+import SupportJobCards from "../components/Support/supportJobCard";
 
 // Define User Role (Replace with Actual Authentication Logic)
 
@@ -119,18 +120,29 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <SupportAgentDashboard /> },
       { path: "tickets", element: <SupportAgentTicket /> },
-      { path: "tickets-activity", element: <TicketsActivity /> },
+      {
+        path: "tickets/tickets-activity",
+        element: <OrganizationTicketsActivity />,
+      },
       { path: "inspections-activity", element: <InspactionAcvity /> },
-      { path: "jobcards-overview", element: <JobCardsOverview /> },
+      // { path: "jobcards-overview", element: <SuppJobCardsOverview  /> },
       {
         path: "tickets/create-inspection/:id",
         element: <SuppCreateInspectionPage />,
+      },
+      {
+        path: "inspectionsheets/inspections-activity",
+        element: <OrganizaInspactionAcvity />,
       },
       { path: "inspectionsheets", element: <SupportAgentInspaction /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "chats", element: <Chats /> },
       { path: "reports", element: <Reports /> },
-      { path: "jobcards", element: <JobCards /> },
+      { path: "jobcards", element: <SupportJobCards /> },
+      {
+        path: "jobcards/jobcards-overview",
+        element: <OrganizationJobCardsOverview />,
+      },
       { path: "notification", element: <NotificationsPage /> },
       { path: "create-inspection/:id", element: <CreateInspectionPage /> },
       { path: "open-sheet-details/:id", element: <OpenSheetDetails /> },
@@ -177,6 +189,10 @@ const router = createBrowserRouter([
     element: <ThirdpartyLayout />,
     children: [
       { path: "", element: <ThirdPartyTickets /> },
+      {
+        path: "tickets/tickets-activity",
+        element: <OrganizationTicketsActivity />,
+      },
       { path: "service-providers", element: <ThirdPartyServiceProvider /> },
       { path: "profile", element: <AdminProfile /> },
       { path: "notification", element: <NotificationsPage /> },

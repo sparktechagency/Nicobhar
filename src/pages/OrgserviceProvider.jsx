@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Input, Select, Button, Image, message } from "antd";
 import Swal from "sweetalert2";
@@ -38,14 +38,18 @@ export default function ServiceProviderTable() {
     console.log(data?.data?.data);
   }
 
+  useEffect(() => {
+    setActiveTab("support_agent");
+  }, []);
+
   // if(isLoading)
 
   const tabs = [
-    { id: "organization", label: "Organization" },
+    // { id: "organization", label: "Organization" },
     { id: "support_agent", label: "Support Agent" },
     { id: "location_employee", label: "Location Employees" },
     { id: "technician", label: "Technicians" },
-    { id: "third_party", label: "Third Party" },
+    // { id: "third_party", label: "Third Party" },
   ];
 
   // const filteredData = MOCK_DATA.filter((item) =>

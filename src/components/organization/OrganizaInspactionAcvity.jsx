@@ -1,5 +1,4 @@
-
-import { useState } from "react"
+import { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -12,72 +11,74 @@ import {
   Pie,
   Cell,
   Legend,
-} from "recharts"
-import { ArrowLeft, RefreshCw, Settings, Clock, CheckCircle } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import { useGetInspectionSheetStaticSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi"
-
-
+} from "recharts";
+import {
+  ArrowLeft,
+  RefreshCw,
+  Settings,
+  Clock,
+  CheckCircle,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useGetInspectionSheetStaticSupportedAgentDashboardApiQuery } from "../../redux/features/supportedAgentDashboard/supportedAgentDashboardApi";
 
 const OrganizaInspactionAcvity = () => {
-  const navigate = useNavigate()
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   // const { data, isLoading } = useGetInspectionSheetStaticSupportedAgentDashboardApiQuery()
-  const { data, isLoading } = useGetInspectionSheetStaticSupportedAgentDashboardApiQuery({
-    start_date: startDate, // change this to your actual range
-    end_date: endDate
-  });
-
+  const { data, isLoading } =
+    useGetInspectionSheetStaticSupportedAgentDashboardApiQuery({
+      start_date: startDate, // change this to your actual range
+      end_date: endDate,
+    });
 
   const handleStartDateChange = (e) => {
-    const date = e.target.value
-    setStartDate(date)
-  }
+    const date = e.target.value;
+    setStartDate(date);
+  };
 
   const handleEndDateChange = (e) => {
-    const date = e.target.value
-    setEndDate(date)
-  }
+    const date = e.target.value;
+    setEndDate(date);
+  };
 
   const handleRefresh = () => {
     // Reset date filters
-    setStartDate('')
-    setEndDate('')
+    setStartDate("");
+    setEndDate("");
     // Force complete refresh by changing the key
-    setRefreshKey(prev => prev + 1)
+    setRefreshKey((prev) => prev + 1);
     // Also call refetch for immediate action
-    refetch()
-  }
-
-
+    refetch();
+  };
 
   // Bar Chart Data
   const barData = data?.total_inspection_per_date
     ? Object.entries(data.total_inspection_per_date).map(([date, value]) => ({
-      date,
-      created: value["New Sheets"] || 0,
-      completed: value["Past Sheets"] || 0,
-    }))
-    : []
+        date,
+        created: value["New Sheets"] || 0,
+        completed: value["Past Sheets"] || 0,
+      }))
+    : [];
 
   // Pie Chart Data
   const pieData = data?.inspections_status
     ? data.inspections_status.map((status, idx) => ({
-      name: status.status,
-      value: status.count,
-      color: [
-        "#22c55e",
-        "#3b82f6",
-        "#ec4899",
-        "#eab308",
-        "#06b6d4",
-        "#f97316",
-        "#8b5cf6",
-      ][idx % 7],
-    }))
-    : []
+        name: status.status,
+        value: status.count,
+        color: [
+          "#22c55e",
+          "#3b82f6",
+          "#ec4899",
+          "#eab308",
+          "#06b6d4",
+          "#f97316",
+          "#8b5cf6",
+        ][idx % 7],
+      }))
+    : [];
 
   // MetricCard component
   const MetricCard = ({ icon, title, value, bgColor }) => (
@@ -88,11 +89,11 @@ const OrganizaInspactionAcvity = () => {
         <p className="text-2xl font-semibold">{value}</p>
       </div>
     </div>
-  )
+  );
 
-  const renderCustomLabel = ({ percent }) => `${(percent * 100).toFixed(1)}%`
+  const renderCustomLabel = ({ percent }) => `${(percent * 100).toFixed(1)}%`;
 
-  if (isLoading) return <p className="p-6">Loading...</p>
+  if (isLoading) return <p className="p-6">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -129,7 +130,9 @@ const OrganizaInspactionAcvity = () => {
             onClick={handleRefresh}
             disabled={isLoading}
           >
-            <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`h-5 w-5 ${isLoading ? "animate-spin" : ""}`}
+            />
           </button>
         </div>
       </div>
@@ -138,22 +141,17 @@ const OrganizaInspactionAcvity = () => {
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           icon={<Settings className="h-6 w-6  text-orange-500" />}
-          title={
-            <span className="text-lg">Created Sheets</span>
-          }
+          title={<span className="text-lg">Created Sheets</span>}
           value={
             <span className="text-3xl font-bold text-gray-800">
               {data?.total_created_sheet || 0}
             </span>
           }
           bgColor="bg-orange-50"
-
         />
         <MetricCard
           icon={<Clock className="h-6 w-6 text-blue-500" />}
-          title={
-            <span className="text-lg">Running Sheets</span>
-          }
+          title={<span className="text-lg">Running Sheets</span>}
           value={
             <span className="text-3xl font-bold text-gray-800">
               {data?.total_running_sheet || 0}
@@ -163,9 +161,7 @@ const OrganizaInspactionAcvity = () => {
         />
         <MetricCard
           icon={<CheckCircle className="h-6 w-6 text-green-500" />}
-          title={
-            <span className="text-lg">Completed Sheets</span>
-          }
+          title={<span className="text-lg">Completed Sheets</span>}
           value={
             <span className="text-3xl font-bold text-gray-800">
               {data?.total_Completed_sheet || 0}
@@ -179,10 +175,15 @@ const OrganizaInspactionAcvity = () => {
       <div className="lg:flex md:flex gap-4">
         {/* Bar Chart */}
         <div className="rounded-lg bg-white p-6 shadow-sm w-full">
-          <h2 className="mb-4 text-lg font-semibold">Total Inspection Per Date</h2>
+          <h2 className="mb-4 text-lg font-semibold">
+            Total Inspection Per Date
+          </h2>
           <div className="h-[500px]">
             <ResponsiveContainer width="100%" height={500}>
-              <BarChart data={barData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <BarChart
+                data={barData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
@@ -214,16 +215,19 @@ const OrganizaInspactionAcvity = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Legend iconType="circle" layout="vertical" align="right" verticalAlign="middle" />
+                <Legend
+                  iconType="circle"
+                  layout="vertical"
+                  align="right"
+                  verticalAlign="middle"
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OrganizaInspactionAcvity
-
-
+export default OrganizaInspactionAcvity;

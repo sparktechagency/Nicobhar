@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Search, Import } from "lucide-react";
+import { Search, Import, HistoryIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetAssestlistQuery } from "../redux/features/assest/assestApi";
+import { Button, Modal, Table } from "antd";
 const AssetManagement = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState("");
+  const [isModalCardOpen, setIsModalCardOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const user = useSelector((state) => state?.auth?.user);
   console.log(user);
@@ -19,7 +21,17 @@ const AssetManagement = () => {
   if (isLoading) {
     return <>loading..</>;
   }
+  const showModalCard = () => {
+    setIsModalCardOpen(true);
+  };
 
+  const handleOkCard = () => {
+    setIsModalCardOpen(false);
+  };
+
+  const handleCancelCard = () => {
+    setIsModalCardOpen(false);
+  };
   const handleContractClick = (assetId) => {
     navigate(`asset-history/${assetId}`);
   };
@@ -66,14 +78,24 @@ const AssetManagement = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 rounded-md bg-[#326280] px-4 py-2 text-white">
+          {/* <button className="flex items-center gap-2 rounded-md bg-[#326280] px-4 py-2 text-white">
             <Import className="h-4 w-4" />
             Import
-          </button>
+          </button> */}
         </div>
       </div>
 
-      <div className="flex items-center justify-end pb-4">
+      <div className="flex items-center justify-end pb-4 gap-2">
+        <Button
+          color="red"
+          shape="circle"
+          className=""
+          onClick={() => {
+            showModalCard(true);
+          }}
+        >
+          <HistoryIcon className="size-5" />
+        </Button>
         <Select options={sortOptions} value={sort} onChange={setSort} />
       </div>
 
@@ -101,9 +123,9 @@ const AssetManagement = () => {
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
                 Max Spend
               </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
+              {/* <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
                 Organization
-              </th>
+              </th> */}
               <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
                 Actions
               </th>
@@ -131,9 +153,9 @@ const AssetManagement = () => {
                 <td className="px-4 py-3 text-sm">
                   {asset.max_spend != null ? asset.max_spend : "N/A"}
                 </td>
-                <td className="px-4 py-3 text-sm">
+                {/* <td className="px-4 py-3 text-sm">
                   {asset.organization != null ? asset.organization : "N/A"}
-                </td>
+                </td> */}
 
                 <td className="px-4 py-3 text-sm">
                   <button
@@ -156,7 +178,7 @@ const AssetManagement = () => {
                     </svg>
                   </button>
 
-                  <button
+                  {/* <button
                     onClick={() => handleEditClick(asset.id)}
                     className="rounded  px-3 py-1 text-white"
                   >
@@ -184,7 +206,7 @@ const AssetManagement = () => {
                         </clipPath>
                       </defs>
                     </svg>
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
@@ -244,8 +266,116 @@ const AssetManagement = () => {
           </div>
         )}
       </div>
+      <Modal
+        title={
+          <div className="modal-header flex justify-center items-center">
+            <span className="header-title capitalize">Maintenance History</span>
+          </div>
+        }
+        className="ticket-modal !w-[90dvw]"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalCardOpen}
+        onOk={handleOkCard}
+        onCancel={handleCancelCard}
+        footer={null}
+      >
+        <div className="p-6 space-y-6">
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-green-600 rounded" />
+            <p>Open (2)</p>
+          </div>
+          <Table dataSource={dataSource} columns={columns} />
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Technician Deployed (0)</p>
+          </div>
+          <p>There are no technician deployed tickets</p>
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Parts Required (0)</p>
+          </div>
+          <p>There are no technician deployed tickets</p>
+          <div className="p-4 rounded-lg border-0 bg-zinc-200 font-semibold text-base flex !flex-row gap-2 items-center">
+            <div className="h-4 w-4 bg-sky-600 rounded" />
+            <p>Closed (2)</p>
+          </div>
+          <Table dataSource={dataSource} columns={columns} />
+        </div>
+      </Modal>
     </div>
   );
 };
+const dataSource = [
+  {
+    key: "1",
+    ticketNumber: "W3487530",
+    description: "ViewSonic",
+    serialNumber: "DH734875",
+    opened: "Md. Abid",
+    serviceProvider: "MiFitness",
+    tipHours: "520.13",
+    ttoHours: "520.13",
+  },
+  {
+    key: "2",
+    ticketNumber: "W3487530",
+    description: "ViewSonic",
+    serialNumber: "DH734875",
+    opened: "Md. Abid",
+    serviceProvider: "MiFitness",
+    tipHours: "520.13",
+    ttoHours: "520.13",
+  },
+];
 
+const columns = [
+  {
+    title: "Ticket Number",
+    dataIndex: "ticketNumber",
+    key: "ticketNumber",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+  },
+  {
+    title: "Serial Number",
+    dataIndex: "serialNumber",
+    key: "serialNumber",
+  },
+  {
+    title: "Opened by",
+    dataIndex: "opened",
+    key: "opened",
+  },
+  {
+    title: "Service Provider",
+    dataIndex: "serviceProvider",
+    key: "serviceProvider",
+    render: (text) => (
+      <div className="flex flex-row items-center gap-2">
+        <div className="h-3.5 w-3.5 bg-blue-600 rounded"></div> {text}
+      </div>
+    ),
+  },
+  {
+    title: "T.I.P (Hours)",
+    dataIndex: "tipHours",
+    key: "tipHours",
+    render: (text) => (
+      <div className="flex flex-col items-center gap-2">
+        {text}
+        <div className="bg-green-700 rounded px-3 py-1 border-2 border-green-500 text-white font-semibold text-xs">
+          BELOW SLA
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "T.T.O (Hours)",
+    dataIndex: "ttoHours",
+    key: "ttoHours",
+  },
+];
 export default AssetManagement;

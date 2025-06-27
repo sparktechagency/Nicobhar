@@ -1,11 +1,14 @@
-import { Modal, Input } from "antd";
+import { Modal, Input, Button } from "antd";
 import { CopyOutlined, CloseOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import Swal from "sweetalert2";
 
-const JobcardModal = ({ isOpen, onClose, ticket }) => {
+const JobcardModal = ({ isOpen, onClose, ticket, loca }) => {
   if (!ticket) {
     return null;
   }
+  console.log(ticket);
+
   return (
     <Modal
       open={isOpen}
@@ -154,6 +157,36 @@ const JobcardModal = ({ isOpen, onClose, ticket }) => {
             </div>
           </div>
         </div>
+        {loca && (
+          <div className="form-row">
+            <div className="form-group">
+              <label className="text-[16px] text-[#000000] font-medium">
+                Ticket number
+              </label>
+              <div className="input-with-copy">
+                <Input
+                  placeholder="Support agent name"
+                  readOnly
+                  value={ticket?.inspection_sheet?.ticket?.order_number}
+                  className="bg-white h-[44px]"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="text-[16px] text-[#000000] font-medium">
+                Purchase order number
+              </label>
+              <div className="input-with-copy">
+                <Input
+                  placeholder="Md. Abid"
+                  readOnly
+                  value={ticket?.job_card_order_number}
+                  className="bg-white h-[44px]"
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <div className="form-row">
           <div className="form-group">
             <label className="text-[16px] text-[#000000] font-medium">
@@ -188,6 +221,26 @@ const JobcardModal = ({ isOpen, onClose, ticket }) => {
                 className="bg-white h-[44px]"
               />
             </div>
+          </div>
+          <div className="col-span-2 flex justify-center items-center">
+            <Button
+              className="py-4 w-1/2 mx-auto"
+              type="primary"
+              variant="solid"
+              color="red"
+              onClick={() => {
+                Swal.fire({
+                  title: "SEND SUCCESSFULLY",
+                  icon: "success",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    onClose();
+                  }
+                });
+              }}
+            >
+              Send
+            </Button>
           </div>
         </div>
 

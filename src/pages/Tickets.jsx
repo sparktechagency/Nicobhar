@@ -249,11 +249,13 @@ const TicketsPage = () => {
         </TabPane>
       </Tabs>
 
-      <TicketModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        ticket={ticketDetail?.data}
-      />
+      {ticketDetail?.data && (
+        <TicketModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          ticket={ticketDetail?.data.ticket}
+        />
+      )}
     </div>
   );
 };

@@ -1,41 +1,40 @@
 import { useState } from "react";
-import { Tabs, Table, Input, Select } from "antd";
+import { Tabs, Table, Input, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import TicketModal from "../components/Support/TicketModal";
+import JobcardModal from "./supportJobModal";
 import {
-  useGetTicketDetailsQuery,
-  useGetTicketListQuery,
-} from "../redux/features/ticket/ticketApi";
+  useGetJobCardDetailsQuery,
+  useGetJobCardListQuery,
+} from "../../redux/features/job-cards/job-cards";
+import { useNavigate } from "react-router-dom";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
-const TicketsPage = () => {
+const SupportJobCards = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [activeTab, setActiveTab] = useState("New Tickets");
+  const [activeTab, setActiveTab] = useState("New Cards");
   const [filter, setFilter] = useState("New");
   const [search, setSearch] = useState("");
-
-  const { data: tickets, isLoading } = useGetTicketListQuery({
+  const { data, isLoading } = useGetJobCardListQuery({
     search: search,
     type: activeTab,
     filter: filter,
   });
 
-  const { data: ticketDetail } = useGetTicketDetailsQuery({
-    id: selectedTicket,
+  const { data: jobDetail } = useGetJobCardDetailsQuery({
+    id: selectedTicket?.key ? selectedTicket.key : 0,
   });
+
   if (isLoading) {
     return <>loading...</>;
   }
+  console.log(selectedTicket);
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
-
-  // useEffect(() => {
-  //   console.log(selectedTicket);
-  // }, [selectedTicket]);
 
   const columns = [
     {
@@ -44,11 +43,11 @@ const TicketsPage = () => {
       key: "tickets",
       render: (text, record) => (
         <div className="ticket-info text-center flex flex-col justify-start">
-          <div className="ticket-number text-[#777777] text-[14px]">
+          <div className="ticket-number text-[#777777] text-[14px] ">
             #{record.ticketNumber}
           </div>
           <div className="company-name text-[16px] font-semibold">
-            {record.organization}
+            {record.asset}
           </div>
           <div className="model-number text-[16px] font-medium">
             {record.modelNumber}
@@ -113,9 +112,25 @@ const TicketsPage = () => {
       ),
     },
     {
-      title: "Cost",
-      dataIndex: "cost",
-      key: "cost",
+      title: "Technician",
+      dataIndex: "Technician",
+      key: "Technician",
+      render: (text, record) => (
+        <div className="technician flex items-center gap-2">
+          <div className="image h-[40px] w-[40px] rounded-full ">
+            <img
+              className="w-full rounded-full"
+              src={record.Technician.image}
+              alt="Technician"
+            />
+          </div>
+          <div className="name">
+            <span className="text-[14px] font-semibold text-[#000000]">
+              {record.Technician.name}
+            </span>
+          </div>
+        </div>
+      ),
     },
     {
       title: "Ticket status",
@@ -144,29 +159,36 @@ const TicketsPage = () => {
       ),
     },
   ];
-  const data = tickets.data.data.map((ticket) => {
-    const createdAt = new Date(ticket.created_at);
+
+  const datas = data?.data.data.map((item) => {
+    const createdAt = new Date(item.created_at);
 
     return {
-      key: ticket.id,
-      ticketNumber: ticket.order_number,
-      organization: ticket.asset.product,
-      modelNumber: ticket.asset.serial_number,
-      date: createdAt.toLocaleDateString("en-GB"), // format: DD/MM/YYYY
+      key: item.id,
+      ticketNumber: item?.inspection_sheet?.ticket?.order_number ?? "N/A",
+      asset: item?.inspection_sheet?.ticket?.asset?.product,
+      modelNumber:
+        item?.inspection_sheet?.ticket?.asset?.serial_number ?? "N/A",
+      date: createdAt.toLocaleDateString("en-GB"), // DD/MM/YYYY
       time: createdAt.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-      }), // format: HH:MM AM/PM
-      location: ticket.user.address,
-      cost: ticket.cost,
-      status: ticket.ticket_status,
+      }), // HH:MM AM/PM
+      location: item?.inspection_sheet?.ticket?.user?.address,
+      Technician: {
+        name: item?.inspection_sheet?.technician.name, // consider replacing with dynamic name if available
+        image: item?.inspection_sheet?.technician.image, // consider moving this to a separate constant or loading from config
+      },
     };
   });
 
   const handleRowClick = (record) => {
-    setSelectedTicket(record.key);
+    setSelectedTicket(record);
     setIsModalOpen(true);
+  };
+  const handleticketacvity = () => {
+    navigate("jobcards-overview");
   };
 
   return (
@@ -182,34 +204,41 @@ const TicketsPage = () => {
             }}
           />
         </div>
+        <Button
+          onClick={handleticketacvity}
+          type="primary"
+          className="text-base font-semibold mr-4"
+        >
+          See Analytics
+        </Button>
         <Select
           defaultValue="New"
           className="location-select"
           onChange={(value) => {
-            setFilter(value); // value is just the selected string
+            setFilter(value);
           }}
         >
           <Option value="New">New</Option>
           <Option value="Assigned">Assigned</Option>
-          <Option value="Inspection sheet">Inspection sheet</Option>
+          {/* <Option value="Inspection sheet">Inspection sheet</Option>
           <Option value="Awaiting purchase order">
             Awaiting purchase order
           </Option>
-          <Option value="Job card created">Job card created</Option>
+          <Option value="Job card created">Job card created</Option> */}
           <Option value="Completed">Completed</Option>
         </Select>
       </div>
 
-      <Tabs defaultActiveKey="New Tickets" onChange={handleTabChange}>
-        <TabPane tab="New Tickets" key="New Tickets">
+      <Tabs defaultActiveKey="New New Cards" onChange={handleTabChange}>
+        <TabPane tab="New Cards" key="New Cards">
           <Table
             className="bg-white p-4 rounded-lg shadow-sm"
             columns={columns}
-            dataSource={data}
+            dataSource={datas}
             pagination={{
-              total: data.total,
+              total: data.data.total,
               pageSize: 10,
-              current: data.current_page,
+              current: data.data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -217,14 +246,14 @@ const TicketsPage = () => {
             })}
           />
         </TabPane>
-        <TabPane tab="Open Tickets" key="Open Tickets">
+        <TabPane tab="Open Cards" key="Open Cards">
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={datas}
             pagination={{
-              total: data.total,
+              total: data.data.total,
               pageSize: 10,
-              current: data.current_page,
+              current: data.data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -232,14 +261,14 @@ const TicketsPage = () => {
             })}
           />
         </TabPane>
-        <TabPane tab="Past Tickets" key="Past Tickets">
+        <TabPane tab="Past Cards" key="Past Cards">
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={datas}
             pagination={{
-              total: data.total,
+              total: data.data.total,
               pageSize: 10,
-              current: data.current_page,
+              current: data.data.current_page,
               showSizeChanger: false,
             }}
             onRow={(record) => ({
@@ -249,16 +278,13 @@ const TicketsPage = () => {
         </TabPane>
       </Tabs>
 
-      {ticketDetail?.data && (
-        <TicketModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          ticket={ticketDetail.data.ticket}
-          opened={activeTab.includes("Past")}
-        />
-      )}
+      <JobcardModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        ticket={jobDetail?.data}
+      />
     </div>
   );
 };
 
-export default TicketsPage;
+export default SupportJobCards;

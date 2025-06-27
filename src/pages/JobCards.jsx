@@ -28,6 +28,8 @@ const JobCards = () => {
 
   if (isLoading) {
     return <>loading...</>;
+  } else {
+    console.log(jobDetail);
   }
   console.log(selectedTicket);
   const handleTabChange = (key) => {
@@ -157,7 +159,6 @@ const JobCards = () => {
       ),
     },
   ];
-
   const datas = data?.data.data.map((item) => {
     const createdAt = new Date(item.created_at);
 
@@ -178,6 +179,7 @@ const JobCards = () => {
         name: item?.inspection_sheet?.technician.name, // consider replacing with dynamic name if available
         image: item?.inspection_sheet?.technician.image, // consider moving this to a separate constant or loading from config
       },
+      status: item?.job_status,
     };
   });
 
@@ -265,7 +267,6 @@ const JobCards = () => {
           />
         </TabPane>
       </Tabs>
-
       <JobcardModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

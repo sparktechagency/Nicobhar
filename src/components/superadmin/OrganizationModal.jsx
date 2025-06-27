@@ -177,7 +177,7 @@ const OrganizationModal = ({ isOpen, onClose, type, org }) => {
       <div className="p-6 bg-white rounded-lg">
         {/* Header */}
         <h2 className="text-lg font-semibold text-center">
-          {type === "add" ? "Add" : "Edit"} {org?.role}
+          {type === "add" ? "Add Organization" : "Edit"} {org?.role}
         </h2>
 
         <Form form={form} layout="vertical" onFinish={onFinish}>

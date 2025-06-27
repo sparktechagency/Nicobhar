@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Tabs, Table, Input, Select, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import TicketModal from "../components/superadmin/TicketModal";
 import {
   useGetTicketDetailsQuery,
   useGetTicketListQuery,
 } from "../redux/features/ticket/ticketApi";
-import { useNavigate } from "react-router-dom";
+import { CircleArrowOutUpRight } from "lucide-react";
+import OrganizationTicketModal from "../components/organization/OrganizationTicketModal";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
 const TicketsPage = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [activeTab, setActiveTab] = useState("New Tickets");
@@ -171,10 +170,6 @@ const TicketsPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleticketacvity = () => {
-    navigate("tickets-activity");
-  };
-
   return (
     <div className="tickets-page">
       <div className="header">
@@ -188,12 +183,8 @@ const TicketsPage = () => {
             }}
           />
         </div>
-        <Button
-          onClick={handleticketacvity}
-          type="primary"
-          className="text-base font-semibold !mx-8"
-        >
-          Tickets Acvity
+        <Button className="mr-2" type="primary" href="tickets/tickets-activity">
+          Ticket activity <CircleArrowOutUpRight className="size-4" />
         </Button>
         <Select
           defaultValue="New"
@@ -262,11 +253,13 @@ const TicketsPage = () => {
         </TabPane>
       </Tabs>
 
-      <TicketModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        ticket={ticketDetail?.data}
-      />
+      {ticketDetail?.data && (
+        <OrganizationTicketModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          ticket={ticketDetail?.data.ticket}
+        />
+      )}
     </div>
   );
 };

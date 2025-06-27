@@ -270,6 +270,7 @@ const JobCards = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         ticket={jobDetail?.data}
+        loca
       />
     </div>
   );
