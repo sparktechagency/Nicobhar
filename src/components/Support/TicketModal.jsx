@@ -142,17 +142,6 @@ const TicketModal = ({
             >
               See Inspection Sheets
             </Button>{" "}
-            {opened && (
-              <Button
-                type="primary"
-                className="w-full py-5 font-semibold"
-                variant="solid"
-                color="red"
-                onClick={() => {}}
-              >
-                Create Quotation
-              </Button>
-            )}
           </div>
         </div>
       </Modal>

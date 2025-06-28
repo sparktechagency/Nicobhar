@@ -20,7 +20,7 @@ const AboutUs = () => {
     if (!isLoading) {
       setText(aboutUs?.message?.description);
     }
-  }, []);
+  }, [aboutUs?.message?.description, isLoading]);
   if (isLoading) {
     return <>Loading...</>;
   }

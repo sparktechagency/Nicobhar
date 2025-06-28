@@ -210,7 +210,7 @@ const AssetManagement = () => {
         </div>
 
         <div className="flex items-center justify-end pb-4 gap-2">
-          <Button
+          {/* <Button
             color="red"
             shape="circle"
             className=""
@@ -219,7 +219,7 @@ const AssetManagement = () => {
             }}
           >
             <HistoryIcon className="size-5" />
-          </Button>
+          </Button> */}
           <Selecter options={sortOptions} value={sort} onChange={setSort} />
         </div>
 

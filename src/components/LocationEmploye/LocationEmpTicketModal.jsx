@@ -1,12 +1,11 @@
-import { Modal, Input } from "antd"
-import { CopyOutlined, CloseOutlined } from "@ant-design/icons"
-import { useNavigate } from "react-router-dom"
+import { Modal, Input } from "antd";
+import { CopyOutlined, CloseOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
-
-const { TextArea } = Input
+const { TextArea } = Input;
 
 const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   return (
     <Modal
       open={isOpen}
@@ -14,7 +13,7 @@ const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
       footer={null}
       width={700}
       className="ticket-modal"
-    //   closeIcon={<CloseOutlined className="close-icon" />}
+      //   closeIcon={<CloseOutlined className="close-icon" />}
       title={
         <div className="modal-header">
           <span className="status-badge">NEW</span>
@@ -26,7 +25,12 @@ const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
         <div className="form-group">
           <label>Ticket Number</label>
           <div className="input-with-copy">
-            <Input style={{height:'44px',width:'100%'}}  value="Auto generated" readOnly className="gray-bg text-[#777777]" />
+            <Input
+              style={{ height: "44px", width: "100%" }}
+              value="Auto generated"
+              readOnly
+              className="gray-bg text-[#777777]"
+            />
             <CopyOutlined className="copy-icon" />
           </div>
         </div>
@@ -35,14 +39,24 @@ const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
           <div className="form-group">
             <label>Asset</label>
             <div className="input-with-copy">
-              <Input style={{height:'44px',width:'100%'}} value="Monitor" readOnly className="gray-bg text-[#777777]" />
+              <Input
+                style={{ height: "44px", width: "100%" }}
+                value="Monitor"
+                readOnly
+                className="gray-bg text-[#777777]"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
           <div className="form-group">
             <label>Serial Number</label>
             <div className="input-with-copy">
-              <Input style={{height:'44px',width:'100%'}} value="HFGS647HNSJU" readOnly className="gray-bg text-[#777777]" />
+              <Input
+                style={{ height: "44px", width: "100%" }}
+                value="HFGS647HNSJU"
+                readOnly
+                className="gray-bg text-[#777777]"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
@@ -52,14 +66,24 @@ const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
           <div className="form-group">
             <label>Organization</label>
             <div className="input-with-copy">
-              <Input style={{height:'44px',width:'100%'}} value="ViewSonic" readOnly className="gray-bg text-[#777777]" />
+              <Input
+                style={{ height: "44px", width: "100%" }}
+                value="ViewSonic"
+                readOnly
+                className="gray-bg text-[#777777]"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
           <div className="form-group">
             <label>Location</label>
             <div className="input-with-copy">
-              <Input style={{height:'44px',width:'100%'}} value="Rampura, Dhaka" readOnly className="gray-bg text-[#777777]" />
+              <Input
+                style={{ height: "44px", width: "100%" }}
+                value="Rampura, Dhaka"
+                readOnly
+                className="gray-bg text-[#777777]"
+              />
               <CopyOutlined className="copy-icon" />
             </div>
           </div>
@@ -79,13 +103,13 @@ const LocationEmpTicketModal = ({ isOpen, onClose, ticket }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn bg-secondary h-[44px] text-white  font-semibold">See inspection sheet</button>
-        
+          <button className="btn bg-secondary h-[44px] text-white  font-semibold">
+            See inspection sheet
+          </button>
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
-export default LocationEmpTicketModal
-
+export default LocationEmpTicketModal;
