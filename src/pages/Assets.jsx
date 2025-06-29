@@ -117,7 +117,6 @@ const AssetManagement = () => {
         values.product_id = "404";
         const res = await updateAsset({ id: editableId, data: values });
         console.log(res);
-
         if (!res?.data?.status) {
           message.error("Asset was not updated");
           return;
@@ -263,7 +262,7 @@ const AssetManagement = () => {
                   <td className="px-4 py-3 text-sm">
                     <button
                       onClick={() => handleContractClick(asset.id)}
-                      className="rounded bg-[#326280] px-3 py-1 text-white "
+                      className="rounded bg-[#326280] px-3 py-1 text-white"
                     >
                       Contract
                     </button>
@@ -306,6 +305,9 @@ const AssetManagement = () => {
                       onClick={() => {
                         form.setFieldsValue({
                           ...asset,
+                          unit_price: JSON.stringify(asset.unit_price),
+                          current_spend: JSON.stringify(asset.current_spend),
+                          max_spend: JSON.stringify(asset.max_spend),
                           product: asset.name,
                         });
                         handleEditClick(asset.id);

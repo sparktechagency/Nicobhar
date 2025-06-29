@@ -306,6 +306,9 @@ const AssetManagement = () => {
                       onClick={() => {
                         form.setFieldsValue({
                           ...asset,
+                          unit_price: JSON.stringify(asset.unit_price),
+                          current_spend: JSON.stringify(asset.current_spend),
+                          max_spend: JSON.stringify(asset.max_spend),
                           product: asset.name,
                         });
                         handleEditClick(asset.id);

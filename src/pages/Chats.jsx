@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { ChatMessages } from "../components/superadmin/chat/ChatMessages";
 import { ChatInput } from "../components/superadmin/chat/ChatInput";
@@ -15,10 +14,8 @@ import {
 import { skipToken } from "@reduxjs/toolkit/query";
 import { connectSocket, getSocket } from "../socket/socket";
 import { Modal } from "antd";
-import '../pages/thirdparty/chart.css'
+import "../pages/thirdparty/chart.css";
 import { FiSearch } from "react-icons/fi";
-
-
 
 export default function ChatPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,45 +24,41 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const [postMess] = usePostMessMutation()
+  const [postMess] = usePostMessMutation();
 
-  const { data: loginUser, isLoading  } = useGetAdminProfileQuery();
+  const { data: loginUser, isLoading } = useGetAdminProfileQuery();
   const role = loginUser?.data?.role;
 
-  const { data: chartListData , refetch : allUserChatListRefetch } = useGetChartQuery(
-    activeTab ? { role: activeTab, search: searchQuery || "" } : skipToken
-  );
+  const { data: chartListData, refetch: allUserChatListRefetch } =
+    useGetChartQuery(
+      activeTab ? { role: activeTab, search: searchQuery || "" } : skipToken
+    );
   const allChartList = chartListData?.chat_list;
 
-  const { data: messageData , refetch : messageDataRefetch } = useGetMessQuery(
+  const { data: messageData, refetch: messageDataRefetch } = useGetMessQuery(
     selectedUser?.id ? selectedUser.id : skipToken
   );
   const allMessageData = messageData?.data?.data;
 
-
-  const { data: searchUserData  } = useGetSearchNewUserQuery({ role: activeTab, search: searchQueryTwo });
-  const allSearchData = searchUserData?.data
+  const { data: searchUserData } = useGetSearchNewUserQuery({
+    role: activeTab,
+    search: searchQueryTwo,
+  });
+  const allSearchData = searchUserData?.data;
 
   // console.log(allSearchData)
 
-
   const showModal = () => {
-    setModalOpen(true)
-  }
+    setModalOpen(true);
+  };
 
-  const handleOkModalOne = () => {
-
-  }
+  const handleOkModalOne = () => {};
 
   const handleCancelModalOne = () => {
-    setModalOpen(false)
-  }
-
-
-
-
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -73,7 +66,6 @@ export default function ChatPage() {
 
     const socket = connectSocket(userId);
     if (userId) {
-
       socket.on("connect", () => {
         console.log("✅ Sokiet Connected with ID:", socket.id);
         setIsConnected(true);
@@ -85,8 +77,8 @@ export default function ChatPage() {
       });
 
       socket.on("private-message", () => {
-        allUserChatListRefetch()
-        messageDataRefetch()
+        allUserChatListRefetch();
+        messageDataRefetch();
       });
 
       return () => {
@@ -97,18 +89,16 @@ export default function ChatPage() {
     }
   }, []);
 
-
   const handleSendMessage = async (text) => {
-
     const sendAbleData = {
       receiver_id: selectedUser?.id,
-      message: text
-    }
+      message: text,
+    };
     try {
-      const res = await postMess(sendAbleData).unwrap()
-      console.log(res)
+      const res = await postMess(sendAbleData).unwrap();
+      console.log(res);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
     const socket = getSocket();
     const messageData = {
@@ -118,7 +108,6 @@ export default function ChatPage() {
 
     if (socket && socket.connected) {
       socket.emit("private-message", messageData);
-     
     }
   };
 
@@ -142,73 +131,134 @@ export default function ChatPage() {
     }
   }, [role]);
 
-
   const handleNavigate = (userInfo) => {
-    setModalOpen(false)
-    setSelectedUser(userInfo)
-  }
-
-
-
-
-
+    setModalOpen(false);
+    setSelectedUser(userInfo);
+  };
 
   if (isLoading) return <p>Loading...</p>;
 
-
-
   return (
     <div className="h-[88vh] bg-white overflow-y-hidden">
-
       {/* Role-Based Tabs */}
       <div className="flex items-center space-x-4 py-6">
         <p className="pl-4 text-lg font-semibold">Chat with</p>
         {/* Generate buttons based on role */}
         {role === "super_admin" && (
           <>
-            <TabButton activeTab={activeTab} tab="organization" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="third-party" setActiveTab={setActiveTab} />
+            <TabButton
+              activeTab={activeTab}
+              tab="organization"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="third-party"
+              setActiveTab={setActiveTab}
+            />
           </>
         )}
         {role === "support_agent" && (
           <>
-            <TabButton activeTab={activeTab} tab="organization" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="location_employee" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="technician" setActiveTab={setActiveTab} />
+            <TabButton
+              activeTab={activeTab}
+              tab="organization"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="location_employee"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="technician"
+              setActiveTab={setActiveTab}
+            />
           </>
         )}
         {role === "location_employee" && (
           <>
-            <TabButton activeTab={activeTab} tab="organization" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="suport_agent" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="technician" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="my-contact" setActiveTab={setActiveTab} />
+            <TabButton
+              activeTab={activeTab}
+              tab="organization"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="suport_agent"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="technician"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="my-contact"
+              setActiveTab={setActiveTab}
+            />
           </>
         )}
         {role === "third_party" && (
           <>
-            <TabButton activeTab={activeTab} tab="organization" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="suport_agent" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="location_employee" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="technician" setActiveTab={setActiveTab} />
+            <TabButton
+              activeTab={activeTab}
+              tab="organization"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="suport_agent"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="location_employee"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="technician"
+              setActiveTab={setActiveTab}
+            />
           </>
         )}
         {role === "organization" && (
           <>
-            <TabButton activeTab={activeTab} tab="super_admin" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="suport_agent" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="location_employee" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="technician" setActiveTab={setActiveTab} />
-            <TabButton activeTab={activeTab} tab="third-party" setActiveTab={setActiveTab} />
+            <TabButton
+              activeTab={activeTab}
+              tab="super_admin"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="suport_agent"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="location_employee"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="technician"
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              activeTab={activeTab}
+              tab="third-party"
+              setActiveTab={setActiveTab}
+            />
           </>
         )}
       </div>
 
-
-      <div className="flex ">
-
+      <div className="flex">
         {/* Left Sidebar */}
-        <div className="w-80 border-r flex flex-col">
+        <div className="w-80 border-r flex flex-col h-[78dvh]">
           <div className="px-4">
             {/* Search */}
             <div className="relative py-1">
@@ -221,7 +271,8 @@ export default function ChatPage() {
               />
               <button
                 onClick={showModal}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white">
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-red-500 text-white"
+              >
                 <TiPlusOutline className="w-4 h-4" />
               </button>
             </div>
@@ -231,7 +282,9 @@ export default function ChatPage() {
           <div className="">
             <ChatList
               users={allChartList?.filter((singleUser) =>
-                singleUser.user.name.toLowerCase().includes(searchQuery.toLowerCase())
+                singleUser.user.name
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase())
               )}
               selectedUser={selectedUser}
               onSelectUser={setSelectedUser}
@@ -239,27 +292,23 @@ export default function ChatPage() {
           </div>
         </div>
 
-
-
         {/* Right side content */}
-        <div className="h-[81vh]  w-full flex flex-col justify-between ">
+        <div className="flex-1 w-full flex flex-col justify-between ">
           {selectedUser ? (
             <>
               <div className="">
-
                 <div>
                   <ChatHeader user={selectedUser} />
                 </div>
 
-
                 <div>
+                  {/* {console.log(allMessageData)} */}
                   <ChatMessages
                     messages={allMessageData?.concat(messages)}
                     currentUser={loginUser?.data}
                     selectedUser={selectedUser}
                   />
                 </div>
-
               </div>
 
               <div>
@@ -273,14 +322,6 @@ export default function ChatPage() {
           )}
         </div>
       </div>
-
-
-
-
-
-
-
-
 
       {/* modal */}
       <Modal
@@ -296,7 +337,6 @@ export default function ChatPage() {
           </div>
         }
       >
-
         <div className="p-4 ">
           <div className="relative py-1">
             <input
@@ -308,29 +348,36 @@ export default function ChatPage() {
             />
             <button
               onClick={showModal}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full ">
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full "
+            >
               <FiSearch />
             </button>
           </div>
 
           <div className="mt-8 space-y-1">
-
-            {
-              allSearchData?.map((user, index) => {
-                return (
-                  <div onClick={() => handleNavigate(user)} key={index} className="cursor-pointer hover:bg-gray-200 flex items-center gap-3  py-2 px-2 rounded-lg">
-                    <img src={user?.image} alt="" className="w-8 h-8 rounded-full" />
-                    <div>
-                      <h2 className=" font-medium">{user?.name}</h2>
-                      <p className="text-gray-500 font-medium">Tap to send message.</p>
-                    </div>
+            {allSearchData?.map((user, index) => {
+              return (
+                <div
+                  onClick={() => handleNavigate(user)}
+                  key={index}
+                  className="cursor-pointer hover:bg-gray-200 flex items-center gap-3  py-2 px-2 rounded-lg"
+                >
+                  <img
+                    src={user?.image}
+                    alt=""
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <h2 className=" font-medium">{user?.name}</h2>
+                    <p className="text-gray-500 font-medium">
+                      Tap to send message.
+                    </p>
                   </div>
-                )
-              })
-            }
+                </div>
+              );
+            })}
           </div>
         </div>
-
       </Modal>
     </div>
   );
@@ -339,7 +386,9 @@ export default function ChatPage() {
 // Reusable Tab Button
 const TabButton = ({ activeTab, tab, setActiveTab }) => (
   <button
-    className={`px-4 py-2 rounded-full ${activeTab === tab ? "bg-red-500 text-white" : "text-gray-500"}`}
+    className={`px-4 py-2 rounded-full ${
+      activeTab === tab ? "bg-red-500 text-white" : "text-gray-500"
+    }`}
     onClick={() => setActiveTab(tab)}
   >
     {tab.replace(/[-_]/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}

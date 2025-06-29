@@ -85,7 +85,7 @@ export default function NotificationsPage() {
                       </span>
                     )}
                     <button
-                      className="text-orange-500 hover:text-orange-600 font-medium"
+                      className="font-medium"
                       onClick={async () => {
                         try {
                           const res = await markNotification({ id: item.id });
